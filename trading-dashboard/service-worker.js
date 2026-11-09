@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cryptowatch-v18';
+const CACHE_NAME = 'cryptowatch-v19';
 
 const PRECACHE_URLS = [
   './',
@@ -13,8 +13,6 @@ const PRECACHE_URLS = [
   './script.js',
   './icons/icon-192.svg',
   './icons/icon-512.svg',
-  './radar/index.html',
-  './radar/assets/css/style.css',
   './radar/assets/js/api.js',
   './radar/assets/js/market-core.js',
   './radar/assets/js/ui.js',

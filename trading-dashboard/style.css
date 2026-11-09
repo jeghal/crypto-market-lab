@@ -1839,6 +1839,7 @@
         .card-chart:-webkit-full-screen .chart-box,
         .card-chart:-moz-full-screen .chart-box {
           min-height: 0;
+        }
       }
 
 .radar-native-wrap {
@@ -2120,3 +2121,9 @@
 .data-health {padding:10px 20px;font-size:12px;color:var(--green,#52dfc0);border-bottom:1px solid var(--border);}
 .data-health[data-stale="true"] {color:var(--yellow,#f0c35e);background:#382d162e;}
 #sigTxt[data-stale="true"] {opacity:.6;}
+
+#radarCard {scroll-margin-top: 24px;}
+.project-nav {align-items:center;gap:8px 14px;padding:8px 20px;}
+.project-nav a {padding:4px 8px;border:1px solid var(--border);border-radius:6px;line-height:1.5;}
+.data-health {line-height:1.8;overflow-wrap:anywhere;}
+@media (max-width:560px) {.project-nav {padding:8px 12px;gap:6px;}.project-nav a {font-size:11px;}.data-health {padding:8px 12px;font-size:11px;}}
