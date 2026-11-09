@@ -1,2 +1,0 @@
-# Standalone Python scanner
-requests==2.32.5

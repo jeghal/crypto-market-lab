@@ -25,7 +25,7 @@ def main():
             page=context.new_page();page.set_default_timeout(15000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
             base=f'http://127.0.0.1:{server.server_port}'
             page.goto(base+'/')
-            check('Independent projects are listed at the workspace entrance',page.locator('a.card').count()==7)
+            check('Independent projects are listed at the workspace entrance',page.locator('a.card').count()==3)
             page.locator('a[href="trading-dashboard/"]').click()
             page.wait_for_function("document.getElementById('dataHealth').dataset.stale === 'false'")
             check('Dashboard displays source age and effective interval','الفريم الفعلي' in page.locator('#dataHealth').inner_text())
