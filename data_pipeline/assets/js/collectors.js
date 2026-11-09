@@ -1,3 +1,4 @@
+// GENERATED from shared/. Do not edit; run node scripts/sync_shared.mjs.
 
 // =========================
 // المجمعون (Collectors)
@@ -133,7 +134,8 @@ async function collectRecentTrades(zip, symbol, commonWindowStart, commonWindowE
     isAggregated: true,
     sliceMs: AGG_TRADES_SLICE_MS,
     truncatedSlices: result.truncatedSlices,
-    largeTradeStats
+    largeTradeStats,
+    rows: result.rows
   };
 }
 

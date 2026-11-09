@@ -211,6 +211,7 @@ class BinanceWebSocket {
   }
 
   _setDot(online, failed = false) {
+    state.network.wsConnected = Boolean(online);
     const dot = document.querySelector('.sdot');
     if (!dot) return;
     if (failed) {

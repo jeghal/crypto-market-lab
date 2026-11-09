@@ -19,6 +19,9 @@
 ├── ATLASFLOW/
 ├── data_pipeline/
 ├── formation/
+├── shared/               # المصدر المشترك للحسابات والاتصال والتحويلات
+├── scripts/              # التوليد والفحوص المشتركة
+├── docs/                 # حدود المشاريع وافتراضات التقييم
 ├── tools/
 │   ├── binance_5m_spot_scanner.py
 │   ├── scanner.html
@@ -27,6 +30,11 @@
 │   └── crypto-alert-bot.zip
 ├── maintenance/
 │   └── inject.py
+├── index.html            # مدخل المشاريع المستقلة
+├── package.json          # أوامر التشغيل والتوليد والفحص
+├── requirements.txt
+├── requirements-dev.txt
+├── README.md
 └── README_ORGANISATION.md
 ```
 

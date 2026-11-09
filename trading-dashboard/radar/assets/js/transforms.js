@@ -1,3 +1,5 @@
+// GENERATED from shared/. Do not edit; run node scripts/sync_shared.mjs.
+globalThis.BinancePipelineProfile = {"limits":[150,400,500,700]};
 
 // =========================
 // الإعدادات الثابتة وتحويل البيانات
@@ -7,12 +9,9 @@ const MARKET_TYPE = "spot";
 const EXCHANGE = "binance";
 const PAGE_VERSION = "2.0.0";
 
-const INTERVALS = [
-  { interval: "1d", limit: 150 },
-  { interval: "4h", limit: 400 },
-  { interval: "1h", limit: 500 },
-  { interval: "15m", limit: 700 }
-];
+const INTERVALS = ["1d", "4h", "1h", "15m"].map((interval, i) => ({
+  interval, limit: (globalThis.BinancePipelineProfile?.limits || [150,400,500,700])[i]
+}));
 
 const ORDERBOOK_LIMIT = 10;
 const ORDERBOOK_SNAPSHOT_COUNT = 3;
@@ -140,38 +139,12 @@ function buildFinalMarketSnapshot(symbol, capturedAt, bookTickerData, ticker24hD
   };
 }
 
-function toFiniteNumber(value) {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : null;
-}
-
-function roundTo(value, digits = 8) {
-  if (!Number.isFinite(value)) return null;
-  return Number(value.toFixed(digits));
-}
-
-function floorToStep(value, step) {
-  if (!Number.isFinite(value) || !Number.isFinite(step) || step <= 0) return null;
-  const scaled = Math.floor((value + Number.EPSILON) / step);
-  return roundTo(scaled * step, 12);
-}
-
-function ceilToStep(value, step) {
-  if (!Number.isFinite(value) || !Number.isFinite(step) || step <= 0) return null;
-  const scaled = Math.ceil((value - Number.EPSILON) / step);
-  return roundTo(scaled * step, 12);
-}
-
-function roundToStep(value, step) {
-  if (!Number.isFinite(value) || !Number.isFinite(step) || step <= 0) return null;
-  const scaled = Math.round(value / step);
-  return roundTo(scaled * step, 12);
-}
+const {toFiniteNumber, roundTo, floorToStep, ceilToStep, roundToStep} = globalThis.BinanceCore;
 
 function countDecimals(value) {
-  const s = String(value ?? "");
-  if (!s.includes(".")) return 0;
-  return s.split(".")[1].replace(/0+$/, "").length;
+  const [coefficient, exponent = "0"] = String(value ?? "").toLowerCase().split("e");
+  const decimals = (coefficient.split(".")[1] || "").replace(/0+$/, "").length;
+  return Math.max(0, decimals - Number(exponent));
 }
 
 function calculateSMA(values, period) {
@@ -182,13 +155,7 @@ function calculateSMA(values, period) {
 }
 
 function calculateEMA(values, period) {
-  if (!Array.isArray(values) || values.length < period || period <= 0) return null;
-  const multiplier = 2 / (period + 1);
-  let ema = values.slice(0, period).reduce((acc, v) => acc + v, 0) / period;
-  for (let i = period; i < values.length; i++) {
-    ema = ((values[i] - ema) * multiplier) + ema;
-  }
-  return ema;
+  return globalThis.BinanceCore.ema(values, period).at(-1) ?? null;
 }
 
 function calculateChangePct(current, previous) {
@@ -576,7 +543,7 @@ function finalizeTradePlanCandidate(candidate, executionRules) {
     [candidate.entry_reference_price, candidate.stop_level, candidate.first_tp_level]
       .filter((value) => Number.isFinite(value))
       .every((value) => isStepAligned(value, tickSize));
-  const passesExecutionRules = hasExecutionPrecision;
+  const passesExecutionRules = hasExecutionPrecision && pricesAligned;
   const structurallyValid = hasEntryZone && hasStop && hasValidatedTp && passesExecutionRules;
 
   let rejectionReason = null;
@@ -1003,6 +970,7 @@ function buildManifest(startedAt, finishedAt, serverTimeReference, symbols, symb
   return {
     bundle_type: "market_bundle",
     schema_version: "2.1.0",
+    version: PAGE_VERSION,
     bundle_generator_version: PAGE_VERSION,
     exchange: EXCHANGE,
     market_type: MARKET_TYPE,

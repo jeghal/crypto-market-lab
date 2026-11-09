@@ -166,6 +166,7 @@ export async function runRegressionTests() {
     for (const project of ['data_pipeline', 'trading-dashboard/radar']) {
       await check(`${project}: notional uses rounded order price and quantity`, () => {
         const context = vm.createContext({});
+        vm.runInContext(read(`${project}/assets/js/market-core.js`), context);
         vm.runInContext(read(`${project}/assets/js/transforms.js`), context);
         const result = vm.runInContext('buildExecutionCheck("TESTUSDT", "2026-11-09", 10.09, {tickSize:"1",stepSize:"1",minQty:"1",maxQty:"100",minNotional:"90.5"})', context);
         assert.equal(result.estimated_notional, 90);
@@ -177,10 +178,11 @@ export async function runRegressionTests() {
       await check(`${project}: 429 retries recover or reject with status and retry delay`, async () => {
         let calls = 0;
         const waits = [];
-        const context = vm.createContext({ fetch: async () => {
+        const context = vm.createContext({ AbortController, DOMException, clearTimeout, setTimeout: (fn,ms) => { if(ms<12000){waits.push(ms); return setTimeout(fn,0);} return setTimeout(fn,ms); }, fetch: async () => {
           calls++;
           return { ok: false, status: 429, headers: { get: () => '2' } };
         }, sleep: async ms => waits.push(ms), appendStatus() {} });
+        vm.runInContext(read(`${project}/assets/js/market-core.js`), context);
         vm.runInContext(read(`${project}/assets/js/api.js`), context);
         await assert.rejects(vm.runInContext('fetchJson("mock")', context), error => error.status === 429 && error.retryAfterMs === 2000);
         assert.equal(calls, 3);

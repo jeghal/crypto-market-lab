@@ -1,0 +1,19 @@
+{
+  "name": "binance-projects-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Independent Binance tools with shared market-data primitives",
+  "scripts": {
+    "build": "node scripts/sync_shared.mjs",
+    "check:shared": "node scripts/sync_shared.mjs --check",
+    "test": "node scripts/sync_shared.mjs --check && node trading-dashboard/scripts/run_unit_tests.mjs && node scripts/test_workspace.mjs && node trading-dashboard/scripts/check_precache.mjs",
+    "test:ui": "python trading-dashboard/scripts/run_ui_e2e_tests.py",
+    "test:workspace-ui": "python scripts/test_workspace_ui.py",
+    "test:live": "node scripts/live_check.mjs",
+    "start": "python -m http.server 8000 --bind 127.0.0.1",
+    "test:bundles": "node scripts/test_bundles.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

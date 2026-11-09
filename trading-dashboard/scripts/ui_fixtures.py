@@ -6,6 +6,7 @@ from urllib.parse import parse_qs, urlparse
 
 
 def install_market_fixtures(context):
+    controls = {'fail_klines': False, 'short_month': False}
     symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'XRPUSDT', 'ADAUSDT',
                'DOGEUSDT', 'AVAXUSDT', 'LINKUSDT', 'DOTUSDT', 'SUIUSDT']
 
@@ -25,11 +26,16 @@ def install_market_fixtures(context):
         query = parse_qs(url.query)
         symbol = query.get('symbol', ['BTCUSDT'])[0]
         if url.path.endswith('/klines'):
+            if controls['fail_klines']:
+                route.fulfill(status=503,content_type='application/json',body='{}')
+                return
             interval = query.get('interval', ['1h'])[0]
             duration = {'1M':2592000000,'1w':604800000,'1d':86400000,'4h':14400000,
                         '1h':3600000,'15m':900000,'5m':300000}.get(interval, 60000)
             count = int(query.get('limit', ['260'])[0])
+            if controls['short_month'] and interval == '1M': count = 5
             end = int(time.time()*1000)//duration*duration
+            if "endTime" in query: end = int(query["endTime"][0])//duration*duration
             payload = []
             for i in range(count):
                 close = 100 + math.sin(i/5)*3 + math.cos(i/11)*2
@@ -62,8 +68,9 @@ def install_market_fixtures(context):
 
     context.route('**/*', handle)
     # REST refreshes supply prices; a quiet local socket prevents live market traffic.
-    context.add_init_script('''window.WebSocket = class {
+    context.add_init_script('''window.WebSocket = class extends EventTarget {
       static CONNECTING=0; static OPEN=1; static CLOSING=2; static CLOSED=3;
-      constructor(){this.readyState=1;queueMicrotask(()=>this.onopen?.());}
+      constructor(){super();this.readyState=1;queueMicrotask(()=>{const event=new Event('open');this.onopen?.(event);this.dispatchEvent(event);});}
       close(){this.readyState=3;} send(){}
     };''')
+    return controls

@@ -10,6 +10,8 @@ import { addToWatchlist, getAllSymbols, loadWatchlist, removeFromWatchlist } fro
 import { destroySentiment, initSentiment } from './market-sentiment.js';
 import { buildCoilRow, buildScreenerRow, buildSignal } from './signal.js';
 import { state } from './state.js';
+import { renderDataHealth } from './data-health.js';
+import { updateJournal } from './signal-journal.js';
 import { activateTab } from './utils.js';
 import { initMomentumScanner } from './momentum-scanner.js';
 import { initPwa } from './pwa.js';
@@ -104,6 +106,8 @@ export function startApp() {
   function clearChartState() {
     // Clear stale data immediately so chart doesn't show old symbol's data
     state.lastResult = null;
+    state.dataHealth = {receivedAt: null, effectiveIv: null, failed: false};
+    renderDataHealth();
     state.chartCandles = [];
     state.hoverIndex = -1;
     state.hoverY = -1;
@@ -131,6 +135,14 @@ export function startApp() {
     renderSignal: render,
     renderTradeCalculator: () => tradeCalc?.render(),
     showToast,
+    onAnalysisSuccess: result => {
+      const journal = updateJournal(result);
+      state.dataHealth = {receivedAt: result.receivedAt || Date.now(), effectiveIv: result.chartIv,
+        failed: false, journalSaved: journal.saved};
+      renderDataHealth();
+    },
+    onAnalysisError: () => { state.dataHealth.failed = true; renderDataHealth(); },
+    onTick: renderDataHealth,
   });
 
   const chartInteractions = createChartInteractionsController({
@@ -274,6 +286,9 @@ export function startApp() {
     SYMS,
   });
 
+  addListener(window, 'offline', () => { state.runtime.isOnline = false; state.dataHealth.failed = true; state.network.wsConnected = false; renderDataHealth(); });
+  addListener(window, 'online', () => { state.runtime.isOnline = true; runController.run(); wsManager.reconnect(state.curSym, state.effectiveIv || state.curIv); });
+  renderDataHealth();
   initPwa(showToast);
   return startup.init({
     bindEvents: events.bindEvents,

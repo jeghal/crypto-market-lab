@@ -1,0 +1,9 @@
+{
+  "name": "cryptowatch-dashboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/run_unit_tests.mjs",
+    "test:ui": "python scripts/run_ui_e2e_tests.py"
+  }
+}

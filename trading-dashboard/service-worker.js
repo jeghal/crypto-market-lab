@@ -1,16 +1,22 @@
-const CACHE_NAME = 'cryptowatch-v17';
+const CACHE_NAME = 'cryptowatch-v18';
 
 const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
   './style.css',
+  './journal.html',
+  './journal.css',
+  './dashboard/journal-page.js',
+  './dashboard/signal-journal.js',
+  './dashboard/data-health.js',
   './script.js',
   './icons/icon-192.svg',
   './icons/icon-512.svg',
   './radar/index.html',
   './radar/assets/css/style.css',
   './radar/assets/js/api.js',
+  './radar/assets/js/market-core.js',
   './radar/assets/js/ui.js',
   './radar/assets/js/transforms.js',
   './radar/assets/js/collectors.js',
@@ -22,6 +28,7 @@ const PRECACHE_URLS = [
   './radar/otoco_prompt.md',
   './dashboard/app.js',
   './dashboard/api.js',
+  './dashboard/market-core.js',
   './dashboard/app-teardown.js',
   './dashboard/app-lifecycle.js',
   './dashboard/chart.js',

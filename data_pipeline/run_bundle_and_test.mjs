@@ -3,10 +3,13 @@ import path from "node:path";
 import vm from "node:vm";
 
 const rootDir = process.cwd();
+const outputDir = path.join(rootDir, "_Reports", "bundles");
+await fs.mkdir(outputDir, { recursive: true });
 const scriptFiles = [
   "assets/js/vendor/jszip.min.js",
-  "assets/js/ui.js",
+  "assets/js/market-core.js",
   "assets/js/api.js",
+  "assets/js/ui.js",
   "assets/js/transforms.js",
   "assets/js/collectors.js",
   "assets/js/main.js"
@@ -21,6 +24,9 @@ let blobCounter = 0;
 function makeElement(id = "") {
   return {
     id,
+    value: id === "symbolsInput" ? "BTCUSDT, ETHUSDT, SOLUSDT" : "",
+    appendChild() {},
+    contains() { return false; },
     style: {},
     className: "",
     innerHTML: "",
@@ -46,6 +52,9 @@ function getOrCreateElement(id) {
 globalThis.window = globalThis;
 globalThis.self = globalThis;
 globalThis.document = {
+  addEventListener() {},
+  querySelector() { return null; },
+  querySelectorAll() { return []; },
   getElementById(id) {
     return getOrCreateElement(id);
   },
@@ -65,7 +74,7 @@ globalThis.document = {
         if (!blob) return;
         const writePromise = blob
           .arrayBuffer()
-          .then((ab) => fs.writeFile(path.join(rootDir, this.download), Buffer.from(ab)))
+          .then((ab) => fs.writeFile(path.join(outputDir, this.download), Buffer.from(ab)))
           .then(() => savedBundleFiles.push(this.download));
         pendingWrites.push(writePromise);
       },
@@ -134,7 +143,7 @@ if (savedBundleFiles.length === 0) {
 }
 
 const bundleName = savedBundleFiles[savedBundleFiles.length - 1];
-const bundlePath = path.join(rootDir, bundleName);
+const bundlePath = path.join(outputDir, bundleName);
 const zipBuffer = await fs.readFile(bundlePath);
 const zip = await globalThis.JSZip.loadAsync(zipBuffer);
 

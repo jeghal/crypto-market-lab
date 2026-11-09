@@ -22,6 +22,9 @@ export function createRunController({
   renderSignal,
   renderTradeCalculator,
   showToast,
+  onAnalysisSuccess,
+  onAnalysisError,
+  onTick,
 } = {}) {
   if (!state) throw new Error('createRunController: state is required');
   if (!el) throw new Error('createRunController: el is required');
@@ -66,6 +69,7 @@ export function createRunController({
   }
 
   function updateCountdown() {
+    onTick?.();
     if (!el.countdown) return;
     const remaining = Math.max(0, Math.round((nextRunAt - Date.now()) / 1000));
     el.countdown.textContent = remaining > 0 ? `⏱ ${remaining}s` : '';
@@ -134,11 +138,15 @@ export function createRunController({
         intervalMs: intervalToMs(state.effectiveIv ?? state.curIv),
       }).slice(-(state.candleLimit || fetched.length));
       
+      result.requestedIv = requestedIv;
+      onAnalysisSuccess?.(result);
+      updateStatus?.(`تم التحديث: ${curSym} · ${ivLabels[usedIv] || usedIv}`);
       renderSignal?.(result);
       renderTradeCalculator?.();
     } catch (error) {
       if (controller.signal.aborted || error?.name === 'AbortError') return;
       if (runId !== state.activeRunId) return;
+      onAnalysisError?.(error);
       updateStatus?.(`⚠ خطأ: ${error.message}`);
       const insufficient = isInsufficientDataError(error);
       if (insufficient) {

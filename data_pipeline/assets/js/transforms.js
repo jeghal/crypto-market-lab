@@ -1,3 +1,5 @@
+// GENERATED from shared/. Do not edit; run node scripts/sync_shared.mjs.
+globalThis.BinancePipelineProfile = {"limits":[100,300,400,500]};
 
 // =========================
 // الإعدادات الثابتة وتحويل البيانات
@@ -7,12 +9,9 @@ const MARKET_TYPE = "spot";
 const EXCHANGE = "binance";
 const PAGE_VERSION = "2.0.0";
 
-const INTERVALS = [
-  { interval: "1d", limit: 100 },
-  { interval: "4h", limit: 300 },
-  { interval: "1h", limit: 400 },
-  { interval: "15m", limit: 500 }
-];
+const INTERVALS = ["1d", "4h", "1h", "15m"].map((interval, i) => ({
+  interval, limit: (globalThis.BinancePipelineProfile?.limits || [150,400,500,700])[i]
+}));
 
 const ORDERBOOK_LIMIT = 10;
 const ORDERBOOK_SNAPSHOT_COUNT = 3;
@@ -140,38 +139,12 @@ function buildFinalMarketSnapshot(symbol, capturedAt, bookTickerData, ticker24hD
   };
 }
 
-function toFiniteNumber(value) {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : null;
-}
-
-function roundTo(value, digits = 8) {
-  if (!Number.isFinite(value)) return null;
-  return Number(value.toFixed(digits));
-}
-
-function floorToStep(value, step) {
-  if (!Number.isFinite(value) || !Number.isFinite(step) || step <= 0) return null;
-  const scaled = Math.floor((value + Number.EPSILON) / step);
-  return roundTo(scaled * step, 12);
-}
-
-function ceilToStep(value, step) {
-  if (!Number.isFinite(value) || !Number.isFinite(step) || step <= 0) return null;
-  const scaled = Math.ceil((value - Number.EPSILON) / step);
-  return roundTo(scaled * step, 12);
-}
-
-function roundToStep(value, step) {
-  if (!Number.isFinite(value) || !Number.isFinite(step) || step <= 0) return null;
-  const scaled = Math.round(value / step);
-  return roundTo(scaled * step, 12);
-}
+const {toFiniteNumber, roundTo, floorToStep, ceilToStep, roundToStep} = globalThis.BinanceCore;
 
 function countDecimals(value) {
-  const s = String(value ?? "");
-  if (!s.includes(".")) return 0;
-  return s.split(".")[1].replace(/0+$/, "").length;
+  const [coefficient, exponent = "0"] = String(value ?? "").toLowerCase().split("e");
+  const decimals = (coefficient.split(".")[1] || "").replace(/0+$/, "").length;
+  return Math.max(0, decimals - Number(exponent));
 }
 
 function calculateSMA(values, period) {
@@ -182,13 +155,7 @@ function calculateSMA(values, period) {
 }
 
 function calculateEMA(values, period) {
-  if (!Array.isArray(values) || values.length < period || period <= 0) return null;
-  const multiplier = 2 / (period + 1);
-  let ema = values.slice(0, period).reduce((acc, v) => acc + v, 0) / period;
-  for (let i = period; i < values.length; i++) {
-    ema = ((values[i] - ema) * multiplier) + ema;
-  }
-  return ema;
+  return globalThis.BinanceCore.ema(values, period).at(-1) ?? null;
 }
 
 function calculateChangePct(current, previous) {
@@ -576,7 +543,7 @@ function finalizeTradePlanCandidate(candidate, executionRules) {
     [candidate.entry_reference_price, candidate.stop_level, candidate.first_tp_level]
       .filter((value) => Number.isFinite(value))
       .every((value) => isStepAligned(value, tickSize));
-  const passesExecutionRules = hasExecutionPrecision;
+  const passesExecutionRules = hasExecutionPrecision && pricesAligned;
   const structurallyValid = hasEntryZone && hasStop && hasValidatedTp && passesExecutionRules;
 
   let rejectionReason = null;
@@ -1004,6 +971,7 @@ function buildManifest(startedAt, finishedAt, serverTimeReference, symbols, symb
     bundle_type: "market_bundle",
     schema_version: "2.1.0",
     version: PAGE_VERSION,
+    bundle_generator_version: PAGE_VERSION,
     exchange: EXCHANGE,
     market_type: MARKET_TYPE,
     collection_started_at: startedAt,
@@ -1030,5 +998,148 @@ function buildManifest(startedAt, finishedAt, serverTimeReference, symbols, symb
     },
     final_market_snapshot: finalMarketSnapshot,
     symbol_results: symbolResults
+  };
+}
+
+function buildExecutionMicrostructureSummary(symbol, windowSeconds, trades, orderbookSnapshots, bookTickerData) {
+  let aggressiveBuyVolume = 0;
+  let aggressiveSellVolume = 0;
+  let largestBuyTrade = { price: 0, quantity: 0 };
+  let largestSellTrade = { price: 0, quantity: 0 };
+  let totalVolume = 0;
+  let totalValue = 0;
+
+  trades.forEach(t => {
+    const qty = Number(t.q);
+    const price = Number(t.p);
+    const value = price * qty;
+    
+    totalVolume += qty;
+    totalValue += value;
+
+    if (t.m) { // Maker is buyer -> Aggressive Seller
+      aggressiveSellVolume += qty;
+      if (qty > largestSellTrade.quantity) {
+        largestSellTrade = { price, quantity: qty };
+      }
+    } else { // Maker is seller -> Aggressive Buyer
+      aggressiveBuyVolume += qty;
+      if (qty > largestBuyTrade.quantity) {
+        largestBuyTrade = { price, quantity: qty };
+      }
+    }
+  });
+
+  const shortVwap = totalVolume > 0 ? (totalValue / totalVolume) : null;
+  const bidPrice = toFiniteNumber(bookTickerData?.bidPrice);
+  const askPrice = toFiniteNumber(bookTickerData?.askPrice);
+  const spread = (Number.isFinite(bidPrice) && Number.isFinite(askPrice)) ? askPrice - bidPrice : null;
+  const spreadBps = spread && bidPrice ? (spread / bidPrice) * 10000 : null;
+  const latestPrice = bidPrice && askPrice ? (bidPrice + askPrice) / 2 : null;
+  const lastPriceVsVwap = (latestPrice && shortVwap) ? (latestPrice > shortVwap ? 'above' : 'below') : 'unknown';
+  
+  const delta = aggressiveBuyVolume - aggressiveSellVolume;
+  const buySellRatio = aggressiveSellVolume > 0 ? (aggressiveBuyVolume / aggressiveSellVolume) : null;
+  
+  let tradeFlowBias = 'neutral';
+  let flowStrength = 'neutral';
+  if (buySellRatio > 1.5) { tradeFlowBias = 'bullish'; flowStrength = 'strong'; }
+  else if (buySellRatio > 1.1) { tradeFlowBias = 'slightly_bullish'; flowStrength = 'weak'; }
+  else if (buySellRatio < 0.66) { tradeFlowBias = 'bearish'; flowStrength = 'strong'; }
+  else if (buySellRatio < 0.9) { tradeFlowBias = 'slightly_bearish'; flowStrength = 'weak'; }
+
+  let bidLiquidityNear = 0;
+  let askLiquidityNear = 0;
+
+  const lastSnapshot = orderbookSnapshots.length > 0 ? orderbookSnapshots[orderbookSnapshots.length - 1].data : null;
+  if (lastSnapshot) {
+    const bids = Array.isArray(lastSnapshot.bids) ? lastSnapshot.bids : [];
+    const asks = Array.isArray(lastSnapshot.asks) ? lastSnapshot.asks : [];
+    bids.forEach(level => {
+      bidLiquidityNear += Number(level[1]);
+    });
+    asks.forEach(level => {
+      askLiquidityNear += Number(level[1]);
+    });
+  }
+
+  const imbalanceNear = (bidLiquidityNear + askLiquidityNear > 0) ? (bidLiquidityNear - askLiquidityNear) / (bidLiquidityNear + askLiquidityNear) : null;
+
+  let executionQuality = 'acceptable';
+  if (spreadBps > 5) executionQuality = 'poor_spread';
+  else if (tradeFlowBias.includes('bearish') && imbalanceNear < -0.2) executionQuality = 'acceptable_but_weak';
+  else if (tradeFlowBias.includes('bullish') && imbalanceNear > 0.2) executionQuality = 'strong';
+
+  if (executionQuality === 'strong' && lastPriceVsVwap === 'below') {
+    executionQuality = 'good_with_minor_caution';
+  }
+
+  let confidenceScore = 50;
+  if (executionQuality === 'strong') confidenceScore += 25;
+  if (executionQuality === 'good_with_minor_caution') confidenceScore += 15;
+  if (executionQuality === 'poor_spread') confidenceScore -= 30;
+  if (executionQuality === 'acceptable_but_weak') confidenceScore -= 10;
+  
+  if (tradeFlowBias === 'bullish') confidenceScore += 15;
+  else if (tradeFlowBias === 'slightly_bullish') confidenceScore += 5;
+  else if (tradeFlowBias === 'bearish') confidenceScore -= 15;
+  else if (tradeFlowBias === 'slightly_bearish') confidenceScore -= 5;
+  
+  if (imbalanceNear > 0.3) confidenceScore += 10;
+  else if (imbalanceNear < -0.3) confidenceScore -= 10;
+  
+  if (lastPriceVsVwap === 'above') confidenceScore += 10;
+  else if (lastPriceVsVwap === 'below') confidenceScore -= 10;
+
+  if (spreadBps < 2) confidenceScore += 5;
+
+  confidenceScore = Math.max(0, Math.min(100, Math.round(confidenceScore)));
+
+  const notes = [];
+  if (spreadBps < 2) notes.push('spread is excellent');
+  else if (spreadBps > 5) notes.push('spread is elevated');
+  
+  if (aggressiveSellVolume > aggressiveBuyVolume) notes.push('recent aggressive selling exceeds buying');
+  else if (aggressiveBuyVolume > aggressiveSellVolume) notes.push('recent aggressive buying exceeds selling');
+
+  if (tradeFlowBias.includes('bearish') && imbalanceNear < 0) notes.push('no clear execution support for immediate long');
+
+  const supportingFlags = [];
+  const riskFlags = [];
+  
+  if (lastPriceVsVwap === 'above') supportingFlags.push('price_above_short_vwap');
+  else if (lastPriceVsVwap === 'below') riskFlags.push('price_below_short_vwap');
+  
+  if (delta > 0) supportingFlags.push('positive_trade_delta');
+  else if (delta < 0) riskFlags.push('negative_trade_delta');
+  
+  if (bidLiquidityNear > askLiquidityNear * 1.2) supportingFlags.push('bid_liquidity_dominates_ask');
+  else if (askLiquidityNear > bidLiquidityNear * 1.2) riskFlags.push('ask_liquidity_dominates_bid');
+
+  if (spreadBps > 10) riskFlags.push('high_spread_risk');
+  else if (spreadBps < 2) supportingFlags.push('excellent_spread');
+
+  return {
+    window_seconds: windowSeconds,
+    aggressive_buy_volume: roundTo(aggressiveBuyVolume, 2),
+    aggressive_sell_volume: roundTo(aggressiveSellVolume, 2),
+    delta: roundTo(delta, 2),
+    buy_sell_ratio: roundTo(buySellRatio, 2),
+    largest_buy_trade: largestBuyTrade,
+    largest_sell_trade: largestSellTrade,
+    short_vwap: roundTo(shortVwap, 2),
+    last_price_vs_vwap: lastPriceVsVwap,
+    trade_flow_bias: tradeFlowBias,
+    flow_strength: flowStrength,
+    near_liquidity_definition: "top_10_levels_per_side",
+    orderbook_bid_liquidity_near: roundTo(bidLiquidityNear, 2),
+    orderbook_ask_liquidity_near: roundTo(askLiquidityNear, 2),
+    orderbook_imbalance_near: roundTo(imbalanceNear, 2),
+    spread_bps: roundTo(spreadBps, 4),
+    execution_quality: executionQuality,
+    execution_confidence_score: confidenceScore,
+    supporting_flags: supportingFlags,
+    risk_flags: riskFlags,
+    notes: notes
   };
 }

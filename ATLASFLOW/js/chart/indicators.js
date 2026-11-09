@@ -4,16 +4,8 @@
     return Math.max(min, Math.min(max, v));
   };
 
-  function ema(values, p) {
-    if (!values.length) return [];
-    const k = 2 / (p + 1);
-    const out = [];
-    let prev = values[0];
-    for (let i = 0; i < values.length; i += 1) {
-      prev = i ? values[i] * k + prev * (1 - k) : values[i];
-      out.push(prev);
-    }
-    return out;
+  function ema(values, period) {
+    return global.BinanceCore.ema(values, period, {seed: "first"});
   }
 
   function vwap(candles) {

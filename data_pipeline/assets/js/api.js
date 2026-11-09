@@ -1,3 +1,4 @@
+// GENERATED from shared/. Do not edit; run node scripts/sync_shared.mjs.
 
 // =========================
 // الاتصال بـ Binance API
@@ -5,37 +6,10 @@
 const BASE_URL = "https://data-api.binance.vision/api/v3";
 
 async function fetchJson(url, retries = 3, delay = 1500) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        if (res.status === 429) {
-          const retryAfter = Number(res.headers.get("Retry-After"));
-          const waitTime = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : delay * (i + 1);
-          if (i === retries - 1) {
-            const error = new Error("HTTP 429: تم تجاوز الحد المسموح بعد استنفاد المحاولات");
-            error.status = 429;
-            error.retryAfterMs = waitTime;
-            throw error;
-          }
-          appendStatus(`⚠️ تم تجاوز الحد المسموح (429)، الانتظار ${waitTime/1000} ثانية...`);
-          await sleep(waitTime);
-          continue; // Try again without throwing
-        }
-        const text = await res.text().catch(() => "");
-        throw new Error(`HTTP ${res.status} ${res.statusText} ${text ? "- " + text : ""}`.trim());
-      }
-      return await res.json();
-    } catch (err) {
-      const isLast = i === retries - 1;
-      if (isLast) throw err;
-      
-      const wait = delay * (i + 1);
-      appendStatus(`⚠️ فشل اتصال، إعادة المحاولة (${i + 1}/${retries}) خلال ${wait/1000} ثانية...`);
-      await sleep(wait);
-    }
-  }
-  throw new Error("Request failed: no attempts remaining");
+  return globalThis.BinanceCore.requestJson(url, {
+    retries: Math.max(0, retries - 1), retryDelayMs: delay,
+    onRetry: ({status, delayMs, attempt}) => appendStatus(`إعادة المحاولة ${attempt}: ${status || 'انقطاع اتصال'}، الانتظار ${delayMs/1000} ثانية...`)
+  });
 }
 
 async function fetchServerTime() {

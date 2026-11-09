@@ -2113,3 +2113,10 @@
   border-radius: 6px;
   border-right: 3px solid var(--accent);
 }
+
+.project-nav {display:flex;flex-wrap:wrap;gap:16px;padding:12px 20px;background:var(--bg2,#101922);border-bottom:1px solid var(--border);}
+.project-nav a {color:var(--accent,#52dfc0);font-size:13px;text-decoration:none;}
+.project-nav a:hover {text-decoration:underline;}
+.data-health {padding:10px 20px;font-size:12px;color:var(--green,#52dfc0);border-bottom:1px solid var(--border);}
+.data-health[data-stale="true"] {color:var(--yellow,#f0c35e);background:#382d162e;}
+#sigTxt[data-stale="true"] {opacity:.6;}

@@ -1,8 +1,9 @@
-const CACHE_NAME = "atlasflow-shell-v3";
+const CACHE_NAME = "atlasflow-shell-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./css/style.css",
+  "./js/core/market-core.js",
   "./js/core/shared.js",
   "./js/chart/formatters.js",
   "./js/chart/indicators.js",

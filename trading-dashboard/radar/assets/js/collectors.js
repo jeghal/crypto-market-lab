@@ -1,3 +1,4 @@
+// GENERATED from shared/. Do not edit; run node scripts/sync_shared.mjs.
 
 // =========================
 // المجمعون (Collectors)

@@ -16,6 +16,7 @@ export const state = {
     trade: true,
     tradeZones: true,
   },
+  dataHealth: { receivedAt: null, effectiveIv: null, failed: false },
   lastResult: null,
   chartCandles: [],
   hoverIndex: -1,

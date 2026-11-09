@@ -1,28 +1,7 @@
 import { BASE, STABLECOIN_BASES, SYMS } from './config.js';
 import { loadVolThreshold } from './storage.js';
 
-function shouldRetryStatus(status) {
-  return [408, 425, 429, 500, 502, 503, 504].includes(status);
-}
-
-function wait(ms, signal) {
-  if (signal?.aborted) return Promise.reject(new DOMException('Aborted', 'AbortError'));
-  if (ms <= 0) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      signal?.removeEventListener('abort', onAbort);
-      resolve();
-    }, ms);
-
-    function onAbort() {
-      clearTimeout(timer);
-      signal?.removeEventListener('abort', onAbort);
-      reject(new DOMException('Aborted', 'AbortError'));
-    }
-
-    signal?.addEventListener('abort', onAbort, { once: true });
-  });
-}
+import './market-core.js';
 
 export async function getExchangeSymbols() {
   try {
@@ -37,64 +16,10 @@ export async function getExchangeSymbols() {
 }
 
 export async function api(path, params = {}, options = {}) {
-  const {
-    signal,
-    retries = 1,
-    retryDelayMs = 2_000,
-    timeoutMs = 0,
-    baseUrl = BASE,
-    ...fetchOptions
-  } = options;
+  const {baseUrl = BASE, ...requestOptions} = options;
   const url = new URL(baseUrl + path);
-  Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
-
-  for (let attempt = 0; attempt <= retries; attempt += 1) {
-    const controller = timeoutMs > 0 ? new AbortController() : null;
-    const requestSignal = controller ? controller.signal : signal;
-    let timeoutId = null;
-    let parentAbortHandler = null;
-
-    try {
-      if (controller && timeoutMs > 0) {
-        timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-        if (signal) {
-          parentAbortHandler = () => controller.abort();
-          signal.addEventListener('abort', parentAbortHandler, { once: true });
-          if (signal.aborted) controller.abort();
-        }
-      }
-
-      const response = await fetch(url, { ...fetchOptions, signal: requestSignal });
-      if (!response.ok) {
-        const error = new Error(`HTTP ${response.status}`);
-        error.status = response.status;
-        if (attempt < retries && shouldRetryStatus(response.status)) {
-          let delayMs = retryDelayMs;
-          if (response.status === 429) {
-            const retryAfter = Number(response.headers.get('Retry-After'));
-            if (Number.isFinite(retryAfter) && retryAfter > 0) {
-              delayMs = retryAfter * 1000;
-            } else {
-              delayMs = Math.max(retryDelayMs, (attempt + 1) * 1500);
-            }
-          }
-          await wait(delayMs, signal);
-          continue;
-        }
-        throw error;
-      }
-      return response.json();
-    } catch (error) {
-      if (error?.name === 'AbortError' && signal?.aborted) throw error;
-      const retryable = error?.status == null || shouldRetryStatus(error.status);
-      if (attempt >= retries || !retryable) throw error;
-      await wait(retryDelayMs, signal);
-    } finally {
-      if (timeoutId) clearTimeout(timeoutId);
-      if (signal && parentAbortHandler) signal.removeEventListener('abort', parentAbortHandler);
-    }
-  }
-  throw new Error('Request failed');
+  Object.entries(params).forEach(([key,value]) => url.searchParams.set(key,value));
+  return globalThis.BinanceCore.requestJson(url, requestOptions);
 }
 
 // In-memory cache for kline data. TTL = 45 s (shorter than the 60 s auto-refresh
@@ -124,7 +49,9 @@ export async function getBookTicker(sym, signal) {
 }
 
 function mapCandles(raw) {
+  const receivedAt = Date.now();
   return raw.map(candle => ({
+    receivedAt,
     t: +candle[0],
     o: +candle[1],
     h: +candle[2],
@@ -217,7 +144,13 @@ export async function getCandles(sym, interval, limit, signal) {
     }
 
     const requestPromise = (async () => {
-      const raw = await api('/api/v3/klines', { symbol: sym, interval, limit: effectiveLimit }, { signal });
+      if (!Number.isInteger(effectiveLimit) || effectiveLimit < 1 || effectiveLimit > 5000) throw new RangeError('Invalid candle limit');
+      let raw = await api('/api/v3/klines', { symbol: sym, interval, limit: Math.min(1000, effectiveLimit) }, { signal });
+      while (raw.length >= 1000 && raw.length < effectiveLimit) {
+        const older = await api('/api/v3/klines', {symbol:sym, interval, limit:Math.min(1000,effectiveLimit-raw.length), endTime:Number(raw[0][0])-1}, {signal});
+        if (!older.length || Number(older.at(-1)[0]) >= Number(raw[0][0])) break;
+        raw = [...older, ...raw];
+      }
       const data = mapCandles(raw);
       _klineCache.set(key, { ts: Date.now(), limit: effectiveLimit, data });
       return data;

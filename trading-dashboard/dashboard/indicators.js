@@ -1,3 +1,5 @@
+import './market-core.js';
+
 function isValidNumber(value) {
   return Number.isFinite(value);
 }
@@ -21,27 +23,7 @@ export function relativeVolume(candles, period = 20) {
   return out;
 }
 
-export function ema(values, period) {
-  const output = Array(values.length).fill(null);
-  if (values.length < period) return output;
-
-  const factor = 2 / (period + 1);
-  let seed = 0;
-
-  for (let index = 0; index < period; index += 1) {
-    seed += values[index];
-  }
-
-  let prev = seed / period;
-  output[period - 1] = prev;
-
-  for (let index = period; index < values.length; index += 1) {
-    prev = values[index] * factor + prev * (1 - factor);
-    output[index] = prev;
-  }
-
-  return output;
-}
+export const ema = globalThis.BinanceCore.ema;
 
 export function rsi(closes, period = 14) {
   const output = Array(closes.length).fill(null);
@@ -331,30 +313,4 @@ export function bbWidthPercentile(closes, period = 20, lookback = 50) {
   return (current - min) / (max - min);
 }
 
-export function atr(candles, period = 14) {
-  const output = Array(candles.length).fill(null);
-  if (candles.length < period) return output;
-
-  const trueRanges = candles.map((candle, index) => {
-    if (index === 0) return candle.h - candle.l;
-
-    const previousClose = candles[index - 1].c;
-    return Math.max(
-      candle.h - candle.l,
-      Math.abs(candle.h - previousClose),
-      Math.abs(candle.l - previousClose),
-    );
-  });
-
-  let prev = 0;
-  for (let index = 0; index < period; index += 1) prev += trueRanges[index];
-  prev /= period;
-  output[period - 1] = prev;
-
-  for (let index = period; index < trueRanges.length; index += 1) {
-    prev = (prev * (period - 1) + trueRanges[index]) / period;
-    output[index] = prev;
-  }
-
-  return output;
-}
+export const atr = globalThis.BinanceCore.atr;
