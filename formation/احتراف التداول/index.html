@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>احتراف التداول — برنامج التعلم الذاتي لتداول العملات الرقمية</title>
+  <meta name="description" content="برنامج عربي للتعلم الذاتي في تداول العملات الرقمية: 15 حصة في 6 أسابيع، من المفاهيم الأساسية إلى التطبيق العملي المنضبط.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.80);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.15);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.14);
+      --teal: #2bd0b5;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at top left,  rgba(43, 208, 181, 0.14), transparent 32%),
+        radial-gradient(ellipse at top right, rgba(248, 184, 78, 0.13), transparent 32%),
+        linear-gradient(180deg, #041017 0%, #081923 50%, #041017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.55), transparent 60%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; color: var(--muted); line-height: 1.9; }
+    h1, h2, h3, h4 { margin: 0; font-family: "Changa", sans-serif; line-height: 1.2; }
+    ul { margin: 0; padding: 0; list-style: none; }
+
+    .container { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    /* ── Header ── */
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(20px);
+      background: rgba(4, 14, 20, 0.78);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      gap: 16px; min-height: 72px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 11px;
+      font-family: "Changa", sans-serif; font-weight: 700; font-size: 1.1rem;
+    }
+    .brand-badge {
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #17212a;
+      box-shadow: 0 10px 24px rgba(248,184,78,0.26);
+      font-size: 1.1rem;
+    }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 4px; }
+    .nav-links a {
+      padding: 8px 13px; border-radius: 999px;
+      color: var(--muted); font-size: 0.95rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(248,184,78,0.1);
+      color: #ffe5ab;
+    }
+
+    /* ── Scroll bar ── */
+    .scroll-progress {
+      position: fixed; top: 0; right: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform-origin: right; transform: scaleX(0);
+      z-index: 100;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 50px; padding: 0 20px; border-radius: 14px;
+      font-weight: 600; font-family: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #14202a;
+      box-shadow: 0 8px 24px rgba(248,184,78,0.28);
+    }
+    .btn-primary:hover { box-shadow: 0 12px 32px rgba(248,184,78,0.38); }
+    .btn-ghost {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.12); }
+
+    /* ── Panel base ── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    /* ── Hero ── */
+    .hero { padding: 64px 0 40px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px; align-items: start;
+    }
+    .hero-panel {
+      padding: 36px;
+      position: relative; overflow: hidden;
+    }
+    .hero-panel::after {
+      content: "";
+      position: absolute; inset: auto -40px -60px auto;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(248,184,78,0.28), transparent 68%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 13px; border-radius: 999px;
+      background: var(--gold-soft); color: #ffd68d;
+      font-size: 0.88rem; margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      margin-bottom: 16px; max-width: 14ch;
+    }
+    .hero-panel > p { margin-bottom: 28px; max-width: 58ch; font-size: 1.02rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+    }
+    .stat {
+      padding: 16px; border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat strong {
+      display: block; font-family: "Changa", sans-serif;
+      font-size: 1.6rem; color: var(--gold); margin-bottom: 5px;
+    }
+    .stat span { color: var(--muted); font-size: 0.85rem; }
+
+    /* ── Side panel ── */
+    .side-panel {
+      padding: 24px; display: grid; gap: 16px;
+      background: linear-gradient(180deg, rgba(43,208,181,0.1), transparent), var(--panel-strong);
+    }
+    .side-block { padding: 18px; border-radius: var(--radius-md); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+    .side-block strong { display: block; margin-bottom: 8px; font-family: "Changa", sans-serif; font-size: 1rem; }
+    .side-block p { font-size: 0.88rem; }
+    .side-divider { height: 1px; background: var(--line); }
+    .path-steps { display: grid; gap: 10px; }
+    .path-step { display: flex; align-items: flex-start; gap: 12px; }
+    .path-dot {
+      width: 10px; height: 10px; border-radius: 999px;
+      background: var(--teal); flex-shrink: 0; margin-top: 6px;
+      box-shadow: 0 0 12px rgba(43,208,181,0.7);
+    }
+    .path-step strong { display: block; font-size: 0.95rem; margin-bottom: 3px; }
+    .path-step p { font-size: 0.82rem; }
+
+    /* ── Section headings ── */
+    main section { padding: 32px 0; }
+    main section[id] { scroll-margin-top: 96px; }
+    .sec-head { margin-bottom: 24px; }
+    .sec-head h2 { font-size: clamp(1.5rem, 2.8vw, 2.4rem); margin-bottom: 8px; }
+    .sec-head p { max-width: 66ch; }
+
+    /* ── Phases strip ── */
+    .phases-strip {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
+      margin-bottom: 32px;
+    }
+    .phase-card {
+      padding: 22px 18px; border-radius: var(--radius-lg);
+      display: grid; gap: 10px;
+    }
+    .ph-1 { background: rgba(43,208,181,0.08);  border: 1px solid rgba(43,208,181,0.22); }
+    .ph-2 { background: rgba(100,160,230,0.08); border: 1px solid rgba(100,160,230,0.22); }
+    .ph-3 { background: rgba(248,184,78,0.08);  border: 1px solid rgba(248,184,78,0.22); }
+    .phase-top { display: flex; align-items: center; gap: 12px; }
+    .phase-emoji { font-size: 1.6rem; }
+    .phase-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
+    .ph-1 .phase-num { color: var(--teal); }
+    .ph-2 .phase-num { color: #6ab0e0; }
+    .ph-3 .phase-num { color: var(--gold); }
+    .phase-card h3 { font-size: 1.05rem; }
+    .phase-card p { font-size: 0.85rem; }
+    .phase-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; padding: 4px 10px; border-radius: 999px;
+      width: fit-content;
+    }
+    .ph-1 .phase-badge { background: rgba(43,208,181,0.12); color: #7fffd4; border: 1px solid rgba(43,208,181,0.2); }
+    .ph-2 .phase-badge { background: rgba(100,160,230,0.12); color: #a8d4f8; border: 1px solid rgba(100,160,230,0.2); }
+    .ph-3 .phase-badge { background: rgba(248,184,78,0.12); color: #ffe7ab; border: 1px solid rgba(248,184,78,0.2); }
+
+    /* ── Tips ── */
+    .tips-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .tip-card { padding: 20px; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
+    .tip-num { font-family: "Changa", sans-serif; font-size: 0.8rem; color: var(--gold); margin-bottom: 8px; }
+    .tip-card h4 { font-size: 0.98rem; margin-bottom: 8px; }
+    .tip-card p { font-size: 0.84rem; }
+
+    /* ── Lesson toolbar ── */
+    .toolbar {
+      padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      display: grid; gap: 12px;
+    }
+    .search-wrap { position: relative; }
+    .lesson-search {
+      width: 100%; min-height: 50px; padding: 0 16px 0 46px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+      background: rgba(5,17,24,0.85); color: var(--text); font: inherit;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .lesson-search::placeholder { color: rgba(182,201,207,0.7); }
+    .lesson-search:focus { border-color: rgba(43,208,181,0.45); box-shadow: 0 0 0 4px rgba(43,208,181,0.1); }
+    input[type="search"]::-webkit-search-cancel-button { display: none; }
+    .search-clear {
+      position: absolute; top: 50%; left: 12px; transform: translateY(-50%);
+      width: 28px; height: 28px; border: 0; border-radius: 7px;
+      background: rgba(255,255,255,0.07); color: var(--muted);
+      cursor: pointer; font-size: 1rem; display: none; align-items: center; justify-content: center;
+    }
+    .search-clear.visible { display: flex; }
+    .search-clear:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+    .toolbar-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-chip {
+      min-height: 38px; padding: 0 13px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 999px;
+      background: rgba(255,255,255,0.03); color: var(--muted);
+      font: inherit; font-size: 0.88rem; cursor: pointer; transition: 0.18s ease;
+    }
+    .filter-chip:hover, .filter-chip.is-active {
+      color: var(--text); border-color: rgba(248,184,78,0.28);
+      background: rgba(248,184,78,0.1);
+    }
+    .filter-status { color: var(--muted); font-size: 0.9rem; }
+    .empty-state {
+      padding: 16px 20px; border-radius: var(--radius-md); margin: 0;
+      border: 1px dashed rgba(248,184,78,0.2); background: rgba(248,184,78,0.05);
+      color: #ffe5ab;
+    }
+
+    /* ── Lesson cards ── */
+    .lessons-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .lesson-card {
+      padding: 22px; border-radius: var(--radius-lg);
+      background: var(--panel); border: 1px solid var(--line);
+      box-shadow: var(--shadow); backdrop-filter: blur(14px);
+      display: flex; flex-direction: column; gap: 14px;
+      transform: translateY(14px); opacity: 0;
+      animation: reveal 0.6s ease forwards;
+      animation-delay: var(--delay, 0s);
+    }
+    .lesson-card.is-hidden { display: none; }
+    .lesson-card-top { display: flex; align-items: flex-start; gap: 14px; }
+    .lesson-num {
+      width: 48px; height: 48px; flex-shrink: 0;
+      display: grid; place-items: center; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(248,184,78,0.2), rgba(43,208,181,0.12));
+      color: #ffe7af; font-family: "Changa", sans-serif; font-size: 1rem;
+    }
+    .lesson-card h3 { font-size: 1.1rem; margin-bottom: 4px; }
+    .lesson-sub { color: var(--muted); font-size: 0.83rem; line-height: 1.7; }
+    .lesson-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+    .lesson-topic {
+      padding: 3px 9px; border-radius: 999px; font-size: 0.74rem;
+      background: rgba(255,255,255,0.05); color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .lesson-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: auto; padding: 10px 16px; border-radius: 12px;
+      background: rgba(248,184,78,0.08); color: #ffe5ab;
+      border: 1px solid rgba(248,184,78,0.2);
+      font-size: 0.88rem; font-weight: 600;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .lesson-link:hover {
+      background: rgba(248,184,78,0.16);
+      border-color: rgba(248,184,78,0.35);
+      transform: translateY(-1px);
+    }
+
+    /* ── Week badges ── */
+    .wk-tag {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 999px; font-size: 0.7rem;
+      margin-bottom: 4px; width: fit-content;
+    }
+    .wk-1 { background: rgba(43,208,181,0.12); color: #7fffd4; border: 1px solid rgba(43,208,181,0.2); }
+    .wk-2 { background: rgba(100,160,230,0.12); color: #a8d4f8; border: 1px solid rgba(100,160,230,0.2); }
+    .wk-3 { background: rgba(180,130,230,0.12); color: #d4b4f8; border: 1px solid rgba(180,130,230,0.2); }
+    .wk-4 { background: rgba(248,184,78,0.12);  color: #ffe7ab; border: 1px solid rgba(248,184,78,0.2); }
+    .wk-5 { background: rgba(255,160,100,0.12); color: #ffdbb8; border: 1px solid rgba(255,160,100,0.2); }
+    .wk-6 { background: rgba(80,200,100,0.12);  color: #b8f8c8; border: 1px solid rgba(80,200,100,0.2); }
+
+    /* ── Rules ── */
+    .rules-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
+    .rule-card { padding: 24px; border-radius: var(--radius-lg); background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: blur(14px); }
+    .rule-card.alert { background: linear-gradient(180deg, rgba(255,120,100,0.1), transparent), var(--panel-strong); border-color: rgba(255,120,100,0.18); }
+    .rule-card h3 { margin-bottom: 16px; font-size: 1.1rem; }
+    .rule-card ul { display: grid; gap: 10px; }
+    .rule-card li { position: relative; padding-right: 18px; color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+    .rule-card li::before {
+      content: ""; position: absolute; top: 10px; right: 0;
+      width: 7px; height: 7px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    /* ── Outcomes ── */
+    .outcomes-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+    .outcome-card { padding: 24px; border-radius: var(--radius-lg); background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); backdrop-filter: blur(14px); }
+    .outcome-card h3 { margin-bottom: 14px; font-size: 1.05rem; }
+    .outcome-icon { font-size: 1.8rem; margin-bottom: 12px; display: block; }
+    .outcome-card ul { display: grid; gap: 9px; }
+    .outcome-card li { position: relative; padding-right: 18px; color: var(--muted); font-size: 0.88rem; line-height: 1.8; }
+    .outcome-card li::before {
+      content: ""; position: absolute; top: 10px; right: 0;
+      width: 7px; height: 7px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    /* ── CTA ── */
+    .cta-box {
+      padding: 30px 32px; border-radius: var(--radius-lg);
+      background: radial-gradient(ellipse at top right, rgba(43,208,181,0.15), transparent 40%),
+        linear-gradient(135deg, rgba(248,184,78,0.08), rgba(255,255,255,0.02)), var(--panel-strong);
+      border: 1px solid var(--line); box-shadow: var(--shadow);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 18px; flex-wrap: wrap;
+    }
+    .cta-box h2 { font-size: clamp(1.3rem, 2.5vw, 2rem); margin-bottom: 10px; }
+    .cta-box p { max-width: 54ch; }
+
+    /* ── Footer ── */
+    .site-footer {
+      padding: 28px 0 44px; border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 24px;
+    }
+    .footer-inner {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; font-family: "Changa", sans-serif; font-size: 1rem; }
+    .footer-badge {
+      width: 36px; height: 36px; border-radius: 11px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #17212a; font-size: 0.9rem;
+    }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 4px; }
+    .footer-links a { padding: 6px 11px; border-radius: 999px; color: var(--muted); font-size: 0.85rem; transition: color 0.2s, background 0.2s; }
+    .footer-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .footer-note { color: var(--muted); font-size: 0.82rem; text-align: center; margin-top: 18px; }
+
+    /* ── Back to top ── */
+    .to-top {
+      position: fixed; left: 20px; bottom: 20px;
+      width: 50px; height: 50px; border: 0; border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d; font-size: 1.3rem;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.28);
+      cursor: pointer; opacity: 0; transform: translateY(12px);
+      pointer-events: none; transition: 0.25s ease; z-index: 35;
+    }
+    .to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Responsive ── */
+    @media (max-width: 1080px) {
+      .hero-grid, .phases-strip, .tips-grid, .lessons-grid, .rules-grid, .outcomes-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: repeat(3,1fr); }
+    }
+    @media (max-width: 760px) {
+      .nav { padding: 12px 0; flex-direction: column; align-items: flex-start; }
+      .hero { padding-top: 40px; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .hero-panel, .rule-card, .outcome-card, .cta-box { border-radius: 22px; }
+      .hero-panel { padding: 24px; }
+      .cta-box { flex-direction: column; align-items: flex-start; }
+      .lessons-grid { grid-template-columns: repeat(2,1fr); }
+      .to-top { left: 14px; bottom: 14px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 500px) {
+      .lessons-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <nav class="nav-links" aria-label="التنقل">
+        <a href="#overview">المسار</a>
+        <a href="#lessons">الحصص</a>
+        <a href="#rules">القواعد</a>
+        <a href="#results">النتائج</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-panel panel">
+          <span class="eyebrow">15 حصة · 6 أسابيع · من الصفر إلى التطبيق</span>
+          <h1>برنامج التعلم الذاتي لتداول العملات الرقمية</h1>
+          <p>
+            مسار منظم يأخذك من المفاهيم الأساسية إلى بناء خطة تداول حقيقية،
+            خطوة بخطوة، دون تشتت ودون القفز إلى صفقات غير محسوبة.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="lesson-01.html">ابدأ من الحصة الأولى</a>
+            <a class="btn btn-ghost" href="#lessons">تصفّح جميع الحصص</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>15</strong>
+              <span>حصة للتعلم المتدرج</span>
+            </div>
+            <div class="stat">
+              <strong>6</strong>
+              <span>أسابيع منظمة</span>
+            </div>
+            <div class="stat">
+              <strong>BTC / ETH</strong>
+              <span>تركيز على الأزواج الواضحة</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side-panel panel">
+          <div class="path-steps">
+            <div class="path-step">
+              <span class="path-dot"></span>
+              <div>
+                <strong>افهم البيئة أولًا</strong>
+                <p>ادرس العملات والبلوكشين والسوق قبل أي تحليل</p>
+              </div>
+            </div>
+            <div class="path-step">
+              <span class="path-dot"></span>
+              <div>
+                <strong>تعلّم قراءة الشارت</strong>
+                <p>الشموع، الفريمات، الدعم والمقاومة، الحجم، المؤشرات</p>
+              </div>
+            </div>
+            <div class="path-step">
+              <span class="path-dot"></span>
+              <div>
+                <strong>انضبط وطبّق</strong>
+                <p>إدارة رأس المال، النفسية، الاستراتيجية، التدرج الصحيح</p>
+              </div>
+            </div>
+          </div>
+          <div class="side-divider"></div>
+          <div class="side-block">
+            <strong>لمن هذا البرنامج؟</strong>
+            <p>للمتعلم الذاتي الذي يريد فهم السوق وحده بطريقة واضحة ومنظمة، حتى لو كان يبدأ من الصفر.</p>
+          </div>
+          <div class="side-block" style="border-color: rgba(255,150,100,0.18); background: rgba(255,120,100,0.05);">
+            <strong style="color: #ffb89a;">⚠️ تنبيه مهم</strong>
+            <p>هذا المحتوى تعليمي فقط. السوق عالي المخاطر — لا تبدأ بأموال حقيقية قبل التدرج الكامل.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══ OVERVIEW ═══ -->
+    <section id="overview">
+      <div class="container">
+        <div class="sec-head">
+          <h2>مراحل المسار التعليمي</h2>
+          <p>المسار مقسّم إلى ثلاث مراحل متتالية — كل مرحلة تبني على ما قبلها.</p>
+        </div>
+
+        <div class="phases-strip">
+          <div class="phase-card ph-1">
+            <div class="phase-top">
+              <span class="phase-emoji">🏗️</span>
+              <div>
+                <div class="phase-num">المرحلة الأولى</div>
+                <h3>بناء الأساس</h3>
+              </div>
+            </div>
+            <p>فهم العملات الرقمية، البلوكشين، طبيعة السوق، المنصات والمحافظ، وأساسيات الأمان.</p>
+            <span class="phase-badge">الحصص 1 – 5 · الأسبوعان 1–2</span>
+          </div>
+
+          <div class="phase-card ph-2">
+            <div class="phase-top">
+              <span class="phase-emoji">📊</span>
+              <div>
+                <div class="phase-num">المرحلة الثانية</div>
+                <h3>قراءة السوق</h3>
+              </div>
+            </div>
+            <p>الشموع اليابانية، الأطر الزمنية، الدعم والمقاومة، حجم التداول، والمؤشرات الفنية.</p>
+            <span class="phase-badge">الحصص 6 – 9 · الأسبوعان 3–4</span>
+          </div>
+
+          <div class="phase-card ph-3">
+            <div class="phase-top">
+              <span class="phase-emoji">🎯</span>
+              <div>
+                <div class="phase-num">المرحلة الثالثة</div>
+                <h3>الانضباط والتطبيق</h3>
+              </div>
+            </div>
+            <p>إدارة رأس المال، الجانب النفسي، بناء الاستراتيجية، خطة التداول، والتدرج الصحيح.</p>
+            <span class="phase-badge">الحصص 10 – 15 · الأسابيع 4–6</span>
+          </div>
+        </div>
+
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-num">نصيحة 1</div>
+            <h4>حصة واحدة في كل مرة</h4>
+            <p>لا تنتقل بسرعة. تأكد أنك فهمت الفكرة الجوهرية لكل حصة قبل المتابعة.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">نصيحة 2</div>
+            <h4>طبّق على BTC و ETH فقط</h4>
+            <p>الهدف من التطبيق ليس الربح، بل تحويل كل مفهوم إلى ملاحظة عملية على الشارت.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-num">نصيحة 3</div>
+            <h4>دوّن ملاحظاتك</h4>
+            <p>اكتب ما تعلمته وما لم يتضح بعد. التعلم الذاتي ينجح بالكتابة والمراجعة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ LESSONS ═══ -->
+    <section id="lessons">
+      <div class="container">
+        <div class="sec-head">
+          <h2>الحصص التعليمية</h2>
+          <p>15 حصة منظمة — كل حصة وحدة تعلم مستقلة بهدف واضح وتطبيق عملي.</p>
+        </div>
+
+        <div class="toolbar" aria-label="أدوات تصفية الحصص">
+          <div class="search-wrap">
+            <input id="lessonSearch" class="lesson-search" type="search"
+              placeholder="ابحث: الشموع، الدعم، النفسية، إدارة رأس المال..."
+              aria-label="ابحث داخل الحصص">
+            <button type="button" class="search-clear" id="searchClear" aria-label="مسح البحث">×</button>
+          </div>
+          <div class="toolbar-row">
+            <div class="filter-chips" role="group" aria-label="تصفية حسب الأسبوع">
+              <button class="filter-chip is-active" type="button" data-week-filter="all">الكل</button>
+              <button class="filter-chip" type="button" data-week-filter="1">الأسبوع 1</button>
+              <button class="filter-chip" type="button" data-week-filter="2">الأسبوع 2</button>
+              <button class="filter-chip" type="button" data-week-filter="3">الأسبوع 3</button>
+              <button class="filter-chip" type="button" data-week-filter="4">الأسبوع 4</button>
+              <button class="filter-chip" type="button" data-week-filter="5">الأسبوع 5</button>
+              <button class="filter-chip" type="button" data-week-filter="6">الأسبوع 6</button>
+            </div>
+            <span id="filterStatus" class="filter-status">15 حصة</span>
+          </div>
+        </div>
+
+        <p id="lessonsEmpty" class="empty-state" hidden>لا توجد حصص مطابقة. جرّب كلمة أخرى.</p>
+
+        <div id="lessonsGrid" class="lessons-grid">
+
+          <article class="lesson-card" data-week="1" style="--delay:.03s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">01</div>
+              <div>
+                <span class="wk-tag wk-1">الأسبوع 1</span>
+                <h3>مدخل إلى العملات الرقمية</h3>
+                <p class="lesson-sub">فهم الأساس قبل أي تحليل أو تداول.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">Coin و Token</span>
+              <span class="lesson-topic">Bitcoin</span>
+              <span class="lesson-topic">Altcoins</span>
+              <span class="lesson-topic">Stablecoins</span>
+            </div>
+            <a class="lesson-link" href="lesson-01.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="1" style="--delay:.06s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">02</div>
+              <div>
+                <span class="wk-tag wk-1">الأسبوع 1</span>
+                <h3>البلوكشين بشكل مبسط</h3>
+                <p class="lesson-sub">التقنية التي تسجل المعاملات وتمنح العملات بنيتها.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">Block</span>
+              <span class="lesson-topic">Chain</span>
+              <span class="lesson-topic">Hash</span>
+              <span class="lesson-topic">اللامركزية</span>
+            </div>
+            <a class="lesson-link" href="lesson-02.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="1" style="--delay:.09s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">03</div>
+              <div>
+                <span class="wk-tag wk-1">الأسبوع 1</span>
+                <h3>كيف يعمل سوق الكريبتو؟</h3>
+                <p class="lesson-sub">أنواع التداول الأساسية والفروق الجوهرية بينها.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">Spot</span>
+              <span class="lesson-topic">Futures</span>
+              <span class="lesson-topic">Leverage</span>
+              <span class="lesson-topic">Order Types</span>
+            </div>
+            <a class="lesson-link" href="lesson-03.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="2" style="--delay:.12s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">04</div>
+              <div>
+                <span class="wk-tag wk-2">الأسبوع 2</span>
+                <h3>المنصات والمحافظ والأمان</h3>
+                <p class="lesson-sub">الحماية الرقمية قبل التحويل والتداول.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">Exchange</span>
+              <span class="lesson-topic">Hot Wallet</span>
+              <span class="lesson-topic">Cold Wallet</span>
+              <span class="lesson-topic">2FA</span>
+            </div>
+            <a class="lesson-link" href="lesson-04.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="2" style="--delay:.15s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">05</div>
+              <div>
+                <span class="wk-tag wk-2">الأسبوع 2</span>
+                <h3>قراءة الشموع اليابانية</h3>
+                <p class="lesson-sub">أول أداة بصرية لفهم حركة السعر.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">الجسم</span>
+              <span class="lesson-topic">الظلال</span>
+              <span class="lesson-topic">افتتاح وإغلاق</span>
+              <span class="lesson-topic">أشكال أساسية</span>
+            </div>
+            <a class="lesson-link" href="lesson-05.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="2" style="--delay:.18s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">06</div>
+              <div>
+                <span class="wk-tag wk-2">الأسبوع 2</span>
+                <h3>الأطر الزمنية والاتجاه العام</h3>
+                <p class="lesson-sub">قراءة الصورة الكبيرة بدل الضياع في تحركات صغيرة.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">Timeframes</span>
+              <span class="lesson-topic">الاتجاه العام</span>
+              <span class="lesson-topic">1H · 4H · Daily</span>
+            </div>
+            <a class="lesson-link" href="lesson-06.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="3" style="--delay:.21s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">07</div>
+              <div>
+                <span class="wk-tag wk-3">الأسبوع 3</span>
+                <h3>الدعم والمقاومة</h3>
+                <p class="lesson-sub">المناطق السعرية التي يتكرر عندها رد فعل السوق.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">الدعم</span>
+              <span class="lesson-topic">المقاومة</span>
+              <span class="lesson-topic">إعادة الاختبار</span>
+              <span class="lesson-topic">الكسر الكاذب</span>
+            </div>
+            <a class="lesson-link" href="lesson-07.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="3" style="--delay:.24s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">08</div>
+              <div>
+                <span class="wk-tag wk-3">الأسبوع 3</span>
+                <h3>حجم التداول والسيولة</h3>
+                <p class="lesson-sub">القوة الحقيقية وراء الحركة السعرية.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">Volume</span>
+              <span class="lesson-topic">السيولة</span>
+              <span class="lesson-topic">الحركة القوية</span>
+            </div>
+            <a class="lesson-link" href="lesson-08.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="4" style="--delay:.27s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">09</div>
+              <div>
+                <span class="wk-tag wk-4">الأسبوع 4</span>
+                <h3>المؤشرات الفنية الأساسية</h3>
+                <p class="lesson-sub">المؤشرات كأداة مساعدة لا بديلة عن الفهم.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">MA / EMA</span>
+              <span class="lesson-topic">RSI</span>
+              <span class="lesson-topic">Volume</span>
+            </div>
+            <a class="lesson-link" href="lesson-09.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="4" style="--delay:.30s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">10</div>
+              <div>
+                <span class="wk-tag wk-4">الأسبوع 4</span>
+                <h3>خصوصية سوق العملات الرقمية</h3>
+                <p class="lesson-sub">ما يجعل الكريبتو مختلفًا وحساسًا.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">هيمنة BTC</span>
+              <span class="lesson-topic">الخوف والطمع</span>
+              <span class="lesson-topic">الحيتان</span>
+            </div>
+            <a class="lesson-link" href="lesson-10.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="4" style="--delay:.33s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">11</div>
+              <div>
+                <span class="wk-tag wk-4">الأسبوع 4</span>
+                <h3>إدارة رأس المال</h3>
+                <p class="lesson-sub">البقاء في السوق بأمان قبل التفكير في الأرباح.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">مخاطرة 1%</span>
+              <span class="lesson-topic">وقف الخسارة</span>
+              <span class="lesson-topic">نسبة RR</span>
+            </div>
+            <a class="lesson-link" href="lesson-11.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="5" style="--delay:.36s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">12</div>
+              <div>
+                <span class="wk-tag wk-5">الأسبوع 5</span>
+                <h3>الجانب النفسي في التداول</h3>
+                <p class="lesson-sub">الانضباط النفسي جزء أساسي من أي خطة ناجحة.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">FOMO</span>
+              <span class="lesson-topic">الانتقام</span>
+              <span class="lesson-topic">الطمع</span>
+              <span class="lesson-topic">الانضباط</span>
+            </div>
+            <a class="lesson-link" href="lesson-12.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="5" style="--delay:.39s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">13</div>
+              <div>
+                <span class="wk-tag wk-5">الأسبوع 5</span>
+                <h3>بناء استراتيجية تداول بسيطة</h3>
+                <p class="lesson-sub">تجميع ما سبق في خطة عملية بشروط واضحة.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">الاتجاه</span>
+              <span class="lesson-topic">المنطقة</span>
+              <span class="lesson-topic">الإشارة</span>
+              <span class="lesson-topic">الوقف والهدف</span>
+            </div>
+            <a class="lesson-link" href="lesson-13.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="6" style="--delay:.42s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">14</div>
+              <div>
+                <span class="wk-tag wk-6">الأسبوع 6</span>
+                <h3>خطة التداول ودفتر المتابعة</h3>
+                <p class="lesson-sub">تنظيم العمل اليومي وتحويل كل صفقة إلى درس.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">خطة التداول</span>
+              <span class="lesson-topic">دفتر الصفقات</span>
+              <span class="lesson-topic">المراجعة</span>
+            </div>
+            <a class="lesson-link" href="lesson-14.html">فتح الحصة ←</a>
+          </article>
+
+          <article class="lesson-card" data-week="6" style="--delay:.45s">
+            <div class="lesson-card-top">
+              <div class="lesson-num">15</div>
+              <div>
+                <span class="wk-tag wk-6">الأسبوع 6</span>
+                <h3>التطبيق العملي والتدرج الصحيح</h3>
+                <p class="lesson-sub">الانتقال الذكي من التعلم النظري إلى التنفيذ.</p>
+              </div>
+            </div>
+            <div class="lesson-topics">
+              <span class="lesson-topic">الملاحظة</span>
+              <span class="lesson-topic">التجريبي</span>
+              <span class="lesson-topic">الحقيقي الصغير</span>
+            </div>
+            <a class="lesson-link" href="lesson-15.html">فتح الحصة ←</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RULES ═══ -->
+    <section id="rules">
+      <div class="container">
+        <div class="sec-head">
+          <h2>قواعد أساسية للمبتدئ</h2>
+          <p>هذه القواعد تبني عادة الانضباط منذ البداية وتحميك من التسرع.</p>
+        </div>
+        <div class="rules-grid">
+          <article class="rule-card">
+            <h3>قواعد العمل</h3>
+            <ul>
+              <li>ابدأ بعملتين فقط: <strong>BTC و ETH</strong>.</li>
+              <li>لا تستعمل الرافعة في البداية أبدًا.</li>
+              <li>لا تدخل صفقة بدون سبب واضح ومكتوب.</li>
+              <li>لا تدخل بسبب الخوف من ضياع الفرصة (FOMO).</li>
+              <li>اجعل هدفك الأول هو التعلم، لا الربح السريع.</li>
+              <li>التزم بإدارة رأس المال مهما بدا لك السوق مغريًا.</li>
+            </ul>
+          </article>
+          <article class="rule-card alert">
+            <h3>تذكير مهم</h3>
+            <ul>
+              <li>النجاح في التداول يأتي من جودة القرار لا من كثرة الصفقات.</li>
+              <li>كلما قلّ التعقيد في البداية، زادت سرعة الفهم وثبات الأداء.</li>
+              <li>أفضل بداية هي: سوق واضح، فريم واضح، قواعد واضحة.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ RESULTS ═══ -->
+    <section id="results">
+      <div class="container">
+        <div class="sec-head">
+          <h2>ما الذي ستكتسبه بعد إنهاء المسار؟</h2>
+          <p>بعد إنهاء الـ 15 حصة، يفترض أن تكون قادرًا على التعامل مع السوق بوعي وخطة واضحة.</p>
+        </div>
+        <div class="outcomes-grid">
+          <article class="outcome-card">
+            <span class="outcome-icon">🧠</span>
+            <h3>على مستوى الفهم</h3>
+            <ul>
+              <li>فهم سوق العملات الرقمية وكيف تتشكّل الأسعار.</li>
+              <li>قراءة الشموع والأطر الزمنية بشكل مستقل.</li>
+              <li>تحديد مناطق الدعم والمقاومة والاتجاه العام.</li>
+              <li>استخدام المؤشرات بطريقة مساعدة ومحدودة.</li>
+            </ul>
+          </article>
+          <article class="outcome-card">
+            <span class="outcome-icon">🎯</span>
+            <h3>على مستوى التطبيق</h3>
+            <ul>
+              <li>إدارة رأس المال بوقف خسارة منضبط.</li>
+              <li>بناء خطة تداول واضحة مع دفتر متابعة.</li>
+              <li>التحكم في ردود الفعل النفسية أثناء الصفقات.</li>
+              <li>الانتقال التدريجي من التجريبي إلى الحقيقي الصغير.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="cta-box" style="margin-top: 22px;">
+          <div>
+            <h2>جاهز للبدء؟</h2>
+            <p>ابدأ بالحصة الأولى، التزم بالتدرج، واعتبر كل حصة خطوة تبني التي بعدها.</p>
+          </div>
+          <a class="btn btn-primary" href="lesson-01.html">ابدأ من الحصة الأولى</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="footer-badge">₿</span>
+          <span>احتراف التداول</span>
+        </div>
+        <nav class="footer-links" aria-label="روابط سريعة">
+          <a href="#overview">المسار</a>
+          <a href="#lessons">الحصص</a>
+          <a href="#rules">القواعد</a>
+          <a href="#results">النتائج</a>
+          <a href="lesson-01.html">الحصة الأولى</a>
+          <a href="lesson-15.html">الحصة الأخيرة</a>
+        </nav>
+      </div>
+      <p class="footer-note">محتوى عربي للتعلم الذاتي في تداول العملات الرقمية · للتعلم والمعرفة فقط · التداول عالي المخاطر</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" data-back-to-top aria-label="العودة إلى الأعلى">↑</button>
+
+  <script>
+    (() => {
+      // Lesson filter + search
+      const cards = Array.from(document.querySelectorAll(".lesson-card[data-week]"));
+      const search = document.getElementById("lessonSearch");
+      const clearBtn = document.getElementById("searchClear");
+      const filters = Array.from(document.querySelectorAll("[data-week-filter]"));
+      const status = document.getElementById("filterStatus");
+      const empty = document.getElementById("lessonsEmpty");
+      let activeWeek = "all";
+
+      const norm = v => v.toLowerCase().trim();
+
+      const applyFilter = () => {
+        const q = norm(search.value);
+        let n = 0;
+        cards.forEach(c => {
+          const ok = (activeWeek === "all" || c.dataset.week === activeWeek)
+                  && (!q || norm(c.textContent).includes(q));
+          c.classList.toggle("is-hidden", !ok);
+          if (ok) n++;
+        });
+        status.textContent = n + " حصة";
+        empty.hidden = n !== 0;
+      };
+
+      search.addEventListener("input", () => {
+        clearBtn.classList.toggle("visible", search.value.length > 0);
+        applyFilter();
+      });
+      clearBtn.addEventListener("click", () => {
+        search.value = "";
+        clearBtn.classList.remove("visible");
+        applyFilter();
+        search.focus();
+      });
+      filters.forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeWeek = btn.dataset.weekFilter;
+          filters.forEach(b => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          applyFilter();
+        });
+      });
+
+      // Nav active spy
+      const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
+      const sections = navLinks.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+      const spy = new IntersectionObserver(entries => {
+        const vis = entries.filter(e => e.isIntersecting);
+        if (!vis.length) return;
+        vis.sort((a,b) => b.intersectionRatio - a.intersectionRatio);
+        const id = vis[0].target.id;
+        navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
+      }, { rootMargin: "-35% 0px -45% 0px", threshold: [0.2, 0.4] });
+      sections.forEach(s => spy.observe(s));
+
+      // Back to top
+      const toTop = document.querySelector("[data-back-to-top]");
+      window.addEventListener("scroll", () => toTop.classList.toggle("visible", window.scrollY > 500), { passive: true });
+      toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+      // Scroll progress
+      const bar = document.querySelector(".scroll-progress");
+      window.addEventListener("scroll", () => {
+        const t = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${t > 0 ? window.scrollY / t : 0})`;
+      }, { passive: true });
+
+      applyFilter();
+    })();
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>

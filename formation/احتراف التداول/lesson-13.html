@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 13: بناء استراتيجية تداول بسيطة</title>
+  <meta
+    name="description"
+    content="الدرس الثالث عشر في برنامج تعلم تداول العملات الرقمية: بناء استراتيجية تداول بسيطة ومنظمة للمبتدئ."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 28px;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      margin-bottom: 16px;
+      max-width: 12ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .section-card h4,
+    .wide-card h4,
+    .question-card h4 {
+      margin: 18px 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    main section { padding: 18px 0; }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.3rem, 2.7vw, 2rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: 0.25s ease;
+    }
+
+    .lesson-chip:hover {
+      transform: translateY(-2px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .study-note {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(43, 208, 181, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .key-card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .key-card h3 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .next-step {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .key-grid,
+      .question-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+
+    /* ── Scroll progress bar ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform: scaleX(0);
+      transform-origin: right;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    /* ── Active chip ── */
+    .lesson-chip.is-active {
+      border-color: rgba(248, 184, 78, 0.55);
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+    }
+
+    /* ── Reveal blocks ── */
+    .reveal-block {
+      margin-top: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(43, 208, 181, 0.18);
+      background: rgba(43, 208, 181, 0.05);
+      overflow: hidden;
+    }
+
+    .reveal-block summary {
+      cursor: pointer;
+      padding: 13px 18px;
+      font-weight: 600;
+      color: var(--teal);
+      list-style: none;
+      user-select: none;
+      font-size: 0.95rem;
+    }
+
+    .reveal-block summary::-webkit-details-marker { display: none; }
+    .reveal-block summary::before { content: "▶ "; font-size: 0.75em; }
+    .reveal-block[open] summary::before { content: "▼ "; }
+
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-content {
+      padding: 0 18px 16px;
+      animation: revealDown 0.25s ease;
+    }
+
+    /* ── Strategy flow visual ── */
+    .strat-section { padding: 10px 0 28px; }
+
+    .strat-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .strat-header h2 {
+      font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+      margin-bottom: 8px;
+    }
+
+    .strat-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .strat-step {
+      flex: 1;
+      min-width: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    /* Arrow connector between steps */
+    .strat-step:not(:last-child)::after {
+      content: "←";
+      position: absolute;
+      top: 32px;
+      left: -14px;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.2);
+      z-index: 1;
+    }
+
+    .strat-node {
+      width: 100%;
+      border-radius: 16px;
+      padding: 18px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .strat-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: "Changa", sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .strat-icon { font-size: 1.5rem; }
+
+    .strat-label {
+      font-family: "Changa", sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .strat-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Step colors */
+    .ss-1 .strat-node { background: rgba(43,208,181,0.1); border-color: rgba(43,208,181,0.25); }
+    .ss-1 .strat-num  { background: var(--teal); }
+
+    .ss-2 .strat-node { background: rgba(248,184,78,0.1); border-color: rgba(248,184,78,0.25); }
+    .ss-2 .strat-num  { background: var(--gold); }
+
+    .ss-3 .strat-node { background: rgba(180,120,255,0.1); border-color: rgba(180,120,255,0.25); }
+    .ss-3 .strat-num  { background: #b478ff; }
+
+    .ss-4 .strat-node { background: rgba(229,83,83,0.1); border-color: rgba(229,83,83,0.25); }
+    .ss-4 .strat-num  { background: #e55353; }
+
+    .ss-5 .strat-node { background: rgba(80,200,120,0.1); border-color: rgba(80,200,120,0.25); }
+    .ss-5 .strat-num  { background: #50c878; }
+
+    /* Result row */
+    .strat-result {
+      display: flex;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .strat-res-card {
+      flex: 1;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .src-yes {
+      background: rgba(80, 200, 120, 0.1);
+      border: 1px solid rgba(80, 200, 120, 0.25);
+      color: #50c878;
+    }
+
+    .src-no {
+      background: rgba(229, 83, 83, 0.08);
+      border: 1px solid rgba(229, 83, 83, 0.2);
+      color: #e55353;
+    }
+
+    .src-icon { font-size: 1.3rem; }
+
+    @media (max-width: 760px) {
+      .strat-flow {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .strat-step::after { display: none; }
+      .strat-node { flex-direction: row; justify-content: flex-start; text-align: right; }
+      .strat-result { flex-direction: column; }
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+          <div class="lesson-rail-pager">
+            <a class="lesson-rail-action pager-prev" href="lesson-12.html">الحصة السابقة</a>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill current" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill" href="lesson-15.html">15</a>
+            </div>
+            <a class="lesson-rail-action pager-next" href="lesson-14.html">الحصة التالية</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 13 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>بناء استراتيجية تداول بسيطة</h1>
+          <p>
+            هذه الحصة تجمع المعارف السابقة داخل خطة تداول عملية واضحة، تعتمد على
+            الاتجاه والمنطقة وإشارة الدخول والوقف والهدف، حتى ينتقل المتعلم من الفهم النظري إلى التنفيذ المنظم.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+          <div class="lesson-nav">
+            <a class="lesson-chip" href="#lesson-content">المحتوى</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">التطبيق</a>
+            <a class="lesson-chip" href="#review">المراجعة</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>بناء استراتيجية تداول بسيطة ومنظمة للمبتدئ في سوق العملات الرقمية.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يتمكن المتعلم من جمع المعارف السابقة في <strong>خطة تداول بسيطة وواضحة</strong>،
+              تعتمد على الاتجاه، والمنطقة السعرية، وإشارة الدخول، مع تحديد الوقف والهدف بطريقة منضبطة.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <article class="section-card">
+            <h3>لماذا هذه الحصة مهمة؟</h3>
+            <p>
+              هذه الحصة تنقل المتعلم من مرحلة جمع المعلومات إلى مرحلة بناء طريقة عمل واضحة.
+              فالمشكلة عند كثير من المبتدئين ليست نقص المفاهيم فقط، بل غياب طريقة منظمة تجمع
+              الاتجاه والمنطقة والإشارة والوقف والهدف داخل قرار واحد.
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>تساعدك على تحويل المعرفة المتفرقة إلى خطة قابلة للتنفيذ.</li>
+              <li>توضح الفرق بين الدخول المنظم والدخول العشوائي.</li>
+              <li>تمهّد للحصة التالية الخاصة بخطة التداول ودفتر المتابعة.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>أخطاء شائعة عند بناء الاستراتيجية</h3>
+            <ul>
+              <li>كتابة شروط كثيرة جدًا تجعل التنفيذ مربكًا.</li>
+              <li>الدخول لأن الحركة قوية فقط دون انتظار منطقة وإشارة.</li>
+              <li>تغيير الشروط من صفقة إلى أخرى حسب المزاج.</li>
+              <li>اعتبار صفقة واحدة دليلًا على نجاح أو فشل الاستراتيجية.</li>
+            </ul>
+            <div class="study-note">
+              <strong>التصحيح:</strong>
+              ابدأ باستراتيجية بسيطة يمكن شرحها في سطور قليلة، ثم اختبرها على مجموعة صفقات لا على حالة واحدة.
+            </div>
+          </article>
+        </div>
+        <div class="study-note">
+          <div class="section-heading">
+            <h2>كيف تدرس هذه الحصة ذاتيًا؟</h2>
+            <p>هذه الحصة هي نقطة جمع لما سبق، لذلك الأفضل أن تدرسها ومعك ملاحظاتك من الحصص السابقة لا بمعزل عنها.</p>
+          </div>
+          <ul>
+            <li>ابدأ بتحديد السوق والفريم قبل قراءة نموذج الاستراتيجية.</li>
+            <li>حوّل كل عنصر في الحصة إلى شرط مكتوب داخل خطة واضحة.</li>
+            <li>جرّب بناء صفقة تدريبية كاملة بدل الاكتفاء بقراءة المثال.</li>
+            <li>إذا لم تستطع شرح سبب الدخول والوقف والهدف، فاستراتيجيتك لم تكتمل بعد.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="strat-section">
+      <div class="container">
+        <div class="strat-header">
+          <h2>سلسلة قرار الصفقة المنظمة</h2>
+          <p style="color:var(--muted)">خمسة شروط يجب أن تكتمل قبل الدخول — بالترتيب</p>
+        </div>
+
+        <div class="strat-flow">
+
+          <div class="strat-step ss-1">
+            <div class="strat-node">
+              <div class="strat-num">1</div>
+              <div class="strat-icon">📈</div>
+              <div class="strat-label">الاتجاه</div>
+              <div class="strat-sub">قمم وقيعان<br>أو EMA كمساعد</div>
+            </div>
+          </div>
+
+          <div class="strat-step ss-2">
+            <div class="strat-node">
+              <div class="strat-num">2</div>
+              <div class="strat-icon">📍</div>
+              <div class="strat-label">المنطقة</div>
+              <div class="strat-sub">دعم أو مقاومة<br>أو إعادة اختبار</div>
+            </div>
+          </div>
+
+          <div class="strat-step ss-3">
+            <div class="strat-node">
+              <div class="strat-num">3</div>
+              <div class="strat-icon">🕯️</div>
+              <div class="strat-label">الإشارة</div>
+              <div class="strat-sub">شمعة تأكيد<br>أو ارتداد واضح</div>
+            </div>
+          </div>
+
+          <div class="strat-step ss-4">
+            <div class="strat-node">
+              <div class="strat-num">4</div>
+              <div class="strat-icon">⛔</div>
+              <div class="strat-label">الوقف</div>
+              <div class="strat-sub">أسفل القاع<br>أو أعلى القمة</div>
+            </div>
+          </div>
+
+          <div class="strat-step ss-5">
+            <div class="strat-node">
+              <div class="strat-num">5</div>
+              <div class="strat-icon">🎯</div>
+              <div class="strat-label">الهدف</div>
+              <div class="strat-sub">نسبة 1:2<br>أو 1:3</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="strat-result">
+          <div class="strat-res-card src-yes">
+            <div class="src-icon">✅</div>
+            <div>اكتملت الشروط الخمسة → <strong>الدخول منطقي</strong></div>
+          </div>
+          <div class="strat-res-card src-no">
+            <div class="src-icon">⏸️</div>
+            <div>شرط واحد ناقص → <strong>انتظر أو تجنب</strong></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>الاستراتيجية الجيدة تجمع الاتجاه والمنطقة والإشارة والوقف والهدف.</li>
+            <li>بساطة الخطة أفضل من تعقيد لا يمكن تطبيقه.</li>
+            <li>عدم الدخول أحيانًا جزء من الاستراتيجية المنضبطة.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس يثبت المصطلحات الأساسية التي تدخل في بناء استراتيجية تداول بسيطة ومنظمة.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <h3>الاستراتيجية</h3>
+            <p>مجموعة شروط مكتوبة تحدد متى تدخل الصفقة ومتى تمتنع عنها.</p>
+          </article>
+          <article class="key-card">
+            <h3>الاتجاه</h3>
+            <p>المسار العام الذي يتحرك فيه السعر، وهو أول عنصر يُبنى عليه القرار.</p>
+          </article>
+          <article class="key-card">
+            <h3>المنطقة</h3>
+            <p>مكان سعري مهم مثل دعم أو مقاومة أو إعادة اختبار.</p>
+          </article>
+          <article class="key-card">
+            <h3>إشارة الدخول</h3>
+            <p>عنصر تأكيد مثل شمعة واضحة أو ارتداد منظم يساعد على تقليل العشوائية.</p>
+          </article>
+          <article class="key-card">
+            <h3>وقف الخسارة</h3>
+            <p>مستوى خروج محدد مسبقًا لحماية الحساب إذا تحركت الصفقة ضدك.</p>
+          </article>
+          <article class="key-card">
+            <h3>الهدف</h3>
+            <p>المستوى الذي تخطط عنده لجني الربح وفق نسبة عائد إلى مخاطرة مناسبة.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة، يصبح المتعلم قادرًا على تحويل الأدوات السابقة إلى طريقة تداول عملية ومنظمة.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يفهم معنى استراتيجية التداول.</li>
+              <li>يميز بين الاستراتيجية الواضحة والدخول العشوائي.</li>
+              <li>يبني نموذجًا بسيطًا لصفقة منظمة.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يحدد شروط الدخول والخروج.</li>
+              <li>يربط بين التحليل وإدارة المخاطر والانضباط.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>بعد أن تعلمنا الاتجاه، والدعم والمقاومة، والحجم، والمؤشرات، وإدارة رأس المال، كيف نحول كل ذلك إلى طريقة عملية واضحة للدخول في الصفقة؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم تُجمع الأجوبة لبيان أن المعرفة المتفرقة تحتاج إلى تنظيم داخل استراتيجية.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            كان متداول مبتدئ يعرف مفاهيم كثيرة:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>الشموع.</li>
+            <li>الاتجاه.</li>
+            <li>الدعم والمقاومة.</li>
+            <li>الحجم.</li>
+            <li>EMA.</li>
+            <li>RSI.</li>
+            <li>إدارة رأس المال.</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            لكنه كلما فتح الشارت تردد كثيرًا، ولم يعرف:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>متى يدخل؟</li>
+            <li>ومتى ينتظر؟</li>
+            <li>ومتى يتجنب الصفقة؟</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            <strong>كيف أبني طريقة تداول واضحة تمنعني من التشتت والعشوائية؟</strong>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>المحتوى التالي يوضح كيف تتحول المعارف السابقة إلى خطة واضحة قابلة للتطبيق والتقييم.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>1) ما المقصود باستراتيجية التداول؟</h3>
+            <p>
+              استراتيجية التداول هي <strong>مجموعة شروط واضحة ومحددة</strong> يعتمدها المتداول قبل الدخول في أي صفقة.
+            </p>
+            <p style="margin-top: 14px;">وتجيب هذه الاستراتيجية عن أسئلة أساسية مثل:</p>
+            <ul style="margin-top: 14px;">
+              <li>ماذا أتداول؟</li>
+              <li>متى أدخل؟</li>
+              <li>أين أضع وقف الخسارة؟</li>
+              <li>أين أحدد الهدف؟</li>
+              <li>متى أتجنب الصفقة؟</li>
+            </ul>
+            <h4>الخلاصة</h4>
+            <p>الاستراتيجية تجعل التداول أوضح، أكثر انضباطًا، وأقل عشوائية.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>2) لماذا يحتاج المبتدئ إلى استراتيجية بسيطة؟</h3>
+            <p>
+              لأن كثرة الشروط والتفاصيل قد تربك المبتدئ. ولهذا فالأفضل أن يبدأ باستراتيجية:
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>سهلة الفهم.</li>
+              <li>قليلة العناصر.</li>
+              <li>قابلة للتطبيق.</li>
+              <li>قابلة للتقييم.</li>
+            </ul>
+            <h4>قاعدة مهمة</h4>
+            <p><strong>الاستراتيجية البسيطة المطبقة جيدًا أفضل من استراتيجية معقدة لا تُفهم ولا تُلتزم.</strong></p>
+          </article>
+
+          <article class="section-card">
+            <h3>3) ما السوق الأنسب في البداية؟</h3>
+            <p>من الأفضل للمبتدئ أن يركز على:</p>
+            <ul style="margin-top: 14px;">
+              <li><strong>BTC</strong>.</li>
+              <li><strong>ETH</strong>.</li>
+            </ul>
+            <h4>لماذا؟</h4>
+            <ul>
+              <li>أوضح من كثير من العملات الصغيرة.</li>
+              <li>أعلى سيولة.</li>
+              <li>أقل عرضة للتلاعب من العملات الضعيفة.</li>
+              <li>مناسبين للتعلم في البداية.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>4) ما الفريم الأنسب لهذه الاستراتيجية؟</h3>
+            <p>الفريمات المناسبة غالبًا للمبتدئ:</p>
+            <ul style="margin-top: 14px;">
+              <li><strong>1 ساعة</strong>.</li>
+              <li><strong>4 ساعات</strong>.</li>
+            </ul>
+            <h4>لماذا؟</h4>
+            <ul>
+              <li>أقل تشويشًا من الفريمات الصغيرة.</li>
+              <li>أوضح في قراءة الاتجاه.</li>
+              <li>أنسب للتعلم والتدريب المنضبط.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>5) مكونات استراتيجية بسيطة للمبتدئ</h3>
+            <p>يمكن أن تعتمد الاستراتيجية على العناصر الآتية:</p>
+            <h4>أ) تحديد الاتجاه</h4>
+            <ul>
+              <li>باستعمال شكل القمم والقيعان.</li>
+              <li>أو EMA بشكل مساعد.</li>
+            </ul>
+            <h4>ب) تحديد المنطقة السعرية</h4>
+            <ul>
+              <li>هل السعر قريب من دعم واضح؟</li>
+              <li>مقاومة واضحة؟</li>
+              <li>أو إعادة اختبار مهمة؟</li>
+            </ul>
+            <h4>ج) انتظار إشارة الدخول</h4>
+            <ul>
+              <li>شمعة تأكيد.</li>
+              <li>أو ارتداد واضح.</li>
+              <li>أو اختراق مدعوم بشكل معقول.</li>
+            </ul>
+            <h4>د) تحديد وقف الخسارة</h4>
+            <p>أسفل آخر قاع في صفقة الشراء أو أعلى آخر قمة في صفقة البيع.</p>
+            <h4>هـ) تحديد الهدف</h4>
+            <p>مثلًا: هدف بنسبة <strong>1:2</strong> أو <strong>1:3</strong> بحيث يكون العائد المحتمل أكبر من الخسارة المحتملة.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>6) نموذج تدريبي لاستراتيجية بسيطة</h3>
+            <ul>
+              <li><strong>السوق:</strong> BTC أو ETH.</li>
+              <li><strong>الفريم:</strong> 1H أو 4H.</li>
+              <li><strong>الاتجاه:</strong> مع الاتجاه العام فقط.</li>
+              <li><strong>المنطقة:</strong> دعم أو مقاومة واضحة.</li>
+              <li><strong>الإشارة:</strong> شمعة تأكيد + ملاحظة حجم جيد نسبيًا.</li>
+              <li><strong>الوقف:</strong> أسفل آخر قاع أو أعلى آخر قمة.</li>
+              <li><strong>الهدف:</strong> 1:2 أو 1:3.</li>
+            </ul>
+            <h4>لماذا هذه الاستراتيجية مناسبة؟</h4>
+            <ul>
+              <li>تجمع بين أهم الأساسيات.</li>
+              <li>تمنع الدخول العشوائي.</li>
+              <li>تساعد على بناء عادة الانضباط.</li>
+              <li>لا تعتمد على التعقيد أو كثرة المؤشرات.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>7) مثال مبسط على صفقة شراء</h3>
+            <h4>الشروط</h4>
+            <ul>
+              <li>الاتجاه العام صاعد.</li>
+              <li>السعر عاد إلى منطقة دعم.</li>
+              <li>ظهرت شمعة ارتداد واضحة.</li>
+              <li>الحجم مقبول.</li>
+              <li>السعر فوق EMA أو قريب منه في اتجاه صاعد.</li>
+            </ul>
+            <h4>القرار</h4>
+            <ul>
+              <li>دخول شراء.</li>
+              <li>وقف الخسارة أسفل القاع الأخير.</li>
+              <li>الهدف عند مقاومة قريبة أو بنسبة 1:2.</li>
+            </ul>
+            <h4>الفكرة</h4>
+            <p>لسنا نشتري لأن السعر يتحرك فقط، بل لأن عدة شروط اجتمعت بشكل منظم.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>8) مثال مبسط على صفقة بيع</h3>
+            <p>في حال التدريب على البيع أو في العقود لاحقًا:</p>
+            <h4>الشروط</h4>
+            <ul>
+              <li>الاتجاه العام هابط.</li>
+              <li>السعر وصل إلى مقاومة واضحة.</li>
+              <li>ظهرت شمعة رفض أو ضعف.</li>
+              <li>الحجم لا يدعم الصعود بقوة.</li>
+              <li>السعر تحت EMA في اتجاه هابط.</li>
+            </ul>
+            <h4>القرار</h4>
+            <ul>
+              <li>دخول بيع.</li>
+              <li>وقف الخسارة أعلى القمة الأخيرة.</li>
+              <li>الهدف عند دعم قريب أو بنسبة مناسبة.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>9) متى نتجنب الصفقة؟</h3>
+            <p>يجب تجنب الصفقة إذا:</p>
+            <ul style="margin-top: 14px;">
+              <li>كان الاتجاه غير واضح.</li>
+              <li>كانت المنطقة السعرية غير مهمة.</li>
+              <li>لم تظهر إشارة دخول واضحة.</li>
+              <li>كانت نسبة المخاطرة غير مناسبة.</li>
+              <li>كان الدخول بسبب التسرع أو الطمع.</li>
+              <li>كانت العملة ضعيفة أو مشوشة.</li>
+            </ul>
+            <h4>قاعدة مهمة</h4>
+            <p><strong>عدم الدخول أحيانًا هو قرار تداول جيد.</strong></p>
+          </article>
+
+          <article class="section-card">
+            <h3>10) ما الفرق بين الاستراتيجية والعشوائية؟</h3>
+            <h4>الاستراتيجية</h4>
+            <ul>
+              <li>لها شروط واضحة.</li>
+              <li>يمكن تقييمها.</li>
+              <li>يمكن تطويرها.</li>
+              <li>تعتمد على الانضباط.</li>
+            </ul>
+            <h4>العشوائية</h4>
+            <ul>
+              <li>دخول بلا سبب واضح.</li>
+              <li>تغيير القرار باستمرار.</li>
+              <li>الاعتماد على الشعور فقط.</li>
+              <li>صعوبة معرفة الخطأ بعد الصفقة.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>11) كيف نختبر الاستراتيجية؟</h3>
+            <p>قبل استعمالها في حساب حقيقي، ينبغي:</p>
+            <ul style="margin-top: 14px;">
+              <li>مراقبتها على الشارت.</li>
+              <li>تدوين الصفقات.</li>
+              <li>تجربة تطبيقها على حساب تجريبي.</li>
+              <li>تقييم النتائج.</li>
+              <li>ملاحظة الأخطاء المتكررة.</li>
+            </ul>
+            <h4>الخلاصة</h4>
+            <p>الاستراتيجية لا تُحكم عليها من صفقة واحدة، بل من <strong>مجموعة صفقات وتطبيق منضبط</strong>.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>12) ما الهدف الحقيقي من الاستراتيجية؟</h3>
+            <p>ليس الهدف أن تجعل كل صفقة رابحة، بل أن تجعل المتداول:</p>
+            <ul style="margin-top: 14px;">
+              <li>منظمًا.</li>
+              <li>واضح القرار.</li>
+              <li>أقل عاطفية.</li>
+              <li>قادرًا على التعلم من نتائجه.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>تبسيط المفاهيم</h3>
+          <ul>
+            <li><strong>الاستراتيجية:</strong> هي طريقة واضحة للدخول والخروج.</li>
+          </ul>
+          <h4>مكوناتها</h4>
+          <ul>
+            <li>اتجاه.</li>
+            <li>منطقة.</li>
+            <li>إشارة.</li>
+            <li>وقف.</li>
+            <li>هدف.</li>
+          </ul>
+          <h4>أفضل بداية</h4>
+          <ul>
+            <li>BTC أو ETH.</li>
+            <li>فريم 1H أو 4H.</li>
+            <li>شروط بسيطة وواضحة.</li>
+          </ul>
+          <h4>القاعدة الأساسية</h4>
+          <p><strong>الصفقة الجيدة ليست التي تبدو مثيرة، بل التي تستوفي شروط الخطة.</strong></p>
+        </article>
+
+        <article class="wide-card">
+          <h3>النشاط التطبيقي 1</h3>
+          <p style="margin-bottom: 16px;">أكمل بما يناسب:</p>
+          <ul>
+            <li>استراتيجية التداول هي مجموعة .......... واضحة قبل الدخول.</li>
+            <li>من الأفضل للمبتدئ أن يبدأ بـ .......... أو ..........</li>
+            <li>الوقف يوضع غالبًا أسفل .......... الأخير في الشراء.</li>
+            <li>الهدف يمكن أن يكون بنسبة .......... أو ..........</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة
+            <div class="reveal-content">
+              <ul>
+                <li>شروط.</li>
+                <li>BTC / ETH.</li>
+                <li>القاع.</li>
+                <li>1:2 / 1:3.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container question-grid">
+        <article class="question-card">
+          <h3>النشاط التطبيقي 2</h3>
+          <p style="margin-bottom: 14px;">صنف الحالات التالية:</p>
+          <ol class="numbered">
+            <li data-step="1">متداول دخل لأن السعر يتحرك بسرعة فقط.</li>
+            <li data-step="2">متداول انتظر الدعم والاتجاه والشمعة والوقف قبل الدخول.</li>
+            <li data-step="3">متداول لم يدخل لأن الاتجاه كان غير واضح.</li>
+            <li data-step="4">متداول اشترى عملة صغيرة فقط لأنها ترند.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة
+            <div class="reveal-content">
+              <ul>
+                <li>دخول عشوائي.</li>
+                <li>دخول منظم.</li>
+                <li>قرار منضبط.</li>
+                <li>سلوك غير منظم.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="question-card">
+          <h3>النشاط التطبيقي 3: بناء صفقة تدريبية</h3>
+          <p>يُطلب من المتعلم أن يكتب نموذج صفقة يتضمن:</p>
+          <ul style="margin-top: 14px;">
+            <li>الزوج: BTC/USDT أو ETH/USDT.</li>
+            <li>الفريم.</li>
+            <li>الاتجاه.</li>
+            <li>المنطقة.</li>
+            <li>إشارة الدخول.</li>
+            <li>الوقف.</li>
+            <li>الهدف.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            قد يرى المتداول سعر البيتكوين يرتفع بسرعة، فيفكر في الشراء فورًا.
+            لكن الاستراتيجية المنضبطة تجبره أولًا على طرح الأسئلة الصحيحة:
+            هل الاتجاه واضح؟ هل السعر عند منطقة مهمة؟ هل ظهرت إشارة دخول؟ أين الوقف؟ وأين الهدف؟
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>إذا لم تكتمل الشروط، فلا دخول.</li>
+            <li>إذا اكتملت الشروط، يصبح القرار منطقيًا لا عاطفيًا.</li>
+            <li>بهذا تتحول الصفقة من رد فعل إلى تنفيذ منظم.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>كيف ترتبط هذه الحصة بما بعدها؟</h3>
+          <p>
+            بعد بناء استراتيجية بسيطة، ستنتقل في الحصة الرابعة عشرة إلى تنظيم تنفيذها يوميًا
+            من خلال خطة تداول واضحة ودفتر متابعة يساعدك على مراجعة الأداء واكتشاف الأخطاء.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            الحصة 13 تجيب عن "كيف أبني طريقة دخول واضحة؟"، والحصة 14 ستجيب عن "كيف أوثّق هذه الطريقة وأراجع نتائجها؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز للانتقال إلى الحصة الرابعة عشرة؟</h3>
+          <ul>
+            <li>أفهم معنى استراتيجية التداول ولماذا يجب أن تكون بسيطة.</li>
+            <li>أستطيع تحديد الاتجاه والمنطقة والإشارة والوقف والهدف.</li>
+            <li>أعرف متى أتجنب الصفقة بدل الدخول العشوائي.</li>
+            <li>أميز بين الشروط الواضحة والانفعال اللحظي.</li>
+            <li>أستطيع كتابة نموذج صفقة تدريبية كامل بصورة منظمة.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الانتقال:</strong>
+            إذا كنت ما زلت لا تستطيع شرح استراتيجيتك في نقاط قليلة وواضحة، فأعد هذه الحصة قبل الانتقال إلى خطة التداول.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">ما العناصر الأساسية لأي استراتيجية تداول بسيطة؟</li>
+            <li data-step="2">لماذا يفضَّل أن يبدأ المبتدئ باستراتيجية قليلة العناصر؟</li>
+            <li data-step="3">متى يكون عدم الدخول قرارًا جيدًا؟</li>
+            <li data-step="4">هل يمكن الحكم على الاستراتيجية من صفقة واحدة فقط؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات المختصرة
+            <div class="reveal-content">
+              <ul>
+                <li>اتجاه، منطقة، إشارة، وقف، وهدف.</li>
+                <li>لأنها أوضح وأسهل في التطبيق والتقييم.</li>
+                <li>عندما لا تكون الشروط مكتملة أو يكون الاتجاه غير واضح.</li>
+                <li>لا، بل من خلال مجموعة صفقات وتطبيق منضبط.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-3">
+        <article class="section-card">
+          <h3>أسئلة الفهم</h3>
+          <ul>
+            <li>ما المقصود باستراتيجية التداول؟</li>
+            <li>لماذا يفضل أن تكون بسيطة في البداية؟</li>
+            <li>ما العناصر الأساسية لأي استراتيجية؟</li>
+            <li>متى يجب تجنب الصفقة؟</li>
+            <li>لماذا لا يمكن الحكم على الاستراتيجية من صفقة واحدة فقط؟</li>
+          </ul>
+        </article>
+
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>
+            استراتيجية التداول هي الأداة التي تجمع بين:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>الفهم.</li>
+            <li>والانضباط.</li>
+            <li>وإدارة المخاطر.</li>
+            <li>والتنفيذ العملي.</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            ولهذا فإن بناء استراتيجية بسيطة وواضحة يعد خطوة أساسية للمبتدئ،
+            لأنها تساعده على الانتقال من <strong>الفهم النظري</strong> إلى
+            <strong>التطبيق العملي المنظم</strong>.
+          </p>
+        </article>
+
+        <article class="section-card">
+          <h3>التقويم</h3>
+          <p style="margin-bottom: 14px;"><strong>صحح أو أكمل:</strong></p>
+          <ol class="numbered">
+            <li data-step="1">الاستراتيجية الجيدة تعني الدخول في كل فرصة تظهر.</li>
+            <li data-step="2">من الأفضل للمبتدئ أن يبدأ باستراتيجية بسيطة.</li>
+            <li data-step="3">يمكن أن تتكون الاستراتيجية من اتجاه ومنطقة وإشارة ووقف وهدف.</li>
+            <li data-step="4">إذا لم تكن شروط الصفقة واضحة فالأفضل عدم الدخول.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة
+            <div class="reveal-content">
+              <ul>
+                <li>خطأ.</li>
+                <li>صحيح.</li>
+                <li>صحيح.</li>
+                <li>صحيح.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>ابنِ نموذجًا بسيطًا لاستراتيجية تداول خاصة بك، واكتب فيه:</p>
+          <ul style="margin-top: 14px;">
+            <li>السوق الذي ستتابعه.</li>
+            <li>الفريم.</li>
+            <li>شروط الدخول.</li>
+            <li>مكان الوقف.</li>
+            <li>مكان الهدف.</li>
+            <li>متى تمتنع عن الدخول.</li>
+          </ul>
+        </article>
+
+        <article class="quote-card">
+          <h3>الرسالة الأساسية في هذه الحصة</h3>
+          <p class="message">الاستراتيجية الجيدة لا تزيل الخسارة تمامًا، لكنها تمنع العشوائية وتبني الانضباط.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <div class="section-card next-step">
+          <div>
+            <h2>الخطوة التالية</h2>
+            <p>بعد بناء استراتيجية واضحة، انتقل إلى الحصة الرابعة عشرة لتتعلم كيف توثق الصفقات وتراجع الأداء عبر خطة تداول ودفتر متابعة.</p>
+          </div>
+          <a class="button button-primary" href="lesson-14.html">الانتقال إلى الحصة 14</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      صفحة الحصة الثالثة عشرة مرتبطة بالبرنامج الرئيسي ويمكن الرجوع منها مباشرة إلى قائمة الحصص.
+    </div>
+  </footer>
+  <script>
+    const bar = document.querySelector(".scroll-progress");
+    window.addEventListener("scroll", () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+    }, { passive: true });
+
+    const chips = document.querySelectorAll(".lesson-chip[href^='#']");
+    const targets = [...chips].map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+    if (targets.length) {
+      const spy = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            chips.forEach(c => c.classList.remove("is-active"));
+            const active = [...chips].find(c => c.getAttribute("href") === "#" + e.target.id);
+            if (active) active.classList.add("is-active");
+          }
+        });
+      }, { rootMargin: "-30% 0px -60% 0px" });
+      targets.forEach(t => spy.observe(t));
+    }
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+

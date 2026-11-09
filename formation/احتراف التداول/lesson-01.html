@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 1: مدخل إلى العملات الرقمية</title>
+  <meta
+    name="description"
+    content="الدرس الأول في برنامج تعلم تداول العملات الرقمية: مدخل منظم إلى مفهوم العملات الرقمية وأنواعها الأساسية."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --danger: #ff9078;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      padding: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.9rem);
+      margin-bottom: 16px;
+      max-width: 12ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .meta-item,
+    .mini-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .mini-card h3,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    main section {
+      padding: 18px 0;
+    }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .section-card h4 {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .lesson-chip:hover {
+      color: var(--text);
+      border-color: rgba(248, 184, 78, 0.24);
+      background: rgba(248, 184, 78, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .key-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .key-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #ffe5ab;
+      font-family: "Changa", sans-serif;
+    }
+
+    .study-note {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(43, 208, 181, 0.08);
+      border: 1px solid rgba(43, 208, 181, 0.16);
+    }
+
+    .study-note strong {
+      color: var(--text);
+    }
+
+    .next-step {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .next-step p {
+      max-width: 60ch;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(255, 144, 120, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.4rem, 2.7vw, 2.1rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ── Scroll progress bar ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform-origin: right;
+      transform: scaleX(0);
+      z-index: 100;
+      transition: transform 0.08s linear;
+    }
+
+    /* ── Lesson chip active state ── */
+    .lesson-chip.is-active {
+      color: #ffe5ab;
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    /* ── Reveal answers (details/summary) ── */
+    .reveal-block {
+      margin-top: 16px;
+    }
+
+    .reveal-block > summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(43, 208, 181, 0.07);
+      border: 1px solid rgba(43, 208, 181, 0.2);
+      color: var(--teal);
+      cursor: pointer;
+      font-family: "Changa", sans-serif;
+      font-size: 0.93rem;
+      list-style: none;
+      transition: 0.2s ease;
+      user-select: none;
+    }
+
+    .reveal-block > summary::-webkit-details-marker { display: none; }
+
+    .reveal-block > summary::before {
+      content: "▶";
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+    }
+
+    .reveal-block[open] > summary::before {
+      transform: rotate(90deg);
+    }
+
+    .reveal-block > summary:hover {
+      background: rgba(43, 208, 181, 0.14);
+      border-color: rgba(43, 208, 181, 0.38);
+    }
+
+    .reveal-content {
+      margin-top: 14px;
+      animation: revealDown 0.22s ease;
+    }
+
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Comparison grid ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .compare-card {
+      padding: 20px 16px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      text-align: center;
+    }
+
+    .compare-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .compare-card strong {
+      display: block;
+      font-family: "Changa", sans-serif;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .compare-card p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+    }
+
+    .compare-card.gold { border-color: rgba(248, 184, 78, 0.28); }
+    .compare-card.teal { border-color: rgba(43, 208, 181, 0.28); }
+    .compare-card.blue { border-color: rgba(99, 179, 237, 0.28); }
+    .compare-card.red  { border-color: rgba(255, 144, 120, 0.22); }
+
+    .compare-card.gold .compare-icon { color: var(--gold); }
+    .compare-card.teal .compare-icon { color: var(--teal); }
+    .compare-card.blue .compare-icon { color: #63b3ed; }
+    .compare-card.red  .compare-icon { color: var(--danger); }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .meta-grid,
+      .question-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .key-grid { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+
+    /* ── Coins Taxonomy Visual ── */
+    .coins-section {
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      margin-bottom: 24px;
+    }
+    .coins-title {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+    .coins-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .coin-card {
+      padding: 18px 12px;
+      border-radius: 18px;
+      text-align: center;
+    }
+    .cc-btc  { background: rgba(247,147,26,0.12); border: 1px solid rgba(247,147,26,0.28); }
+    .cc-eth  { background: rgba(98,126,234,0.12);  border: 1px solid rgba(98,126,234,0.28); }
+    .cc-tok  { background: rgba(43,208,181,0.10);  border: 1px solid rgba(43,208,181,0.25); }
+    .cc-stbl { background: rgba(248,184,78,0.10);  border: 1px solid rgba(248,184,78,0.25); }
+    .coin-symbol { font-size: 2rem; margin-bottom: 8px; }
+    .coin-name { font-family: "Changa", sans-serif; font-size: 1rem; color: var(--text); margin-bottom: 6px; }
+    .coin-tag { font-size: 0.72rem; padding: 3px 8px; border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--muted); }
+    .coin-desc { font-size: 0.78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+    @media (max-width: 680px) { .coins-grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+          <div class="lesson-rail-pager">
+            <span class="lesson-rail-action pager-prev is-disabled">الحصة السابقة</span>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill current" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill" href="lesson-15.html">15</a>
+            </div>
+            <a class="lesson-rail-action pager-next" href="lesson-02.html">الحصة التالية</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 1 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>مدخل إلى العملات الرقمية</h1>
+          <p>
+            هذه الحصة تقدم الأساس الذي يحتاجه المتعلم قبل الدخول إلى عالم الكريبتو:
+            ما العملات الرقمية، كيف تصنف، ولماذا لا يجب التعامل مع جميع العملات وكأنها متشابهة.
+          </p>
+          <div class="lesson-nav" aria-label="التنقل داخل الحصة">
+            <a class="lesson-chip" href="#lesson-content">محتوى الحصة</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">النشاط التطبيقي</a>
+            <a class="lesson-chip" href="#review">أسئلة الفهم</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>التعرف على مفهوم العملات الرقمية وأنواعها الأساسية.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يتعرف المتعلم على معنى العملات الرقمية، ويفهم الفرق بين أهم أنواعها،
+              حتى يعرف ما الذي يتعامل معه داخل سوق الكريبتو.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>كيف تدرس هذه الحصة ذاتيًا؟</h3>
+          <ol class="numbered">
+            <li data-step="1">اقرأ العنوان والأهداف أولًا حتى تعرف ما المطلوب منك في نهاية الحصة.</li>
+            <li data-step="2">مر على المحاور الثمانية بهدوء، ثم أعد صياغة كل مفهوم بكلماتك الخاصة.</li>
+            <li data-step="3">نفذ النشاط والتقويم قبل الانتقال للحصة الثانية حتى تتأكد أن الفهم أصبح ثابتًا.</li>
+          </ol>
+          <div class="study-note">
+            <strong>نصيحة تعلم ذاتي:</strong>
+            إذا وجدت مصطلحًا جديدًا، لا تحفظه فقط، بل اربطه بمثال عملي مثل Bitcoin أو USDT حتى يصبح أوضح.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>لماذا هذه الحصة مهمة؟</h3>
+          <p>
+            كثير من المبتدئين يقفزون مباشرة إلى الشارت أو إلى توصيات الشراء دون أن يعرفوا
+            أصلًا نوع العملة التي يتعاملون معها. هذه الحصة تمنع هذا الخطأ من البداية.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>تجعلك تميز بين العملات الرئيسية والعملات الضعيفة.</li>
+            <li>تعطيك لغة أولية لفهم السوق بدل متابعة الأسماء فقط.</li>
+            <li>تساعدك على فهم لماذا لا تتحرك كل العملات بالطريقة نفسها.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>أخطاء شائعة عند أول دخول لعالم الكريبتو</h3>
+          <ul>
+            <li>الاعتقاد أن كل العملات الرقمية متشابهة في الجودة والهدف.</li>
+            <li>شراء أي عملة فقط لأنها ارتفعت بسرعة.</li>
+            <li>عدم التمييز بين Coin و Token.</li>
+            <li>الخلط بين العملة الرئيسية والعملات المستقرة.</li>
+          </ul>
+          <div class="study-note">
+            <strong>التصحيح:</strong>
+            قبل التفكير في الربح، اسأل دائمًا: ما نوع هذه العملة؟ وهل هي أصل رئيسي أم عملة مستقرة
+            أم مشروع مضاربي ضعيف؟
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة، يصبح المتعلم قادرًا على تمييز المفاهيم الأساسية التي تشكل مدخل السوق.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يعرف معنى العملات الرقمية.</li>
+              <li>يميز بين <strong>Coin</strong> و <strong>Token</strong>.</li>
+              <li>يفرق بين <strong>Bitcoin</strong> و <strong>Altcoins</strong>.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يتعرف على العملات المستقرة.</li>
+              <li>يفهم بشكل أولي لماذا تتحرك الأسعار بسرعة وعنف أحيانًا.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>هل العملات الرقمية هي أموال حقيقية؟ وإذا كانت غير ملموسة، فلماذا يشتريها الناس ويبيعونها؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم يطلب من المتعلم أو المتدربين إعطاء تصوراتهم الأولية.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            أراد شاب أن يبدأ التداول، فوجد آلاف العملات الرقمية على المنصات، ولاحظ أن بعضها مشهور مثل
+            <strong>Bitcoin</strong> و <strong>Ethereum</strong>، وبعضها الآخر يرتفع بسرعة ثم ينهار بسرعة.
+          </p>
+          <p style="margin-top: 14px;"><strong>ما العملات الرقمية؟ وهل كلها متشابهة؟</strong></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>المحتوى منظم في محاور قصيرة وواضحة حتى يبني المتعلم تصورًا صحيحًا قبل أي تداول فعلي.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>1) ما هي العملات الرقمية؟</h3>
+            <p>
+              العملات الرقمية هي أصول رقمية يتم تداولها عبر الإنترنت، وتعتمد غالبًا على تقنية تسمى
+              <strong>البلوكشين</strong>. وهي ليست أوراقًا نقدية أو قطعًا معدنية، لكنها تُخزن وتُنقل إلكترونيًا.
+            </p>
+          </article>
+          <article class="section-card">
+            <h3>2) لماذا سميت رقمية؟</h3>
+            <ul>
+              <li>توجد في شكل إلكتروني.</li>
+              <li>يتم إرسالها واستقبالها عبر الشبكات الرقمية.</li>
+              <li>لا تحتاج في أصلها إلى حملها بشكل مادي مثل النقود التقليدية.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>3) ما الفرق بين Coin و Token؟</h3>
+            <h4>Coin</h4>
+            <p>هي عملة رقمية تملك <strong>شبكتها الخاصة</strong>، مثل Bitcoin و Ethereum.</p>
+            <h4 style="margin-top: 14px;">Token</h4>
+            <p>هو أصل رقمي يتم إنشاؤه فوق شبكة موجودة أصلًا، وكثير من المشاريع تُنشأ فوق شبكة Ethereum.</p>
+            <p style="margin-top: 14px;"><strong>الخلاصة:</strong> الـ Coin له بلوكشين خاص، أما الـ Token فيعتمد على بلوكشين موجود.</p>
+          </article>
+          <article class="section-card">
+            <h3>4) ما هو Bitcoin؟</h3>
+            <p>
+              البيتكوين هو أول وأشهر عملة رقمية، ويُنظر إليه غالبًا على أنه أصل رقمي رئيسي في السوق،
+              وهو الأكثر متابعة وتأثيرًا على باقي العملات.
+            </p>
+          </article>
+          <article class="section-card">
+            <h3>5) ما هي Altcoins؟</h3>
+            <p>هي كل العملات الرقمية الأخرى غير البيتكوين تقريبًا، ومنها:</p>
+            <ul>
+              <li>Ethereum</li>
+              <li>Solana</li>
+              <li>XRP</li>
+              <li>Cardano</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>6) ما هي العملات المستقرة؟</h3>
+            <p>
+              هي عملات رقمية صممت لتكون أقل تقلبًا، وغالبًا ترتبط بقيمة ثابتة تقريبًا مثل الدولار.
+            </p>
+            <ul>
+              <li>USDT</li>
+              <li>USDC</li>
+              <li>تستعمل لحفظ القيمة مؤقتًا.</li>
+              <li>تسهل الدخول والخروج من الصفقات.</li>
+              <li>تقلل التعرض لتقلبات السوق.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>7) هل كل العملات الرقمية قوية وموثوقة؟</h3>
+            <p>لا. فهناك مشاريع قوية لها استعمالات واضحة، وعملات مضاربية ضعيفة تعتمد فقط على الضجة أو الترند.</p>
+            <p style="margin-top: 14px;">ولهذا لا ينبغي شراء أي عملة فقط لأن سعرها يتحرك بسرعة.</p>
+          </article>
+          <article class="section-card">
+            <h3>8) لماذا ترتفع وتنخفض الأسعار بعنف؟</h3>
+            <ul>
+              <li>كثرة المضاربة.</li>
+              <li>الأخبار.</li>
+              <li>الخوف والطمع.</li>
+              <li>السيولة.</li>
+              <li>تأثير البيتكوين على السوق.</li>
+              <li>دخول وخروج الأموال بسرعة.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>مقارنة سريعة بين أنواع العملات الرقمية</h3>
+          <p>قبل أن تتذكر الأسماء، تأكد أنك تفهم الفرق الجوهري بين هذه الأنواع الأربعة.</p>
+          <div class="compare-grid">
+            <div class="compare-card gold">
+              <div class="compare-icon">₿</div>
+              <strong>Bitcoin</strong>
+              <p>العملة الأصل، الأقدم والأشهر، تحرّكه يؤثر على السوق كله.</p>
+            </div>
+            <div class="compare-card teal">
+              <div class="compare-icon">◈</div>
+              <strong>Coin</strong>
+              <p>عملة لها بلوكشين خاص بها مثل Ethereum وSolana.</p>
+            </div>
+            <div class="compare-card blue">
+              <div class="compare-icon">◇</div>
+              <strong>Token</strong>
+              <p>أصل رقمي يعمل فوق بلوكشين موجود، لا شبكة مستقلة له.</p>
+            </div>
+            <div class="compare-card red">
+              <div class="compare-icon">≈</div>
+              <strong>Stablecoin</strong>
+              <p>مربوطة بالدولار تقريبًا مثل USDT وUSDC، تُستخدم للحفظ والتنقل بين الصفقات.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="coins-section">
+          <div class="coins-title">أنواع العملات الرقمية — نظرة سريعة</div>
+          <div class="coins-grid">
+            <div class="coin-card cc-btc">
+              <div class="coin-symbol">₿</div>
+              <div class="coin-name">Bitcoin</div>
+              <div class="coin-tag">Coin · Layer 1</div>
+              <div class="coin-desc">أول وأشهر عملة رقمية، شبكتها الخاصة</div>
+            </div>
+            <div class="coin-card cc-eth">
+              <div class="coin-symbol">Ξ</div>
+              <div class="coin-name">Ethereum</div>
+              <div class="coin-tag">Coin · Smart Contract</div>
+              <div class="coin-desc">منصة العقود الذكية الأكثر استخدامًا</div>
+            </div>
+            <div class="coin-card cc-tok">
+              <div class="coin-symbol">🪙</div>
+              <div class="coin-name">Token</div>
+              <div class="coin-tag">يعمل فوق شبكة موجودة</div>
+              <div class="coin-desc">يُبنى فوق ETH أو شبكة أخرى كـ BNB</div>
+            </div>
+            <div class="coin-card cc-stbl">
+              <div class="coin-symbol">≈$</div>
+              <div class="coin-name">Stablecoin</div>
+              <div class="coin-tag">مستقرة · مثل USDT</div>
+              <div class="coin-desc">مرتبطة بالدولار للحد من التقلب</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>ليست كل العملات الرقمية متشابهة في النوع أو القوة.</li>
+            <li>التمييز بين Coin و Token خطوة أساسية قبل أي تداول.</li>
+            <li>فهم نوع العملة أهم من مطاردة سرعتها في الصعود.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس السريع يساعدك على تثبيت الكلمات الأساسية التي ستتكرر لاحقًا في البرنامج.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <strong>عملة رقمية</strong>
+            <p>أصل رقمي يتم تداوله عبر الإنترنت ويُنقل إلكترونيًا.</p>
+          </article>
+          <article class="key-card">
+            <strong>Coin</strong>
+            <p>عملة لها شبكتها الخاصة مثل Bitcoin.</p>
+          </article>
+          <article class="key-card">
+            <strong>Token</strong>
+            <p>أصل رقمي مبني فوق شبكة موجودة مثل بعض المشاريع فوق Ethereum.</p>
+          </article>
+          <article class="key-card">
+            <strong>Altcoin</strong>
+            <p>اسم يطلق على العملات الأخرى غير البيتكوين.</p>
+          </article>
+          <article class="key-card">
+            <strong>Stablecoin</strong>
+            <p>عملة أقل تقلبًا وترتبط غالبًا بقيمة شبه ثابتة مثل الدولار.</p>
+          </article>
+          <article class="key-card">
+            <strong>تقلب</strong>
+            <p>سرعة وقوة حركة السعر صعودًا أو هبوطًا خلال فترة قصيرة.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>تبسيط المفاهيم للمتعلمين</h3>
+          <p style="margin-bottom: 16px;">يمكن تقديم التصنيف الآتي بشكل مبسط:</p>
+          <ol class="numbered">
+            <li data-step="1">Bitcoin: العملة الأشهر والأكثر تأثيرًا.</li>
+            <li data-step="2">Ethereum: عملة مشهورة ولها استعمالات كثيرة.</li>
+            <li data-step="3">Altcoins: باقي العملات البديلة.</li>
+            <li data-step="4">Stablecoins: عملات مستقرة مثل USDT وUSDC.</li>
+          </ol>
+        </article>
+        <article class="wide-card">
+          <h3>النشاط التطبيقي</h3>
+          <p style="margin-bottom: 16px;">يُطلب من المتعلم تصنيف العملات التالية:</p>
+          <ul>
+            <li>Bitcoin</li>
+            <li>Ethereum</li>
+            <li>USDT</li>
+            <li>Solana</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li><strong>Bitcoin:</strong> Coin رئيسي.</li>
+                <li><strong>Ethereum:</strong> Coin ومن أشهر العملات بعد البيتكوين.</li>
+                <li><strong>USDT:</strong> Stablecoin.</li>
+                <li><strong>Solana:</strong> Altcoin.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            إذا قال لك شخص: "هذه العملة ارتفعت 40% اليوم، ادخل بسرعة"، فلا يكفي أن تنظر إلى
+            نسبة الارتفاع فقط.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>هل هي Bitcoin أم Altcoin صغيرة؟</li>
+            <li>هل هي Stablecoin أصلًا لا يفترض أن تتحرك بهذه الطريقة؟</li>
+            <li>هل المشروع معروف أم مجرد ضجة مؤقتة؟</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            هذه الأسئلة هي أول تطبيق عملي مباشر لما تعلمته في هذه الحصة.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>كيف تربط هذه الحصة بما بعدها؟</h3>
+          <p>
+            بعد أن عرفت ما هي العملات الرقمية وأنواعها، ستحتاج في الحصة القادمة إلى فهم
+            <strong>البلوكشين</strong>، لأنه النظام الذي تُسجل فيه كثير من هذه المعاملات.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            الحصة 1 تجيب عن سؤال "ماذا أتداول؟"، والحصة 2 ستجيب عن سؤال "كيف تُسجل هذه المعاملات؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container">
+        <div class="section-heading">
+          <h2>أسئلة الفهم والتقويم</h2>
+          <p>هذا الجزء يساعد على تثبيت المفاهيم الأساسية قبل الانتقال إلى الحصة التالية.</p>
+        </div>
+        <div class="question-grid">
+          <article class="question-card">
+            <h3>أسئلة الفهم</h3>
+            <ul>
+              <li>ما المقصود بالعملة الرقمية؟</li>
+              <li>ما الفرق بين Coin و Token؟</li>
+              <li>هل البيتكوين هو نفسه جميع العملات الرقمية؟</li>
+              <li>ما المقصود بالعملات المستقرة؟</li>
+              <li>لماذا لا يجب شراء أي عملة فقط لأنها ترتفع بسرعة؟</li>
+            </ul>
+          </article>
+          <article class="question-card">
+            <h3>التقويم</h3>
+            <p style="margin-bottom: 14px;"><strong>أكمل بما يناسب:</strong></p>
+            <ol class="numbered">
+              <li data-step="1">البيتكوين يُعد من أشهر .......... الرقمية.</li>
+              <li data-step="2">العملة التي تملك شبكتها الخاصة تسمى ..........</li>
+              <li data-step="3">من أمثلة العملات المستقرة: .......... و ..........</li>
+              <li data-step="4">ليست كل العملات الرقمية .......... في القوة والموثوقية.</li>
+            </ol>
+            <details class="reveal-block">
+              <summary>إظهار الأجوبة</summary>
+              <div class="reveal-content">
+                <ul>
+                  <li>العملات</li>
+                  <li>Coin</li>
+                  <li>USDT و USDC</li>
+                  <li>متشابهة</li>
+                </ul>
+              </div>
+            </details>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز للانتقال إلى الحصة الثانية؟</h3>
+          <ul>
+            <li>أستطيع شرح معنى العملة الرقمية بكلمات بسيطة.</li>
+            <li>أعرف الفرق بين Coin و Token دون خلط.</li>
+            <li>أميز بين Bitcoin و Altcoins و Stablecoins.</li>
+            <li>أفهم لماذا لا يجب شراء أي عملة فقط لأنها تصعد بسرعة.</li>
+            <li>أستطيع تصنيف أمثلة مثل Bitcoin و USDT و Solana بشكل صحيح.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الانتقال:</strong>
+            إذا كنت قادرًا على الإجابة بثقة عن 4 نقاط على الأقل، فانتقالك إلى الحصة الثانية سيكون
+            أكثر فائدة وأقل تشوشًا.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">هل USDT عملة مستقرة أم Altcoin؟</li>
+            <li data-step="2">هل كل Token يملك شبكته الخاصة؟</li>
+            <li data-step="3">هل Bitcoin هو نفسه كل العملات الرقمية؟</li>
+            <li data-step="4">ما السبب الذي يجعل بعض العملات ترتفع وتهبط بعنف؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>USDT عملة مستقرة.</li>
+                <li>لا، الـ Token يعتمد غالبًا على شبكة موجودة.</li>
+                <li>لا، البيتكوين جزء من السوق وليس كل السوق.</li>
+                <li>من الأسباب: المضاربة، الأخبار، الخوف والطمع، والسيولة.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-3">
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>
+            العملات الرقمية هي أصول رقمية يتم تداولها عبر الإنترنت. وليست كل العملات متشابهة،
+            فهناك عملات رئيسية وعملات بديلة وعملات مستقرة، ومشاريع قوية وأخرى مضاربية ضعيفة.
+          </p>
+          <p style="margin-top: 14px;">فهم نوع العملة هو أول خطوة قبل التفكير في التداول.</p>
+        </article>
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>ابحث عن 5 عملات رقمية مشهورة، ثم صنفها إلى:</p>
+          <ul style="margin-top: 14px;">
+            <li>عملة رئيسية.</li>
+            <li>عملة بديلة.</li>
+            <li>عملة مستقرة.</li>
+          </ul>
+        </article>
+        <article class="quote-card">
+          <h3>رسالة أساسية في هذه الحصة</h3>
+          <p class="message">لا تبدأ بالتداول قبل أن تعرف ماذا تتداول.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <article class="wide-card next-step">
+          <div>
+            <h3>ماذا بعد الحصة الأولى؟</h3>
+            <p>
+              إذا أصبحت تميز بين العملات الرئيسية والبديلة والمستقرة، وتفهم الفرق بين Coin و Token،
+              فأنت جاهز للانتقال إلى الحصة الثانية لفهم التقنية التي تسجل هذه المعاملات: البلوكشين.
+            </p>
+          </div>
+          <a class="button button-primary" href="lesson-02.html">انتقل إلى الحصة الثانية</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      صفحة الحصة الأولى مرتبطة ببرنامج تعلم تداول العملات الرقمية ويمكن الرجوع منها مباشرة إلى الصفحة الرئيسية.
+    </div>
+  </footer>
+  <script>
+    (() => {
+      // Scroll progress bar
+      const scrollProgress = document.querySelector(".scroll-progress");
+      const updateScroll = () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        scrollProgress.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+      };
+      window.addEventListener("scroll", updateScroll, { passive: true });
+      updateScroll();
+
+      // Lesson chip scroll spy
+      const chips = Array.from(document.querySelectorAll(".lesson-chip[href^='#']"));
+      const targets = chips.map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+
+      const spy = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter(e => e.isIntersecting);
+          if (!visible.length) return;
+          visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          const id = visible[0].target.id;
+          chips.forEach(c => c.classList.toggle("is-active", c.getAttribute("href") === `#${id}`));
+        },
+        { rootMargin: "-30% 0px -50% 0px", threshold: [0.1, 0.3, 0.5] }
+      );
+      targets.forEach(t => spy.observe(t));
+    })();
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+

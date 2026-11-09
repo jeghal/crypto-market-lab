@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AtlasFlow | Dashboard - Unit Tests</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07101c; --card: #121c2a; --accent: #00e896; --red: #ff3a5c; --text: #e6f1ff; --text-muted: #8aa3bd;
+    }
+    body {
+      background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; margin: 0; padding: 20px;
+    }
+    .header {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--accent); padding-bottom: 15px;
+    }
+    .title { font-size: 24px; font-weight: 700; color: var(--accent); }
+    .status-capsule {
+      background: var(--card); padding: 8px 16px; border-radius: 30px; font-family: 'Share Tech Mono', monospace; font-size: 14px;
+    }
+    .suite-card {
+      background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
+    }
+    .suite-name { font-size: 18px; font-weight: 700; margin-bottom: 15px; border-right: 4px solid var(--accent); padding-right: 12px; }
+    .spec-item {
+      display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .spec-name { font-size: 15px; color: var(--text-muted); }
+    .status-badge {
+      padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; font-family: 'Share Tech Mono', monospace;
+    }
+    .status-pass { background: rgba(0,232,150,0.15); color: var(--accent); border: 1px solid var(--accent); }
+    .status-fail { background: rgba(255,58,92,0.15); color: var(--red); border: 1px solid var(--red); }
+    .error-msg {
+      display: block; width: 100%; color: var(--red); font-size: 13px; font-family: 'Share Tech Mono', monospace; margin-top: 8px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 4px;
+    }
+    #results { max-width: 900px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">AtlasFlow | اختبارات الوحدة الأساسية</div>
+    <div id="overall" class="status-capsule">تحميل...</div>
+  </div>
+
+  <div id="results"></div>
+  <div hidden><p id="chartAutoNote"></p><ul id="chartAutoChecklist"></ul></div>
+
+  <!-- Load Dependencies for Tests (Indicator & Decision logic) -->
+  <script src="./js/core/shared.js"></script>
+  <script src="./js/chart/indicators.js"></script>
+  <script src="./js/chart/interactions.js"></script>
+  <script src="./js/chart/data.js"></script>
+  <script src="./js/assistant.js"></script>
+  
+  <!-- Load Test Runner & Specs -->
+  <script src="./js/tests/runner.js"></script>
+  <script src="./js/tests/specs/indicators.spec.js"></script>
+  <script src="./js/tests/specs/decisions.spec.js"></script>
+  <script src="./js/tests/specs/bridge.spec.js"></script>
+  <script src="./js/tests/specs/events.spec.js"></script>
+  <script src="./js/tests/specs/data.spec.js"></script>
+
+  <script>
+    const resultsContainer = document.getElementById("results");
+    const overall = document.getElementById("overall");
+    let totalPass = 0;
+    let totalFail = 0;
+
+    function renderSuite(suite) {
+      const card = document.createElement("div");
+      card.className = "suite-card";
+      
+      const title = document.createElement("div");
+      title.className = "suite-name";
+      title.textContent = suite.name;
+      card.appendChild(title);
+
+      suite.specs.forEach(spec => {
+        const item = document.createElement("div");
+        item.className = "spec-item";
+        
+        const name = document.createElement("div");
+        name.className = "spec-name";
+        name.textContent = `\u25CF ${spec.name}`;
+        
+        const badge = document.createElement("div");
+        badge.className = `status-badge ${spec.status === "pass" ? "status-pass" : "status-fail"}`;
+        badge.textContent = spec.status === "pass" ? "PASS" : "FAIL";
+
+        item.appendChild(name);
+        item.appendChild(badge);
+        card.appendChild(item);
+
+        if (spec.status === "fail") {
+          totalFail++;
+          const err = document.createElement("pre");
+          err.className = "error-msg";
+          err.textContent = `Error: ${spec.error}`;
+          card.appendChild(err);
+        } else {
+          totalPass++;
+        }
+      });
+
+      resultsContainer.appendChild(card);
+      updateOverall();
+    }
+
+    function updateOverall() {
+      const total = totalPass + totalFail;
+      overall.textContent = `إجمالي ${total} اختبار: ${totalPass} نجح | ${totalFail} فشل`;
+      overall.style.color = totalFail > 0 ? "var(--red)" : "var(--accent)";
+    }
+
+    window.onload = async () => {
+      await AtlasFlowTests.runTests(renderSuite);
+      overall.dataset.completed = "true";
+    };
+  </script>
+</body>
+</html>

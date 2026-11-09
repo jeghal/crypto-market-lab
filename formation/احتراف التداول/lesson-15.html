@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 15: التطبيق العملي والتدرج الصحيح من التجريبي إلى الحقيقي</title>
+  <meta
+    name="description"
+    content="الدرس الخامس عشر في برنامج تعلم تداول العملات الرقمية: الانتقال من التعلم النظري إلى التطبيق العملي في تداول العملات الرقمية بطريقة تدريجية ومنضبطة."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 28px;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      margin-bottom: 16px;
+      max-width: 13ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .section-card h4,
+    .wide-card h4,
+    .question-card h4 {
+      margin: 18px 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    main section { padding: 18px 0; }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.3rem, 2.7vw, 2rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: 0.25s ease;
+    }
+
+    .lesson-chip:hover {
+      transform: translateY(-2px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .study-note {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(43, 208, 181, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .key-card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .key-card h3 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .next-step {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .key-grid,
+      .question-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── Scroll Progress ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform: scaleX(0);
+      transform-origin: right;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    /* ── Chip active (scroll spy) ── */
+    .lesson-chip.is-active {
+      border-color: rgba(248, 184, 78, 0.6);
+      background: rgba(248, 184, 78, 0.18);
+      color: var(--gold);
+    }
+
+    /* ── Reveal blocks ── */
+    .reveal-block {
+      margin-top: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+      overflow: hidden;
+    }
+    .reveal-block summary {
+      cursor: pointer;
+      padding: 12px 16px;
+      color: var(--teal);
+      font-weight: 600;
+      list-style: none;
+      user-select: none;
+    }
+    .reveal-block summary::-webkit-details-marker { display: none; }
+    .reveal-block[open] summary { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+    .reveal-content {
+      padding: 14px 16px;
+      animation: revealDown 0.25s ease;
+    }
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Progression Ladder Visual ── */
+    .ladder-section {
+      padding: 32px 28px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      margin-bottom: 24px;
+    }
+    .ladder-title {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.25rem;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .ladder-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .ladder-step {
+      flex: 1;
+      min-width: 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 10px;
+      border-radius: 18px;
+      position: relative;
+    }
+    .ladder-step::before {
+      content: "←";
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      color: var(--muted);
+      z-index: 1;
+    }
+    .ladder-step:last-child::before { display: none; }
+    .ls-1 { background: rgba(43,208,181,0.10); border: 1px solid rgba(43,208,181,0.28); }
+    .ls-2 { background: rgba(100,160,220,0.10); border: 1px solid rgba(100,160,220,0.28); }
+    .ls-3 { background: rgba(180,130,230,0.10); border: 1px solid rgba(180,130,230,0.28); }
+    .ls-4 { background: rgba(248,184,78,0.10);  border: 1px solid rgba(248,184,78,0.28); }
+    .ls-5 { background: rgba(80,200,100,0.10);  border: 1px solid rgba(80,200,100,0.28); }
+    .ladder-icon { font-size: 2rem; margin-bottom: 10px; }
+    .ladder-num {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .ls-1 .ladder-num { color: var(--teal); }
+    .ls-2 .ladder-num { color: #6ab0e0; }
+    .ls-3 .ladder-num { color: #c080f0; }
+    .ls-4 .ladder-num { color: var(--gold); }
+    .ls-5 .ladder-num { color: #50c864; }
+    .ladder-name {
+      font-family: "Changa", sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .ladder-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+          <div class="lesson-rail-pager">
+            <a class="lesson-rail-action pager-prev" href="lesson-14.html">الحصة السابقة</a>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill current" href="lesson-15.html">15</a>
+            </div>
+            <span class="lesson-rail-action pager-next is-disabled">الحصة التالية</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 15 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>التطبيق العملي والتدرج الصحيح من التجريبي إلى الحقيقي</h1>
+          <p>
+            تشرح هذه الحصة كيف ينتقل المتعلم من الفهم النظري إلى التنفيذ العملي بشكل تدريجي
+            ومنضبط، يبدأ بالملاحظة والتحليل ثم بالحساب التجريبي، قبل الوصول إلى حساب حقيقي صغير
+            جدًا يحمي رأس المال من أخطاء التعجل.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+          <div class="lesson-nav">
+            <a class="lesson-chip" href="#lesson-content">المحتوى</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">التطبيق</a>
+            <a class="lesson-chip" href="#review">المراجعة</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>الانتقال من التعلم النظري إلى التطبيق العملي في تداول العملات الرقمية.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يفهم المتعلم أن الانتقال إلى التداول الحقيقي يجب أن يتم
+              <strong>بشكل تدريجي ومنضبط</strong>، يبدأ بالملاحظة والتحليل، ثم بالحساب التجريبي،
+              ثم بصفقات قليلة وصغيرة جدًا، حتى يكتسب مهارة التنفيذ دون تعريض رأس ماله لخطر كبير.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <article class="section-card">
+            <h3>لماذا هذه الحصة مهمة؟</h3>
+            <p>
+              هذه الحصة هي الجسر بين الدراسة والتنفيذ. فبعد فهم التحليل وإدارة المخاطر
+              والانضباط، يبقى السؤال الأهم: كيف تبدأ فعلًا من دون تسرع أو مخاطرة غير محسوبة؟
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>تحول البرنامج من معرفة نظرية إلى خطة تطبيق عملية.</li>
+              <li>تمنع الانتقال المتسرع إلى حساب حقيقي كبير.</li>
+              <li>تلخص المسار الصحيح للتعلم الذاتي المنضبط.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>أخطاء شائعة عند بدء التطبيق العملي</h3>
+            <ul>
+              <li>الانتقال إلى الحقيقي قبل اختبار الخطة عمليًا.</li>
+              <li>اعتبار الحساب التجريبي مضيعة للوقت.</li>
+              <li>التركيز على الربح السريع بدل جودة التنفيذ.</li>
+              <li>رفع المخاطرة بعد نجاح أو نجاحين فقط.</li>
+            </ul>
+            <div class="study-note">
+              <strong>التصحيح:</strong>
+              قيّم جاهزيتك بمدى التزامك بالخطة وتوثيقك للنتائج، لا بحماسك لبدء الحساب الحقيقي.
+            </div>
+          </article>
+        </div>
+        <div class="study-note">
+          <div class="section-heading">
+            <h2>كيف تدرس هذه الحصة ذاتيًا؟</h2>
+            <p>هذه الحصة ختامية، لذلك الأفضل أن تتعامل معها كخطة تنفيذ شخصية لا كمجرد ملخص لما سبق.</p>
+          </div>
+          <ul>
+            <li>اقرأ مراحل التدرج واحدة واحدة وحدد أين أنت الآن فعلًا.</li>
+            <li>اكتب خطة أسبوعية قصيرة بدل التفكير مباشرة في حساب حقيقي.</li>
+            <li>اجعل هدفك الأول جودة التنفيذ والانضباط، لا حجم الربح.</li>
+            <li>بعد إنهاء الحصة، ارجع إلى البرنامج كاملًا وحدد الحصص التي تحتاج مراجعة قبل التطبيق.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="ladder-section">
+          <div class="ladder-title">مسار التدرج الصحيح — من الملاحظة إلى التداول المنضبط</div>
+          <div class="ladder-flow">
+            <div class="ladder-step ls-1">
+              <div class="ladder-icon">👁️</div>
+              <div class="ladder-num">الخطوة 1</div>
+              <div class="ladder-name">الملاحظة</div>
+              <div class="ladder-desc">متابعة السوق وتحليل الشارت دون تنفيذ صفقات</div>
+            </div>
+            <div class="ladder-step ls-2">
+              <div class="ladder-icon">🧪</div>
+              <div class="ladder-num">الخطوة 2</div>
+              <div class="ladder-name">الحساب التجريبي</div>
+              <div class="ladder-desc">تنفيذ صفقات افتراضية واختبار الخطة والانضباط</div>
+            </div>
+            <div class="ladder-step ls-3">
+              <div class="ladder-icon">📊</div>
+              <div class="ladder-num">الخطوة 3</div>
+              <div class="ladder-name">تقييم الأداء</div>
+              <div class="ladder-desc">مراجعة النتائج والأخطاء ومدى الالتزام بالخطة</div>
+            </div>
+            <div class="ladder-step ls-4">
+              <div class="ladder-icon">💰</div>
+              <div class="ladder-num">الخطوة 4</div>
+              <div class="ladder-name">الحقيقي الصغير</div>
+              <div class="ladder-desc">حساب حقيقي برأس مال محدود جدًا هدفه التعلم</div>
+            </div>
+            <div class="ladder-step ls-5">
+              <div class="ladder-icon">📈</div>
+              <div class="ladder-num">الخطوة 5</div>
+              <div class="ladder-name">التداول المنضبط</div>
+              <div class="ladder-desc">تنفيذ منظم بجودة عالية وانضباط متراكم</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>التدرج من الملاحظة إلى التجريبي ثم الحقيقي هو الطريق الأنضج.</li>
+            <li>الهدف الأول من البداية العملية هو جودة التنفيذ لا سرعة الربح.</li>
+            <li>الحساب الحقيقي الصغير مرحلة تعلم، لا مرحلة استعراض أو مخاطرة.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس يثبت المفاهيم الأساسية التي تحكم الانتقال الصحيح من التعلم إلى التنفيذ.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <h3>الملاحظة</h3>
+            <p>مرحلة متابعة السوق وتحليله دون تنفيذ صفقات فعلية.</p>
+          </article>
+          <article class="key-card">
+            <h3>الحساب التجريبي</h3>
+            <p>بيئة تدريب تستعمل أموالًا افتراضية لاختبار التنفيذ والخطة.</p>
+          </article>
+          <article class="key-card">
+            <h3>التدرج</h3>
+            <p>الانتقال المنظم من المشاهدة إلى التجريب ثم إلى الحقيقي الصغير.</p>
+          </article>
+          <article class="key-card">
+            <h3>التنفيذ</h3>
+            <p>تحويل التحليل والخطة إلى قرار فعلي داخل السوق.</p>
+          </article>
+          <article class="key-card">
+            <h3>الجاهزية</h3>
+            <p>قدرة نسبية على الالتزام بالخطة والتوثيق قبل المخاطرة بأموال حقيقية.</p>
+          </article>
+          <article class="key-card">
+            <h3>الحساب الحقيقي الصغير</h3>
+            <p>أول مرحلة تطبيق فعلي بأموال محدودة جدًا هدفها التعلم لا التوسع السريع.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة يصبح المتعلم قادرًا على التدرج من الدراسة إلى التنفيذ بطريقة أكثر أمانًا ووضوحًا.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يعرف معنى التطبيق العملي في التداول.</li>
+              <li>يميز بين الحساب التجريبي والحساب الحقيقي.</li>
+              <li>يفهم أهمية التدرج في التعلم.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يدرك مخاطر الانتقال السريع إلى التداول الحقيقي.</li>
+              <li>يضع خطة أولية لبدء التطبيق العملي.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>هل يكفي أن أفهم الدروس نظريًا حتى أبدأ مباشرة بحساب حقيقي؟ أم أن التطبيق يحتاج إلى تدرج وتدريب قبل المخاطرة بالمال؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم تُجمع الأجوبة لبيان أن الفهم النظري مهم، لكنه لا يكفي وحده دون تدريب منظم.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            أنهى متعلم دراسة أساسيات التداول، وتعرف على الشموع والاتجاه والدعم والمقاومة والحجم
+            والمؤشرات وإدارة رأس المال والنفسية والاستراتيجية وخطة التداول، فتحمس وقرر أن يبدأ
+            مباشرة بحساب حقيقي كبير نسبيًا.
+          </p>
+          <p style="margin-top: 14px;">
+            لكنه اكتشف سريعًا أن التطبيق أصعب من الفهم النظري، لأن التنفيذ تحت الضغط يختلف عن
+            القراءة الهادئة. فطرح السؤال: <strong>كيف أبدأ التطبيق العملي بطريقة صحيحة وآمنة؟</strong>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>هذه الحصة تجمع ما سبق داخل طريق عملي واضح من الملاحظة إلى الحساب الحقيقي الصغير.</p>
+        </div>
+        <article class="wide-card">
+          <h3>الانتقال المنظم من النظرية إلى التنفيذ</h3>
+
+          <h4>1) ما المقصود بالتطبيق العملي في التداول؟</h4>
+          <p>
+            التطبيق العملي هو تحويل ما تعلمه المتداول نظريًا إلى مراقبة فعلية للسوق، وتحليل حقيقي
+            للشارت، واتخاذ قرارات منظمة، وتنفيذ الصفقات وفق خطة واضحة.
+          </p>
+          <p style="margin-top: 12px;">
+            الخلاصة: التطبيق العملي هو مرحلة <strong>الانتقال من المعرفة إلى المهارة</strong>.
+          </p>
+
+          <h4>2) لماذا لا يكفي الفهم النظري وحده؟</h4>
+          <p>
+            لأن المتعلم قد يعرف القواعد، لكنه عند التطبيق يواجه سرعة حركة السوق، والضغط النفسي،
+            والتردد عند التنفيذ، وصعوبة الالتزام أثناء الربح أو الخسارة، والاختلاف بين التحليل
+            النظري والتنفيذ الفعلي.
+          </p>
+          <p style="margin-top: 12px;">
+            لذلك الفهم النظري مهم، لكن المهارة العملية تُبنى بالتدرج والممارسة المنظمة.
+          </p>
+
+          <h4>3) ما أول خطوة في التطبيق العملي؟</h4>
+          <p>أول خطوة ليست الدخول المباشر، بل <strong>المشاهدة والتحليل فقط</strong>.</p>
+          <ul style="margin-top: 12px;">
+            <li>فتح الشارت يوميًا.</li>
+            <li>تحديد الاتجاه.</li>
+            <li>رسم الدعم والمقاومة.</li>
+            <li>ملاحظة الحجم.</li>
+            <li>اقتراح سيناريوهات الدخول والخروج.</li>
+            <li>تسجيل الملاحظات.</li>
+          </ul>
+          <p style="margin-top: 12px;">
+            فائدة هذه المرحلة أنها تدرب المتعلم على رؤية السوق وبناء التحليل والتعود على النظام دون ضغط مالي.
+          </p>
+
+          <h4>4) ما هو الحساب التجريبي؟</h4>
+          <p>
+            الحساب التجريبي هو حساب يسمح للمتعلم بالتدرب على التداول باستعمال أموال افتراضية لا حقيقية.
+          </p>
+          <ul style="margin-top: 12px;">
+            <li>تعلم التنفيذ.</li>
+            <li>تجربة الاستراتيجية.</li>
+            <li>التعود على المنصة.</li>
+            <li>اختبار الانضباط.</li>
+            <li>فهم الأخطاء العملية.</li>
+          </ul>
+          <p style="margin-top: 12px;">
+            لكنه لا ينقل كل الإحساس النفسي الموجود في الحساب الحقيقي، لأن المال فيه غير حقيقي.
+          </p>
+
+          <h4>5) لماذا نحتاج إلى الحساب التجريبي؟</h4>
+          <p>
+            لأنه يساعد المتعلم على التدريب على الدخول، ووضع الوقف، وتحديد الهدف، وتسجيل الصفقات،
+            واحترام الخطة دون تعريض نفسه لخسائر مالية حقيقية في البداية.
+          </p>
+          <p style="margin-top: 12px;">
+            الخلاصة: الحساب التجريبي هو <strong>جسر</strong> بين الدراسة النظرية والحساب الحقيقي.
+          </p>
+
+          <h4>6) ما الخطأ في الانتقال السريع إلى الحقيقي؟</h4>
+          <ul>
+            <li>اكتشاف الأخطاء بأموال حقيقية.</li>
+            <li>التعرض لضغط نفسي كبير.</li>
+            <li>الخسارة بسبب ضعف التنفيذ لا ضعف الفهم.</li>
+            <li>المبالغة في حجم الصفقات.</li>
+            <li>الانكسار النفسي مبكرًا.</li>
+          </ul>
+          <p style="margin-top: 12px;">
+            القاعدة المهمة: <strong>ليس المطلوب أن تدخل السوق الحقيقي بسرعة، بل أن تدخل وأنت أكثر استعدادًا.</strong>
+          </p>
+
+          <h4>7) ما التدرج الصحيح في التطبيق؟</h4>
+          <ol class="numbered">
+            <li data-step="1">الملاحظة والتحليل دون دخول صفقات.</li>
+            <li data-step="2">الحساب التجريبي لتنفيذ صفقات افتراضية واختبار الخطة وتسجيل النتائج.</li>
+            <li data-step="3">صفقات قليلة جدًا بحجم صغير جدًا ومخاطرة منخفضة جدًا.</li>
+            <li data-step="4">تقييم النتائج ومراجعة الأداء والأخطاء ومدى الالتزام.</li>
+            <li data-step="5">الحساب الحقيقي الصغير برأس مال محدود وبحذر شديد.</li>
+          </ol>
+
+          <h4>8) لماذا يجب أن يكون الحساب الحقيقي صغيرًا جدًا في البداية؟</h4>
+          <p>
+            لأن الهدف في هذه المرحلة ليس تحقيق دخل كبير، بل تعلم التنفيذ الحقيقي، والتعود على الضغط
+            النفسي الحقيقي، واختبار النفس والانضباط، وحماية رأس المال من الأخطاء الأولى.
+          </p>
+          <p style="margin-top: 12px;">
+            الرسالة: <strong>أول حساب حقيقي هو حساب للتعلم المنضبط، لا لإثبات القوة أو السعي السريع للربح.</strong>
+          </p>
+
+          <h4>9) ما الذي يجب التركيز عليه في البداية؟</h4>
+          <ul>
+            <li>جودة التنفيذ.</li>
+            <li>الالتزام بالخطة.</li>
+            <li>احترام الوقف.</li>
+            <li>تقليل عدد الصفقات.</li>
+            <li>تجنب الرافعة العالية.</li>
+            <li>متابعة BTC و ETH فقط في البداية.</li>
+          </ul>
+
+          <h4>10) متى أعرف أنني جاهز نسبيًا للحقيقي؟</h4>
+          <ul>
+            <li>أفهم استراتيجيتي جيدًا.</li>
+            <li>أطبقها بشكل متكرر ومنظم.</li>
+            <li>أسجل صفقاتي.</li>
+            <li>أعرف أخطائي المتكررة.</li>
+            <li>ألتزم بنسبة مخاطرة صغيرة.</li>
+            <li>لا أدخل بشكل عشوائي.</li>
+          </ul>
+          <p style="margin-top: 12px;">
+            حتى عند الجاهزية النسبية، يبقى الدخول الحقيقي تدريجيًا وحذرًا.
+          </p>
+
+          <h4>11) ما الأخطاء الشائعة في مرحلة التطبيق؟</h4>
+          <ul>
+            <li>الانتقال المبكر إلى الحقيقي.</li>
+            <li>فتح صفقات كثيرة.</li>
+            <li>تغيير الخطة باستمرار.</li>
+            <li>دخول صفقات بلا سبب واضح.</li>
+            <li>تجاهل التوثيق.</li>
+            <li>رفع المخاطرة بعد أول نجاح.</li>
+            <li>استعمال رافعة عالية قبل النضج الكافي.</li>
+          </ul>
+
+          <h4>12) كيف نبني أول خطة تطبيق عملي؟</h4>
+          <h4>الأسبوع الأول</h4>
+          <ul>
+            <li>مراقبة BTC و ETH فقط.</li>
+            <li>تحديد الاتجاه العام يوميًا.</li>
+            <li>رسم المناطق المهمة.</li>
+            <li>اقتراح صفقات افتراضية.</li>
+            <li>تسجيل الملاحظات.</li>
+          </ul>
+
+          <h4>الأسبوع الثاني</h4>
+          <ul>
+            <li>بدء حساب تجريبي.</li>
+            <li>تنفيذ عدد قليل من الصفقات.</li>
+            <li>احترام الوقف والهدف.</li>
+            <li>كتابة سبب كل صفقة.</li>
+          </ul>
+
+          <h4>الأسبوع الثالث وما بعده</h4>
+          <ul>
+            <li>تقييم النتائج.</li>
+            <li>ملاحظة الأخطاء.</li>
+            <li>تقليل العشوائية.</li>
+            <li>التفكير لاحقًا في حساب حقيقي صغير جدًا إذا كان الأداء منضبطًا.</li>
+          </ul>
+
+          <h4>13) ما الهدف الحقيقي من هذه المرحلة؟</h4>
+          <p>
+            ليس الهدف أن تحقق ربحًا سريعًا، بل أن تصبح قادرًا على تنفيذ الخطة والعمل بهدوء واحترام
+            رأس المال والتعلم من الواقع والانتقال التدريجي من النظرية إلى الممارسة.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container">
+        <div class="section-heading">
+          <h2>تبسيط المفاهيم</h2>
+          <p>ملخص سريع للفكرة الأساسية في الحصة.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>التطبيق العملي</h3>
+            <p>هو تحويل المعرفة إلى تنفيذ فعلي ومنظم.</p>
+            <h4>البداية الصحيحة</h4>
+            <ul>
+              <li>ملاحظة.</li>
+              <li>تحليل.</li>
+              <li>حساب تجريبي.</li>
+              <li>حساب حقيقي صغير جدًا.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>الهدف</h3>
+            <p>تعلم التنفيذ والانضباط قبل الربح.</p>
+            <h4>القاعدة الأساسية</h4>
+            <p><strong>التدرج يحمي المتعلم من خسائر التعجل.</strong></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container">
+        <div class="section-heading">
+          <h2>النشاط التطبيقي</h2>
+          <p>أنشطة تساعد المتعلم على تحويل الدرس إلى خطة تنفيذية واضحة.</p>
+        </div>
+        <div class="grid-3">
+          <article class="question-card">
+            <h3>نشاط 1: أكمل بما يناسب</h3>
+            <ul>
+              <li>أول خطوة في التطبيق العملي هي .......... والتحليل.</li>
+              <li>الحساب الذي يستعمل أموالًا غير حقيقية يسمى ..........</li>
+              <li>من الخطأ الانتقال بسرعة إلى الحساب ..........</li>
+              <li>الهدف في البداية هو تعلم .......... أكثر من مطاردة الربح.</li>
+            </ul>
+            <details class="reveal-block">
+              <summary>إظهار الأجوبة المتوقعة</summary>
+              <div class="reveal-content">
+                <ul>
+                  <li>المشاهدة</li>
+                  <li>التجريبي</li>
+                  <li>الحقيقي</li>
+                  <li>التنفيذ</li>
+                </ul>
+              </div>
+            </details>
+          </article>
+
+          <article class="question-card">
+            <h3>نشاط 2: صنف الحالات التالية</h3>
+            <ul>
+              <li>متعلم بدأ بحساب حقيقي كبير مباشرة.</li>
+              <li>متعلم راقب السوق أولًا ثم استعمل حسابًا تجريبيًا.</li>
+              <li>متعلم دخل الحقيقي بحجم صغير جدًا بعد تدريب منظم.</li>
+              <li>متعلم رفع المخاطرة بعد أول صفقة ناجحة.</li>
+            </ul>
+            <details class="reveal-block">
+              <summary>إظهار الأجوبة</summary>
+              <div class="reveal-content">
+                <ul>
+                  <li>تدرج غير صحيح</li>
+                  <li>تدرج صحيح</li>
+                  <li>سلوك منضبط</li>
+                  <li>سلوك خطير</li>
+                </ul>
+              </div>
+            </details>
+          </article>
+
+          <article class="question-card">
+            <h3>نشاط 3: إعداد خطة بداية</h3>
+            <p>
+              يطلب من المتعلم أن يكتب خطة قصيرة تتضمن العملات التي سيراقبها، والفريم الذي سيعتمده،
+              وهل سيبدأ بالمراقبة أم بالتجريبي، وكيف سيسجل نتائجه، ومتى يفكر في الحساب الحقيقي.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            قد يُنهي متعلم جميع الدروس ثم يفتح حسابًا حقيقيًا بسرعة بدافع الحماس.
+            لكن عند أول ضغط نفسي أو أول خسارة، يكتشف أن المعرفة وحدها لم تكن كافية،
+            لأن التنفيذ المنضبط لم يُختبر بعد بشكل تدريجي.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>التجريبي ليس تأخيرًا، بل مرحلة بناء.</li>
+            <li>الحساب الحقيقي الصغير يحميك من أخطاء البداية المكلفة.</li>
+            <li>الهدف الأول هو الثبات والانضباط، لا إثبات القدرة بسرعة.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>كيف تجمع هذه الحصة ما قبلها؟</h3>
+          <p>
+            هذه الحصة لا تقدم أداة جديدة بقدر ما تجمع ما سبق كله في مسار تنفيذي:
+            من فهم السوق، إلى إدارة رأس المال، إلى الانضباط النفسي، إلى الاستراتيجية وخطة التداول،
+            ثم تحويل ذلك إلى تطبيق تدريجي واقعي.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            ما تعلمته في الحصص السابقة يجيب عن "كيف أفهم السوق؟"، وهذه الحصة تجيب عن "كيف أبدأ التنفيذ دون أن أفسد ذلك بالتعجل؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز لبدء التطبيق المنظم؟</h3>
+          <ul>
+            <li>أفهم الفرق بين المشاهدة، والتجريبي، والحقيقي.</li>
+            <li>أعرف لماذا يجب أن يكون أول حساب حقيقي صغيرًا جدًا.</li>
+            <li>أستطيع وضع خطة أسبوع أول واضحة للمراقبة أو للتجريب.</li>
+            <li>أدرك أن هدفي الأول هو جودة التنفيذ لا الربح السريع.</li>
+            <li>أعرف أن العودة إلى الدروس السابقة للمراجعة جزء طبيعي من التعلم.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الخاتمة:</strong>
+            إذا كنت ما زلت ترى أن سرعة البدء أهم من جودة التدرج، فأعد هذه الحصة وراجع الحصص 11 إلى 14 قبل التطبيق.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">ما أول خطوة عملية قبل الدخول الحقيقي إلى السوق؟</li>
+            <li data-step="2">ما فائدة الحساب التجريبي في هذه المرحلة؟</li>
+            <li data-step="3">لماذا لا ينبغي أن يكون أول حساب حقيقي كبيرًا؟</li>
+            <li data-step="4">ما الهدف الحقيقي من البداية العملية؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات المختصرة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>المشاهدة والتحليل وبناء سيناريوهات منظمة.</li>
+                <li>تدريب التنفيذ واختبار الخطة دون مخاطرة مالية حقيقية.</li>
+                <li>لأن الهدف هو التعلم المنضبط وحماية رأس المال من أخطاء البداية.</li>
+                <li>بناء مهارة التنفيذ والانضباط قبل مطاردة الربح.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>أسئلة الفهم</h2>
+          <p>أسئلة مراجعة سريعة بعد نهاية الحصة.</p>
+        </div>
+        <div class="question-grid">
+          <article class="question-card">
+            <ul>
+              <li>ما المقصود بالتطبيق العملي؟</li>
+              <li>لماذا لا يكفي الفهم النظري وحده؟</li>
+              <li>ما فائدة الحساب التجريبي؟</li>
+            </ul>
+          </article>
+          <article class="question-card">
+            <ul>
+              <li>لماذا يجب أن يكون الحساب الحقيقي صغيرًا جدًا في البداية؟</li>
+              <li>ما التدرج الصحيح من التعلم إلى التطبيق؟</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>
+            التطبيق العملي هو المرحلة التي يكتسب فيها المتعلم مهارة التنفيذ الحقيقي، لكنه لا ينبغي أن
+            يبدأ بالعجلة أو بالمخاطرة الكبيرة. فالطريق الصحيح يكون عبر:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>الملاحظة</li>
+            <li>التحليل</li>
+            <li>الحساب التجريبي</li>
+            <li>التقييم</li>
+            <li>ثم الحساب الحقيقي الصغير جدًا</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            وهذا التدرج هو ما يسمح ببناء متداول أكثر وعيًا، وأكثر انضباطًا، وأقل عرضة للأخطاء المكلفة.
+          </p>
+        </article>
+
+        <article class="section-card">
+          <h3>التقويم</h3>
+          <ul>
+            <li>يمكن البدء مباشرة بحساب حقيقي كبير بعد إنهاء الدروس النظرية.</li>
+            <li>الحساب التجريبي يساعد على تعلم التنفيذ دون مخاطرة مالية حقيقية.</li>
+            <li>الهدف من البداية العملية هو الربح السريع فقط.</li>
+            <li>التدرج في التطبيق يساعد على تقليل الأخطاء الكبيرة.</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>خطأ</li>
+                <li>صحيح</li>
+                <li>خطأ</li>
+                <li>صحيح</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>
+            اكتب خطة تطبيق عملي لمدة أسبوع، توضح فيها:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>ماذا ستراقب؟</li>
+            <li>كم مرة ستفتح الشارت؟</li>
+            <li>هل ستدخل صفقات تجريبية؟</li>
+            <li>كيف ستسجل الملاحظات والنتائج؟</li>
+          </ul>
+        </article>
+
+        <article class="quote-card">
+          <h3>الرسالة الأساسية في هذه الحصة</h3>
+          <p class="message">
+            في تداول العملات الرقمية، التطبيق الناجح لا يبدأ بالاندفاع، بل بالتدرج والانضباط
+            والتدريب المنظم.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <div class="section-card next-step">
+          <div>
+            <h2>الخطوة التالية</h2>
+            <p>أكملت المسار الأساسي. ارجع الآن إلى الصفحة الرئيسية لمراجعة البرنامج، ثم ابدأ تنفيذ خطة تعلمك الذاتي بالتدرج الذي يناسبك.</p>
+          </div>
+          <a class="button button-primary" href="index.html#lessons">العودة إلى البرنامج</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      هذه الصفحة جزء من برنامج تعلّم تداول العملات الرقمية، ويمكنك الرجوع إلى جميع الحصص من الصفحة الرئيسية.
+    </div>
+  </footer>
+  <script>
+    // Scroll progress bar
+    const bar = document.querySelector(".scroll-progress");
+    window.addEventListener("scroll", () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+    }, { passive: true });
+
+    // Chip scroll spy
+    const chips = document.querySelectorAll(".lesson-chip[href^='#']");
+    const targets = [...chips].map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+    if (targets.length) {
+      const spy = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            chips.forEach(c => c.classList.remove("is-active"));
+            const active = [...chips].find(c => c.getAttribute("href") === "#" + e.target.id);
+            if (active) active.classList.add("is-active");
+          }
+        });
+      }, { rootMargin: "-30% 0px -60% 0px" });
+      targets.forEach(t => spy.observe(t));
+    }
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,25 @@
+{
+  "name": "CryptoWatch Pro",
+  "short_name": "CryptoWatch",
+  "description": "Dashboard d'analyse technique crypto en temps réel",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0d1520",
+  "background_color": "#070f1c",
+  "icons": [
+    {
+      "src": "./icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 2: البلوكشين بشكل مبسط</title>
+  <meta
+    name="description"
+    content="الدرس الثاني في برنامج تعلم تداول العملات الرقمية: فهم البلوكشين بشكل مبسط وعلاقته بالعملات الرقمية."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --danger: #ff9078;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.9rem);
+      margin-bottom: 16px;
+      max-width: 11ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .meta-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .meta-item,
+    .mini-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    main section { padding: 18px 0; }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .section-card h4 {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .lesson-chip:hover {
+      color: var(--text);
+      border-color: rgba(248, 184, 78, 0.24);
+      background: rgba(248, 184, 78, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .key-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .key-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #ffe5ab;
+      font-family: "Changa", sans-serif;
+    }
+
+    .study-note {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(43, 208, 181, 0.08);
+      border: 1px solid rgba(43, 208, 181, 0.16);
+    }
+
+    .study-note strong {
+      color: var(--text);
+    }
+
+    .next-step {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .next-step p {
+      max-width: 60ch;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(255, 144, 120, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.35rem, 2.7vw, 2rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ── Scroll progress bar ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform-origin: right;
+      transform: scaleX(0);
+      z-index: 100;
+      transition: transform 0.08s linear;
+    }
+
+    /* ── Lesson chip active ── */
+    .lesson-chip.is-active {
+      color: #ffe5ab;
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    /* ── Reveal answers ── */
+    .reveal-block { margin-top: 16px; }
+
+    .reveal-block > summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(43, 208, 181, 0.07);
+      border: 1px solid rgba(43, 208, 181, 0.2);
+      color: var(--teal);
+      cursor: pointer;
+      font-family: "Changa", sans-serif;
+      font-size: 0.93rem;
+      list-style: none;
+      transition: 0.2s ease;
+      user-select: none;
+    }
+
+    .reveal-block > summary::-webkit-details-marker { display: none; }
+
+    .reveal-block > summary::before {
+      content: "▶";
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+    }
+
+    .reveal-block[open] > summary::before { transform: rotate(90deg); }
+
+    .reveal-block > summary:hover {
+      background: rgba(43, 208, 181, 0.14);
+      border-color: rgba(43, 208, 181, 0.38);
+    }
+
+    .reveal-content {
+      margin-top: 14px;
+      animation: revealDown 0.22s ease;
+    }
+
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Transaction journey flow ── */
+    .tx-flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding: 6px 0 14px;
+      margin-top: 18px;
+    }
+
+    .tx-step {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      min-width: 120px;
+    }
+
+    .tx-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      background: rgba(43, 208, 181, 0.1);
+      border: 1px solid rgba(43, 208, 181, 0.22);
+    }
+
+    .tx-step:last-child .tx-icon {
+      background: rgba(248, 184, 78, 0.12);
+      border-color: rgba(248, 184, 78, 0.3);
+      box-shadow: 0 0 18px rgba(248, 184, 78, 0.1);
+    }
+
+    .tx-label {
+      font-size: 0.82rem;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.4;
+      font-family: "Changa", sans-serif;
+    }
+
+    .tx-arrow {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 6px;
+      padding-bottom: 26px;
+    }
+
+    .tx-arrow-line {
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(to left, var(--gold), var(--teal));
+    }
+
+    .tx-arrow-head {
+      font-size: 0.65rem;
+      color: var(--gold);
+      margin-top: -2px;
+      margin-right: -6px;
+      align-self: flex-start;
+      transform: translateY(-5px);
+    }
+
+    /* ── Block structure visual ── */
+    .block-chain {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: stretch;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 8px 0 14px;
+      margin-top: 18px;
+    }
+
+    .chain-block {
+      flex-shrink: 0;
+      width: 150px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 12px;
+      font-size: 0.82rem;
+    }
+
+    .chain-block.is-new {
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.07);
+    }
+
+    .chain-block-label {
+      font-family: "Changa", sans-serif;
+      font-size: 0.88rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .chain-block.is-new .chain-block-label { color: #ffd88a; }
+
+    .chain-block p { font-size: 0.8rem; margin-bottom: 6px; }
+
+    .chain-link-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(43, 208, 181, 0.1);
+      border: 1px solid rgba(43, 208, 181, 0.18);
+      color: var(--teal);
+      font-size: 0.76rem;
+    }
+
+    .chain-connector {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 1.2rem;
+      padding-bottom: 6px;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .meta-grid,
+      .question-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .key-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+
+    /* ── Blockchain Visual ── */
+    .chain-section {
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      margin-bottom: 24px;
+    }
+    .chain-title {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+    .chain-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      overflow-x: auto;
+    }
+    .chain-block {
+      flex: 1;
+      min-width: 130px;
+      padding: 16px 12px;
+      border-radius: 16px;
+      background: rgba(43,208,181,0.08);
+      border: 1px solid rgba(43,208,181,0.22);
+      text-align: center;
+      position: relative;
+    }
+    .chain-block::before {
+      content: "←";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      color: var(--muted);
+      z-index: 1;
+    }
+    .chain-block:last-child::before { display: none; }
+    .cb-num {
+      font-family: "Changa", sans-serif;
+      font-size: 0.72rem;
+      color: var(--teal);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+    .cb-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .cb-label { font-family: "Changa", sans-serif; font-size: 0.92rem; color: var(--text); margin-bottom: 4px; }
+    .cb-detail { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+    .chain-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--teal);
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(43,208,181,0.08);
+      border: 1px solid rgba(43,208,181,0.18);
+      display: inline-block;
+      margin-inline: auto;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+
+          <div class="lesson-rail-pager">
+            <a class="lesson-rail-action pager-prev" href="lesson-01.html">الحصة السابقة</a>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill current" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill" href="lesson-15.html">15</a>
+            </div>
+            <a class="lesson-rail-action pager-next" href="lesson-03.html">الحصة التالية</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 2 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>البلوكشين بشكل مبسط</h1>
+          <p>
+            هذه الحصة تشرح معنى البلوكشين بطريقة مباشرة وسهلة، وتوضح كيف تُسجل
+            المعاملات الرقمية، ولماذا تعتبر هذه التقنية جزءًا أساسيًا من عالم العملات الرقمية.
+          </p>
+          <div class="lesson-nav" aria-label="التنقل داخل الحصة">
+            <a class="lesson-chip" href="#lesson-content">محتوى الحصة</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">النشاط التطبيقي</a>
+            <a class="lesson-chip" href="#review">أسئلة الفهم</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>فهم مفهوم البلوكشين وعلاقته بالعملات الرقمية.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يفهم المتعلم معنى <strong>البلوكشين</strong> بطريقة مبسطة، ويستوعب كيف تُسجل
+              المعاملات الرقمية، ولماذا تُعد هذه التقنية أساسًا مهمًا في عالم العملات الرقمية.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>كيف تدرس هذه الحصة ذاتيًا؟</h3>
+          <ol class="numbered">
+            <li data-step="1">اقرأ معنى البلوكشين أولًا، ثم حاول شرحه بكلمات بسيطة كأنك تشرحه لشخص آخر.</li>
+            <li data-step="2">ركز على تسلسل انتقال المعاملة من الإرسال حتى إضافتها إلى السلسلة.</li>
+            <li data-step="3">قبل الانتقال للحصة التالية، تأكد أنك تعرف الفرق بين Bitcoin كتطبيق وBlockchain كتقنية.</li>
+          </ol>
+          <div class="study-note">
+            <strong>نصيحة تعلم ذاتي:</strong>
+            إذا شعرت أن المفهوم تجريدي، استعمل مثال دفتر الحسابات الرقمي الموجود في الحصة وكرره بصوتك.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>لماذا هذه الحصة مهمة؟</h3>
+          <p>
+            بعد أن عرفت في الحصة الأولى ما هي العملات الرقمية، تحتاج الآن إلى فهم النظام الذي
+            يسجل المعاملات ويحافظ على ترتيبها. بدون هذا الفهم، تبقى فكرة الكريبتو ناقصة.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>توضح لك أين تُحفظ المعاملات الرقمية.</li>
+            <li>تساعدك على التمييز بين الأصل الرقمي والتقنية التي تشغله.</li>
+            <li>تمنحك تصورًا منطقيًا قبل دراسة السوق والمنصات والتداول.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>أخطاء شائعة عند فهم البلوكشين</h3>
+          <ul>
+            <li>الاعتقاد أن البلوكشين هو نفسه البيتكوين.</li>
+            <li>تصور أن البلوكشين يعني الأمان المطلق بلا أي مخاطر.</li>
+            <li>التركيز على المصطلح دون فهم وظيفة الكتلة والسلسلة.</li>
+            <li>حفظ التعريف نظريًا دون القدرة على شرح انتقال معاملة واحدة.</li>
+          </ul>
+          <div class="study-note">
+            <strong>التصحيح:</strong>
+            إذا استطعت شرح كيف تنتقل معاملة من الإرسال إلى التسجيل داخل كتلة، فأنت فهمت الفكرة
+            أكثر من مجرد حفظ تعريف عام.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة، يصبح المتعلم قادرًا على فهم بنية السجل الرقمي وعلاقته بحركة المعاملات داخل الشبكة.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يعرف معنى البلوكشين بشكل مبسط.</li>
+              <li>يفهم معنى الكتلة والسلسلة.</li>
+              <li>يدرك كيف تُسجل المعاملات داخل الشبكة.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يفسر لماذا يصعب تعديل البيانات المسجلة.</li>
+              <li>يربط بين البلوكشين والعملات الرقمية.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>إذا أرسل شخص عملة رقمية إلى شخص آخر، فمن الذي يسجل هذه العملية؟ وأين تُحفظ هذه المعلومات؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم تُجمع أجوبة المتعلمين لتمهيد فكرة أن هناك نظامًا رقميًا يسجل العمليات.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            أراد متعلم أن يفهم كيف تنتقل عملة رقمية من شخص إلى آخر دون وجود بنك تقليدي
+            يشرف مباشرة على العملية.
+          </p>
+          <p style="margin-top: 14px;">
+            <strong>إذا لم يكن هناك دفتر بنكي عادي، فأين تُسجل المعاملات؟ وكيف نضمن عدم التلاعب بها؟</strong>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>المحاور التالية تبني صورة واضحة عن معنى البلوكشين وكيفية عمله وعلاقته المباشرة بالعملات الرقمية.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>1) ما هو البلوكشين؟</h3>
+            <p>
+              البلوكشين هو <strong>سجل رقمي</strong> تُحفظ فيه المعاملات على شكل
+              <strong>كتل مترابطة</strong>. وكل كتلة تحتوي على مجموعة من العمليات،
+              ثم ترتبط بالكتلة التي قبلها، فتتكون سلسلة من الكتل.
+            </p>
+            <ul style="margin-top: 14px;">
+              <li><strong>Block</strong> = كتلة</li>
+              <li><strong>Chain</strong> = سلسلة</li>
+            </ul>
+            <p style="margin-top: 14px;">إذن البلوكشين يعني: <strong>سلسلة الكتل</strong>.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>2) كيف يعمل البلوكشين بشكل مبسط؟</h3>
+            <ul>
+              <li>تُجمع المعاملات الرقمية الجديدة.</li>
+              <li>توضع هذه المعاملات في كتلة.</li>
+              <li>تُضاف الكتلة إلى السلسلة.</li>
+              <li>تُسجل العملية داخل الشبكة.</li>
+            </ul>
+            <p style="margin-top: 14px;">وبعد إضافتها، تصبح جزءًا من السجل الرقمي.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>3) ماذا تحتوي الكتلة؟</h3>
+            <p>بشكل مبسط، تحتوي الكتلة على:</p>
+            <ul style="margin-top: 14px;">
+              <li>مجموعة من المعاملات.</li>
+              <li>معلومات رقمية خاصة بها.</li>
+              <li>رابط بالكتلة السابقة.</li>
+            </ul>
+            <p style="margin-top: 14px;">وهذا الترابط هو الذي يجعل السلسلة متماسكة.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>4) لماذا يعد البلوكشين مهمًا؟</h3>
+            <ul>
+              <li>تسجيل المعاملات بطريقة منظمة.</li>
+              <li>تتبع العمليات المسجلة.</li>
+              <li>صعوبة التلاعب بالسجل.</li>
+              <li>مشاركة المعلومات بين عدد كبير من المشاركين في الشبكة.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>5) لماذا يصعب تعديل البيانات؟</h3>
+            <p>
+              لأن كل كتلة مرتبطة بما قبلها. فإذا تم تغيير معلومة داخل كتلة، يتأثر ترابط السلسلة،
+              ويصبح التغيير ظاهرًا داخل النظام.
+            </p>
+            <p style="margin-top: 14px;">
+              بصيغة مبسطة: <strong>كلما زاد ترابط الكتل، زادت صعوبة التلاعب بالمعلومات المسجلة.</strong>
+            </p>
+          </article>
+
+          <article class="section-card">
+            <h3>6) ما علاقة البلوكشين بالعملات الرقمية؟</h3>
+            <p>العملات الرقمية تعتمد غالبًا على البلوكشين لتسجيل:</p>
+            <ul style="margin-top: 14px;">
+              <li>التحويلات.</li>
+              <li>الملكية.</li>
+              <li>المعاملات بين المستخدمين.</li>
+            </ul>
+            <p style="margin-top: 14px;">إذن البلوكشين هو البنية التي تساعد على تشغيل كثير من العملات الرقمية.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>7) هل البلوكشين هو نفسه البيتكوين؟</h3>
+            <p>
+              لا. البيتكوين <strong>عملة رقمية</strong>، أما البلوكشين فهو
+              <strong>التقنية</strong> التي تساعد على تسجيل معاملاتها.
+            </p>
+            <ul style="margin-top: 14px;">
+              <li><strong>Bitcoin</strong> = أصل رقمي.</li>
+              <li><strong>Blockchain</strong> = التقنية أو النظام الذي تُسجل فيه المعاملات.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>تبسيط الفكرة بمثال</h3>
+            <p>يمكن تشبيه البلوكشين بـ <strong>دفتر حسابات رقمي كبير</strong>:</p>
+            <ul style="margin-top: 14px;">
+              <li>كل صفحة تمثل <strong>كتلة</strong>.</li>
+              <li>الصفحات مرتبة ومتصلة.</li>
+              <li>عند كتابة عملية جديدة، تُضاف في مكانها.</li>
+              <li>لا يمكن تغيير صفحة قديمة بسهولة دون أن يظهر ذلك.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>رحلة المعاملة داخل البلوكشين</h3>
+          <p>من لحظة إرسال العملة إلى لحظة تسجيلها نهائيًا، هذه هي المراحل الأربع.</p>
+          <div class="tx-flow" role="img" aria-label="مراحل تسجيل المعاملة في البلوكشين">
+            <div class="tx-step">
+              <div class="tx-icon">📤</div>
+              <div class="tx-label">إرسال المعاملة</div>
+            </div>
+            <div class="tx-arrow"><div class="tx-arrow-line"></div><div class="tx-arrow-head">◀</div></div>
+            <div class="tx-step">
+              <div class="tx-icon">📦</div>
+              <div class="tx-label">تجميع المعاملات</div>
+            </div>
+            <div class="tx-arrow"><div class="tx-arrow-line"></div><div class="tx-arrow-head">◀</div></div>
+            <div class="tx-step">
+              <div class="tx-icon">🔗</div>
+              <div class="tx-label">تكوين كتلة جديدة</div>
+            </div>
+            <div class="tx-arrow"><div class="tx-arrow-line"></div><div class="tx-arrow-head">◀</div></div>
+            <div class="tx-step">
+              <div class="tx-icon">✅</div>
+              <div class="tx-label">إضافتها للسلسلة</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>بنية سلسلة الكتل</h3>
+          <p>كل كتلة تحمل معاملاتها، ورابطًا بالكتلة التي قبلها. الكتلة الذهبية هي الأحدث.</p>
+          <div class="block-chain" role="img" aria-label="مخطط سلسلة الكتل">
+            <div class="chain-block is-new">
+              <span class="chain-block-label">كتلة #N (جديدة)</span>
+              <p>المعاملات الأخيرة</p>
+              <div class="chain-link-badge">→ رابط بـ #N-1</div>
+            </div>
+            <div class="chain-connector">⟵</div>
+            <div class="chain-block">
+              <span class="chain-block-label">كتلة #N-1</span>
+              <p>معاملات سابقة</p>
+              <div class="chain-link-badge">→ رابط بـ #N-2</div>
+            </div>
+            <div class="chain-connector">⟵</div>
+            <div class="chain-block">
+              <span class="chain-block-label">كتلة #N-2</span>
+              <p>معاملات أقدم</p>
+              <div class="chain-link-badge">→ رابط بـ #N-3</div>
+            </div>
+            <div class="chain-connector">⟵</div>
+            <div class="chain-block">
+              <span class="chain-block-label">كتلة #1 (الأولى)</span>
+              <p>أول المعاملات</p>
+              <div class="chain-link-badge">البداية</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="chain-section">
+          <div class="chain-title">كيف تسير المعاملة عبر البلوكشين؟</div>
+          <div class="chain-flow">
+            <div class="chain-block">
+              <div class="cb-num">الخطوة 1</div>
+              <div class="cb-icon">📤</div>
+              <div class="cb-label">بث المعاملة</div>
+              <div class="cb-detail">يرسل المستخدم طلب التحويل للشبكة</div>
+            </div>
+            <div class="chain-block">
+              <div class="cb-num">الخطوة 2</div>
+              <div class="cb-icon">🔍</div>
+              <div class="cb-label">التحقق</div>
+              <div class="cb-detail">العقد تتحقق من صحة المعاملة</div>
+            </div>
+            <div class="chain-block">
+              <div class="cb-num">الخطوة 3</div>
+              <div class="cb-icon">📦</div>
+              <div class="cb-label">تجميع في كتلة</div>
+              <div class="cb-detail">المعاملات تُجمع في Block جديد</div>
+            </div>
+            <div class="chain-block">
+              <div class="cb-num">الخطوة 4</div>
+              <div class="cb-icon">🔗</div>
+              <div class="cb-label">ربط بالسلسلة</div>
+              <div class="cb-detail">الكتلة تُضاف وترتبط بالسابقة بـ Hash</div>
+            </div>
+          </div>
+          <div class="chain-note">🔒 الكتل المترابطة بـ Hash تجعل التلاعب شبه مستحيل</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>البلوكشين سجل رقمي منظم وليس عملة رقمية بحد ذاته.</li>
+            <li>الكتل مترابطة، وهذا ما يجعل التلاعب أصعب.</li>
+            <li>فهم البلوكشين يساعدك على فهم كيف تُسجَّل المعاملات.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس السريع يثبت المصطلحات الأساسية قبل الانتقال إلى فهم السوق في الحصص التالية.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <strong>Blockchain</strong>
+            <p>سجل رقمي منظم تُحفظ فيه المعاملات على شكل كتل مترابطة.</p>
+          </article>
+          <article class="key-card">
+            <strong>Block</strong>
+            <p>كتلة تحتوي على مجموعة من المعاملات ومعلومات مرتبطة بها.</p>
+          </article>
+          <article class="key-card">
+            <strong>Chain</strong>
+            <p>الترابط بين الكتل بحيث تتكون سلسلة يصعب العبث بها دون أن يظهر ذلك.</p>
+          </article>
+          <article class="key-card">
+            <strong>Transaction</strong>
+            <p>معاملة رقمية مثل إرسال أصل من مستخدم إلى آخر.</p>
+          </article>
+          <article class="key-card">
+            <strong>سجل رقمي</strong>
+            <p>دفتر حسابات إلكتروني منظم تُسجل فيه العمليات بدل السجل الورقي التقليدي.</p>
+          </article>
+          <article class="key-card">
+            <strong>ترابط الكتل</strong>
+            <p>العلاقة بين الكتلة الحالية والسابقة، وهي ما يجعل تعديل البيانات صعبًا.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>النشاط التطبيقي 1</h3>
+          <p style="margin-bottom: 16px;">اطلب من المتعلم ترتيب المراحل التالية:</p>
+          <ul>
+            <li>تسجيل العملية.</li>
+            <li>إرسال عملة رقمية.</li>
+            <li>تجميع المعاملات.</li>
+            <li>إضافة الكتلة إلى السلسلة.</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الترتيب الصحيح</summary>
+            <div class="reveal-content">
+              <ol class="numbered">
+                <li data-step="1">إرسال عملة رقمية.</li>
+                <li data-step="2">تجميع المعاملات.</li>
+                <li data-step="3">تسجيل العملية داخل كتلة.</li>
+                <li data-step="4">إضافة الكتلة إلى السلسلة.</li>
+              </ol>
+            </div>
+          </details>
+        </article>
+
+        <article class="wide-card">
+          <h3>النشاط التطبيقي 2</h3>
+          <p style="margin-bottom: 16px;">أكمل بما يناسب:</p>
+          <ul>
+            <li>البلوكشين يعني .......... الكتل.</li>
+            <li>الكتلة تحتوي على مجموعة من ..........</li>
+            <li>البيتكوين عملة رقمية، أما البلوكشين فهو ..........</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>سلسلة.</li>
+                <li>المعاملات.</li>
+                <li>تقنية أو نظام تسجيل.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            إذا أرسل شخص 1 BTC إلى شخص آخر، فالسؤال ليس فقط: "هل وصل الأصل؟" بل أيضًا:
+            "أين سُجلت هذه العملية؟"
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>تُجمع المعاملة مع معاملات أخرى.</li>
+            <li>تدخل في كتلة.</li>
+            <li>تُضاف هذه الكتلة إلى السلسلة.</li>
+            <li>تصبح العملية جزءًا من السجل الرقمي.</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            هذا المثال البسيط هو جوهر ما تقصده الحصة بالبلوكشين.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>كيف ترتبط هذه الحصة بما بعدها؟</h3>
+          <p>
+            الحصة الثانية تشرح البنية التقنية التي تعمل عليها العملات الرقمية، أما الحصة الثالثة
+            فستنقلك إلى فهم السوق نفسه: كيف يتم الشراء والبيع، وما الفرق بين Spot و Futures.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            الحصة 1 أجابت عن "ما الذي نتداوله؟"، والحصة 2 تجيب عن "كيف تُسجل المعاملات؟"،
+            والحصة 3 ستجيب عن "كيف يعمل السوق؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container">
+        <div class="section-heading">
+          <h2>أسئلة الفهم والتقويم</h2>
+          <p>هذا الجزء يثبت الفرق بين التقنية نفسها وبين العملات التي تعمل فوقها.</p>
+        </div>
+        <div class="question-grid">
+          <article class="question-card">
+            <h3>أسئلة الفهم</h3>
+            <ul>
+              <li>ما المقصود بالبلوكشين؟</li>
+              <li>لماذا سمي سلسلة الكتل؟</li>
+              <li>ماذا تحتوي الكتلة؟</li>
+              <li>لماذا يصعب تعديل المعلومات داخل البلوكشين؟</li>
+              <li>ما الفرق بين البيتكوين والبلوكشين؟</li>
+            </ul>
+          </article>
+
+          <article class="question-card">
+            <h3>التقويم</h3>
+            <p style="margin-bottom: 14px;"><strong>صحح أو أكمل:</strong></p>
+            <ol class="numbered">
+              <li data-step="1">البلوكشين هو نوع من العملات الرقمية.</li>
+              <li data-step="2">الكتلة تحتوي على معاملات رقمية.</li>
+              <li data-step="3">ترتبط كل كتلة بالكتلة التي قبلها.</li>
+              <li data-step="4">البيتكوين هو نفسه البلوكشين.</li>
+            </ol>
+            <details class="reveal-block">
+              <summary>إظهار الأجوبة</summary>
+              <div class="reveal-content">
+                <ul>
+                  <li>خطأ — البلوكشين تقنية وليس عملة.</li>
+                  <li>صحيح.</li>
+                  <li>صحيح.</li>
+                  <li>خطأ — البيتكوين أصل رقمي، والبلوكشين التقنية.</li>
+                </ul>
+              </div>
+            </details>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز للانتقال إلى الحصة الثالثة؟</h3>
+          <ul>
+            <li>أستطيع شرح معنى البلوكشين بكلمات بسيطة.</li>
+            <li>أفهم الفرق بين الكتلة والسلسلة.</li>
+            <li>أعرف لماذا يصعب تعديل البيانات بعد تسجيلها.</li>
+            <li>أميز بين البيتكوين كعملة والبلوكشين كتقنية.</li>
+            <li>أستطيع ترتيب مراحل انتقال معاملة رقمية بشكل صحيح.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الانتقال:</strong>
+            إذا كنت قادرًا على شرح الفكرة العامة دون قراءة النص، فالحصة القادمة ستكون أوضح
+            لأنك لن تخلط بين التقنية والسوق.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">هل البلوكشين هو نفسه البيتكوين؟</li>
+            <li data-step="2">ماذا تحتوي الكتلة بشكل مبسط؟</li>
+            <li data-step="3">لماذا يصعب تعديل البيانات داخل السلسلة؟</li>
+            <li data-step="4">ما أول فائدة عملية لفهم البلوكشين للمتعلم المبتدئ؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>لا، البيتكوين أصل رقمي والبلوكشين تقنية تسجيل.</li>
+                <li>تحتوي على معاملات ومعلومات مرتبطة بها ورابط بالكتلة السابقة.</li>
+                <li>لأن الكتل مترابطة وأي تعديل يؤثر في ترابط السلسلة.</li>
+                <li>فهم أين وكيف تُسجل المعاملات الرقمية.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-3">
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>
+            البلوكشين هو <strong>سجل رقمي منظم</strong> تُحفظ فيه المعاملات على شكل كتل مترابطة.
+            وهو الأساس الذي تقوم عليه كثير من العملات الرقمية، لأنه يسمح بتسجيل العمليات
+            بطريقة واضحة ومنظمة، مع تقليل إمكانية التلاعب بها.
+          </p>
+        </article>
+
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>
+            اكتب فقرة قصيرة من 4 إلى 6 أسطر تشرح فيها:
+            <strong>كيف يساعد البلوكشين على تسجيل المعاملات الرقمية؟</strong>
+          </p>
+        </article>
+
+        <article class="quote-card">
+          <h3>الرسالة الأساسية في هذه الحصة</h3>
+          <p class="message">العملات الرقمية لا تعمل في الفراغ، بل تعتمد على نظام تسجيل رقمي يسمى البلوكشين.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <article class="wide-card next-step">
+          <div>
+            <h3>ماذا بعد الحصة الثانية؟</h3>
+            <p>
+              إذا أصبحت تفهم كيف تُسجل المعاملات داخل البلوكشين، فأنت جاهز للحصة الثالثة حتى ترى
+              كيف يتحول هذا العالم التقني إلى سوق فعلي فيه شراء وبيع وSpot وFutures.
+            </p>
+          </div>
+          <a class="button button-primary" href="lesson-03.html">انتقل إلى الحصة الثالثة</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      صفحة الحصة الثانية مرتبطة بالبرنامج الرئيسي ويمكن الرجوع منها مباشرة إلى جميع الحصص.
+    </div>
+  </footer>
+  <script>
+    (() => {
+      // Scroll progress bar
+      const bar = document.querySelector(".scroll-progress");
+      const updateScroll = () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+      };
+      window.addEventListener("scroll", updateScroll, { passive: true });
+      updateScroll();
+
+      // Lesson chip scroll spy
+      const chips = Array.from(document.querySelectorAll(".lesson-chip[href^='#']"));
+      const targets = chips.map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+      const spy = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter(e => e.isIntersecting);
+          if (!visible.length) return;
+          visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          const id = visible[0].target.id;
+          chips.forEach(c => c.classList.toggle("is-active", c.getAttribute("href") === `#${id}`));
+        },
+        { rootMargin: "-30% 0px -50% 0px", threshold: [0.1, 0.3, 0.5] }
+      );
+      targets.forEach(t => spy.observe(t));
+    })();
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+
+

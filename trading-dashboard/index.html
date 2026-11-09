@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d1520" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
+    <title>CryptoWatch Pro</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230d1520'/%3E%3Ctext x='32' y='42' font-size='34' text-anchor='middle' fill='%2339d5ff'%3E%E2%82%BF%3C/text%3E%3C/svg%3E"
+    />
+    <link
+      href="https://fonts.bunny.net/css2?family=Share+Tech+Mono&family=Cairo:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css?v=1.2" />
+    <style>
+      /* تصحيح جذري لتنسيق الرادار */
+      .ai-radar-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        width: 100% !important;
+        margin: 10px 0 !important;
+      }
+      .ai-radar-grid .tbtn {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        height: 34px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        font-family: var(--ar) !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .ai-radar-actions {
+        display: flex !important;
+        gap: 8px !important;
+        width: 100% !important;
+        margin-top: 10px !important;
+      }
+      .ai-radar-actions .tbtn {
+        flex: 1 !important;
+        display: flex !important;
+        justify-content: center !important;
+        height: 34px !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        font-family: var(--ar) !important;
+      }
+      .ai-radar-actions .pro-btn {
+        flex: 2 !important;
+        background: var(--accent) !important;
+        color: #000 !important;
+      }
+      .radar-native-wrap {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .radar-section-title { font-size: 10px; color: var(--muted); margin-bottom: 4px; }
+      .radar-symbol-line { font-size: 11px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+      .radar-symbol-line b { font-family: var(--mono); color: var(--accent); font-size: 13px; }
+      #statusLog { font-size: 10px; font-family: var(--mono); background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); margin-top: 10px; min-height: 40px; }
+      .note-text { font-size: 9px; color: var(--muted); margin-top: 10px; }
+      .progress-text { font-size: 10px; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 4px; }
+      .stab .sp, .stab .sc { direction: ltr !important; unicode-bidi: isolate; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-hex">₿</div>
+        <h1>CRYPTO<span>WATCH</span></h1>
+      </div>
+
+      <div class="sym-tabs" id="symTabs">
+        <button class="stab active" data-sym="BTCUSDT">
+          <span class="sn">BTC</span><span class="sp" id="p-BTCUSDT">—</span
+          ><span class="sc" id="c-BTCUSDT">—</span>
+        </button>
+        <button class="stab" data-sym="ETHUSDT">
+          <span class="sn">ETH</span><span class="sp" id="p-ETHUSDT">—</span
+          ><span class="sc" id="c-ETHUSDT">—</span>
+        </button>
+        <button class="stab" data-sym="BNBUSDT">
+          <span class="sn">BNB</span><span class="sp" id="p-BNBUSDT">—</span
+          ><span class="sc" id="c-BNBUSDT">—</span>
+        </button>
+        <button class="stab" data-sym="SOLUSDT">
+          <span class="sn">SOL</span><span class="sp" id="p-SOLUSDT">—</span
+          ><span class="sc" id="c-SOLUSDT">—</span>
+        </button>
+        <button class="stab" data-sym="XRPUSDT">
+          <span class="sn">XRP</span><span class="sp" id="p-XRPUSDT">—</span
+          ><span class="sc" id="c-XRPUSDT">—</span>
+        </button>
+
+        <!-- Custom watchlist tabs (injected dynamically) -->
+        <div id="watchlistTabs" style="display:flex; gap:2px; flex-wrap:wrap" aria-label="أزواج العملات المفضلة"></div>
+
+        <!-- Add symbol selector -->
+        <div class="wl-add-wrap" id="wlAddWrap">
+          <input list="wlPairsList" id="wlInput" class="wl-selector"
+                 placeholder="＋ إضافة رمز" autocomplete="off" spellcheck="false" aria-label="إضافة زوج جديد للقائمة" />
+          <datalist id="wlPairsList">
+            <option value="DOGEUSDT">DOGE</option>
+            <option value="AVAXUSDT">AVAX</option>
+            <option value="DOTUSDT">DOT</option>
+            <option value="ADAUSDT">ADA</option>
+            <option value="LINKUSDT">LINK</option>
+            <option value="LTCUSDT">LTC</option>
+            <option value="MATICUSDT">MATIC</option>
+            <option value="UNIUSDT">UNI</option>
+            <option value="ATOMUSDT">ATOM</option>
+            <option value="XLMUSDT">XLM</option>
+            <option value="TRXUSDT">TRX</option>
+            <option value="NEARUSDT">NEAR</option>
+            <option value="APTUSDT">APT</option>
+            <option value="ARBUSDT">ARB</option>
+            <option value="OPUSDT">OP</option>
+            <option value="INJUSDT">INJ</option>
+            <option value="SUIUSDT">SUI</option>
+            <option value="SEIUSDT">SEI</option>
+            <option value="TIAUSDT">TIA</option>
+            <option value="WIFUSDT">WIF</option>
+            <option value="FETUSDT">FET</option>
+            <option value="RENDERUSDT">RENDER</option>
+            <option value="LDOUSDT">LDO</option>
+            <option value="MKRUSDT">MKR</option>
+            <option value="AAVEUSDT">AAVE</option>
+            <option value="SANDUSDT">SAND</option>
+            <option value="MANAUSDT">MANA</option>
+            <option value="FTMUSDT">FTM</option>
+            <option value="ALGOUSDT">ALGO</option>
+            <option value="FILUSDT">FIL</option>
+            <option value="ICPUSDT">ICP</option>
+            <option value="RUNEUSDT">RUNE</option>
+            <option value="TONUSDT">TON</option>
+            <option value="JUPUSDT">JUP</option>
+            <option value="PYTHUSDT">PYTH</option>
+            <option value="STRKUSDT">STRK</option>
+            <option value="PEPEUSDT">PEPE</option>
+            <option value="FLOKIUSDT">FLOKI</option>
+            <option value="BONKUSDT">BONK</option>
+            <option value="WLDUSDT">WLD</option>
+            <option value="GMXUSDT">GMX</option>
+            <option value="DYDXUSDT">DYDX</option>
+            <option value="ENSUSDT">ENS</option>
+            <option value="GRTUSDT">GRT</option>
+            <option value="1INCHUSDT">1INCH</option>
+          </datalist>
+        </div>
+      </div>
+
+    </header>
+
+    <div class="layout">
+      <!-- ═══ CHART ═══ -->
+      <div class="card card-chart" style="animation-delay: 0.04s">
+        <div class="chart-head">
+          <div class="chart-title-block">
+            <span id="chartLbl" hidden></span>
+            <div class="chart-span-indicator" id="chartSpanIndicator">المدة الإجمالية —</div>
+          </div>
+          <label class="chart-market-shell" for="chartSymbolSelect">
+            <span class="chart-market-label">الزوج</span>
+            <select class="chart-market-select" id="chartSymbolSelect" aria-label="اختيار الزوج من الشارت"></select>
+          </label>
+          <div class="chart-actions">
+            <button class="tbtn chart-act-btn" id="btnCapture" title="لقطة الشاشة">⎙</button>
+            <button class="tbtn chart-act-btn" id="btnFullscreen" title="ملء الشاشة">⛶</button>
+          </div>
+        </div>
+        <div class="chart-ctrls">
+          <!-- Interval tabs -->
+          <div class="iv-tabs" id="ivTabs">
+            <button class="itab" data-iv="5m">5m</button>
+            <button class="itab" data-iv="15m">15m</button>
+            <button class="itab" data-iv="1h">1h</button>
+            <button class="itab" data-iv="4h">4h</button>
+            <button class="itab active" data-iv="1d">1ي</button>
+            <button class="itab" data-iv="1w">1W</button>
+            <button class="itab" data-iv="1M">1M</button>
+          </div>
+
+          <!-- Candle count selector -->
+          <div class="candle-selector">
+            <label for="candleCount">عدد الشموع</label>
+            <select id="candleCount">
+              <option value="10">10</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+              <option value="80">80</option>
+              <option value="100" selected>100</option>
+              <option value="150">150</option>
+              <option value="200">200</option>
+              <option value="300">300</option>
+              <option value="500">500</option>
+              <option value="1000">1000</option>
+            </select>
+          </div>
+          <div class="analysis-selector">
+            <label for="analysisProfileSelect">النمط</label>
+            <select id="analysisProfileSelect">
+              <option value="balanced" selected>متوازن</option>
+              <option value="conservative">محافظ</option>
+            </select>
+          </div>
+
+          <button class="tbtn on" id="togEMA">EMA 7/21/50</button>
+          <button class="tbtn on" id="togVol">Volume</button>
+          <button class="tbtn on" id="togGrid">Grid</button>
+          <button class="tbtn on" id="togSR">S/R</button>
+          <button class="tbtn on" id="togTL">اتجاهات</button>
+          <button class="tbtn" id="togFib">Fib</button>
+          <button class="tbtn" id="togBB">BB 20</button>
+          <button class="tbtn" id="togVP">Vol Profile</button>
+          <button class="tbtn on" id="togTrade">صفقة</button>
+          <button class="tbtn on" id="togTradeZones">مناطق</button>
+          <button class="tbtn chart-act-btn" id="btnAddLevel" title="إضافة مستوى سعري">＋ مستوى</button>
+        </div>
+        <div class="chart-box">
+          <canvas id="cv"></canvas>
+          <div id="tt"></div>
+        </div>
+      </div>
+
+      <!-- ═══ SIDEBAR ═══ -->
+      <div class="sidebar">
+        <!-- Signal -->
+        <div class="card" style="animation-delay: 0.08s">
+          <div class="ct">
+            إشارة الدخول
+            <button class="tbtn pro-btn" id="proDecisionBtn" title="تحليل احترافي D1 → H4 → H1 → M15">قرار احترافي</button>
+          </div>
+          <div class="sig-row">
+            <div class="sig-orb w" id="sigOrb">◎</div>
+            <div class="sig-info">
+              <h3 id="sigTxt">جارٍ التحليل...</h3>
+              <p id="sigSub">EMA · RSI · MACD</p>
+            </div>
+          </div>
+          <div id="sigPills" class="pills"></div>
+          <div id="bearSigPills" class="pills bear-pills" style="display:none"></div>
+          <div id="decisionExplanation" class="decision-explanation"></div>
+          <pre id="proDecisionOutput" class="pro-decision-output">اضغط "قرار احترافي" لعرض قرار تنفيذي واحد عالي الجودة.</pre>
+        </div>
+
+        <!-- Scenario -->
+        <div class="card" style="animation-delay: 0.1s">
+          <div class="ct">
+            السيناريو
+            <span id="scenarioStatus" class="scenario-status">—</span>
+          </div>
+          <div class="scenario-grid">
+            <div class="scenario-row">
+              <span class="scenario-label">الاتجاه</span>
+              <span id="scenarioBias" class="scenario-value">—</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-label">التفعيل</span>
+              <span id="scenarioTrigger" class="scenario-value">—</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-label">الإلغاء</span>
+              <span id="scenarioInvalid" class="scenario-value">—</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-label">الثقة</span>
+              <span id="scenarioConfidence" class="scenario-value">—</span>
+            </div>
+          </div>
+          <div id="scenarioSummary" class="scenario-summary">جارٍ بناء السيناريو...</div>
+        </div>
+
+        <!-- Screener -->
+        <div class="card" style="animation-delay: 0.44s">
+          <div class="ct" style="display:flex; justify-content:space-between; align-items:center;">
+            ماسح الإشارات
+            <div class="scr-controls">
+              <button class="tbtn scr-mode-btn active" id="screenerScanBtn" title="فحص قائمتك">قائمتي</button>
+              <button class="tbtn scr-mode-btn" id="screenerTopBtn" title="أفضل العملات ارتفاعاً">الأقوى</button>
+              <button class="tbtn scr-mode-btn" id="screenerBreakBtn" title="مرشحات اختراق سعري">اختراق</button>
+              <button class="tbtn scr-mode-btn" id="screenerCoilBtn" title="ضغط قبل الانفجار">ضغط</button>
+              <button class="tbtn scr-mode-btn" id="screenerMomentumBtn" title="انفجارات لحظية على فريم 5m">لحظي</button>
+            </div>
+          </div>
+          <!-- Standard screener table -->
+          <table class="scr-table" id="screenerTable">
+            <thead>
+              <tr>
+                <th data-sort="sym">العملة</th>
+                <th data-sort="price">السعر</th>
+                <th data-sort="condCount">الإشارة</th>
+                <th data-sort="trend">الترند</th>
+                <th data-sort="stochKPct">Stoch</th>
+                <th data-sort="macdDir">MACD</th>
+                <th data-sort="rr">R:R</th>
+              </tr>
+            </thead>
+            <tbody id="screenerBody">
+              <tr><td colspan="7" style="text-align:center;color:var(--muted)">جارٍ المسح...</td></tr>
+            </tbody>
+          </table>
+          <!-- Coil screener table (shown only in coil mode) -->
+          <table class="scr-table coil-table" id="coilTable" style="display:none">
+            <thead>
+              <tr>
+                <th>العملة</th>
+                <th>السعر</th>
+                <th>الاتجاه</th>
+                <th title="Bollinger Band Width Percentile — 0% = أقصى ضغط">ضغط BB</th>
+                <th title="المسافة لأقرب مقاومة">→ مقاومة</th>
+                <th title="نقاط الكويل (100 = مثالي)">النقاط</th>
+              </tr>
+            </thead>
+            <tbody id="coilBody">
+              <tr><td colspan="6" style="text-align:center;color:var(--muted)">اضغط 🎯 كويل للمسح</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Trade Calculator -->
+        <div class="card tc-card" style="animation-delay: 0.4s">
+          <div class="ct">
+            حاسبة الصفقة (Spot)
+            <button class="tbtn tc-fill-btn" id="tcFillBtn" title="ملء تلقائي من القراءة الحالية للشراء Spot">↙ تعبئة تلقائية</button>
+          </div>
+
+          <!-- Inputs -->
+          <div class="tc-inputs">
+            <div class="tc-field">
+              <label for="tcAmount">رأس المال (USDT)</label>
+              <input id="tcAmount" class="tc-input" type="text" inputmode="decimal" placeholder="100">
+            </div>
+            <div class="tc-field">
+              <label for="tcEntry">سعر الدخول</label>
+              <div class="tc-prefix-wrap">
+                <span class="tc-prefix">$</span>
+                <input id="tcEntry" class="tc-input tc-has-prefix" type="text" inputmode="decimal" placeholder="0.00">
+              </div>
+              <button class="tc-live-btn" id="tcLiveBtn">⊙ السعر الحي</button>
+            </div>
+            <div class="tc-field">
+              <label for="tcTarget">هدف الربح (TP)</label>
+              <div class="tc-prefix-wrap">
+                <span class="tc-prefix profit">$</span>
+                <input id="tcTarget" class="tc-input tc-has-prefix tc-input-tp" type="text" inputmode="decimal" placeholder="0.00">
+              </div>
+              <div class="tc-qbtns" id="tcTpBtns">
+                <button class="tc-qbtn tp" data-tp="3">+3%</button>
+                <button class="tc-qbtn tp" data-tp="5">+5%</button>
+                <button class="tc-qbtn tp" data-tp="10">+10%</button>
+              </div>
+            </div>
+            <!-- Stop-Limit group: Trigger → Limit, spans full row -->
+            <div class="tc-sl-group">
+              <div class="tc-sl-group-hd">
+                <span>وقف الخسارة (Stop-Limit)</span>
+                <span class="tc-sl-hint">التفعيل ← الحد</span>
+              </div>
+              <div class="tc-sl-pair">
+                <div class="tc-field" style="flex:1">
+                  <label for="tcTrigger">سعر التفعيل (Trigger)</label>
+                  <div class="tc-prefix-wrap">
+                    <span class="tc-prefix loss">$</span>
+                    <input id="tcTrigger" class="tc-input tc-has-prefix tc-input-sl" type="text" inputmode="decimal" placeholder="اختياري">
+                  </div>
+                </div>
+                <div class="tc-sl-arrow">←</div>
+                <div class="tc-field" style="flex:1">
+                  <label for="tcStop">سعر الحد (SL Limit)</label>
+                  <div class="tc-prefix-wrap">
+                    <span class="tc-prefix loss">$</span>
+                    <input id="tcStop" class="tc-input tc-has-prefix tc-input-sl" type="text" inputmode="decimal" placeholder="0.00">
+                  </div>
+                </div>
+              </div>
+              <div class="tc-qbtns" id="tcSlBtns">
+                <button class="tc-qbtn sl" data-sl="2">−2%</button>
+                <button class="tc-qbtn sl" data-sl="3">−3%</button>
+                <button class="tc-qbtn sl" data-sl="5">−5%</button>
+                <button class="tc-qbtn flat" id="tcBreakevenBtn">BEP</button>
+              </div>
+              <div id="tcTriggerWarn" class="tc-trigger-warn" style="display:none"></div>
+            </div>
+            <div class="tc-field">
+              <label for="tcBuyFee">رسوم شراء %</label>
+              <input id="tcBuyFee" class="tc-input" type="text" inputmode="decimal" value="0.1">
+            </div>
+            <div class="tc-field">
+              <label for="tcSellFee">رسوم بيع %</label>
+              <input id="tcSellFee" class="tc-input" type="text" inputmode="decimal" value="0.1">
+            </div>
+            <div></div><!-- grid spacer -->
+          </div>
+
+          <!-- Result rows -->
+          <div class="tc-results">
+            <div class="tc-res-row">
+              <span>الكمية المشتراة</span><span id="tcQty" class="tc-val">—</span>
+            </div>
+            <div class="tc-res-row">
+              <span>رسوم الشراء</span><span id="tcBuyFeeAmt" class="tc-val">—</span>
+            </div>
+            <div class="tc-res-row">
+              <span>الكمية الفعلية</span><span id="tcQtyNet" class="tc-val">—</span>
+            </div>
+            <div class="tc-res-row">
+              <span>نقطة التعادل</span>
+              <span id="tcBreakeven" class="tc-val" data-value=""><span id="tcBEPPrice">—</span><button class="tc-bep-apply" id="tcBepApply" style="display:none">← SL</button></span>
+            </div>
+          </div>
+
+          <!-- TP scenario -->
+          <div class="tc-scenario profit" id="tcTpCard">
+            <div class="tc-sc-label">🎯 سيناريو الهدف (TP)</div>
+            <div class="tc-sc-row"><span>إيرادات صافية</span><span id="tcTpNet" class="tc-val">—</span></div>
+            <div class="tc-sc-row"><span>رسوم البيع</span><span id="tcTpFee" class="tc-val">—</span></div>
+            <div class="tc-profit-bar positive" id="tcProfitBar">
+              <div>
+                <div class="tc-pb-label" id="tcProfitLabel">الربح الصافي</div>
+                <div class="tc-pb-pct" id="tcProfitPct">—</div>
+              </div>
+              <div class="tc-pb-amount" id="tcProfitAmt">—</div>
+            </div>
+          </div>
+
+          <!-- SL scenario -->
+          <div class="tc-scenario loss" id="tcSlCard">
+            <div class="tc-sc-label" id="tcSlLabel">🛑 سيناريو الإيقاف (SL)</div>
+            <div class="tc-sc-row"><span>إيرادات صافية</span><span id="tcSlNet" class="tc-val">—</span></div>
+            <div class="tc-sc-row"><span>الخسارة</span><span id="tcSlLoss" class="tc-val">—</span></div>
+          </div>
+
+          <!-- R/R -->
+          <div class="tc-rr-box">
+            <span>نسبة المخاطرة / العائد</span>
+            <span id="tcRR">—</span>
+          </div>
+
+          <div id="tcNote" class="tc-note">أدخل بيانات الصفقة للحساب.</div>
+        </div>
+
+        <!-- Conditions -->
+        <div class="card" style="animation-delay: 0.12s">
+          <div class="ct">الشروط الفنية<span id="condScore" class="cond-score">—/8</span></div>
+          <div class="entry-filters" aria-label="فلاتر الدخول">
+            <div class="entry-filter">
+              <span>D1</span><span id="entryFilterD1" class="entry-filter-badge">—</span>
+            </div>
+            <div class="entry-filter">
+              <span>النطاق</span><span id="entryFilterRange" class="entry-filter-badge">—</span>
+            </div>
+            <div class="entry-filter">
+              <span>R:R</span><span id="entryFilterRR" class="entry-filter-badge">—</span>
+            </div>
+          </div>
+          <div class="clist">
+            <div class="crow">
+              <span>EMA 7 &gt; 21 &gt; 50 (4h)</span><span class="cbadge" id="cc0">—</span>
+            </div>
+            <div class="crow">
+              <span>EMA 7 &gt; 21 &gt; 50 (1h)</span><span class="cbadge" id="cc1">—</span>
+            </div>
+            <div class="crow">
+              <span>Pullback نحو EMA 7 (آخر 5 شموع)</span><span class="cbadge" id="cc2">—</span>
+            </div>
+            <div class="crow">
+              <span>اختراق بشمعة صاعدة</span
+              ><span class="cbadge" id="cc3">—</span>
+            </div>
+            <div class="crow">
+              <span>انعكاس StochRSI صاعد (ليس متشبّعاً)</span><span class="cbadge" id="cc4">—</span>
+            </div>
+            <div class="crow">
+              <span>زخم MACD متصاعد (Histogram)</span><span class="cbadge" id="cc5">—</span>
+            </div>
+            <div class="crow">
+              <span>RVOL &gt; 1.8× (15m)</span><span class="cbadge" id="cc6">—</span>
+            </div>
+            <div class="crow">
+              <span>RSI اليومي ≤ 70 (غير متشبّع)</span><span class="cbadge" id="cc7">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MTF -->
+        <div class="card" style="animation-delay: 0.16s">
+          <div class="ct">تحليل متعدد الأطر</div>
+          <div id="mtfSummary" class="mtf-summary">جارٍ تقييم التوافق بين الأطر...</div>
+          <table class="scr-table mtf-table">
+            <thead>
+              <tr><th>إطار</th><th>EMA</th><th>Stoch K</th><th>MACD</th></tr>
+            </thead>
+            <tbody id="mtfBody">
+              <tr><td colspan="4" style="text-align:center;color:var(--muted)">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Book -->
+        <div class="card" style="animation-delay: 0.2s">
+          <div class="ct">لقطة السوق</div>
+          <div class="brows">
+            <div class="brow">
+              <span class="blbl">أفضل بيع (Ask)</span>
+              <span class="bval" id="bkA" style="color: var(--red)">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">أفضل شراء (Bid)</span>
+              <span class="bval" id="bkB" style="color: var(--green)">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">فرق السعر</span>
+              <span class="bval" id="bkSp">—</span>
+            </div>
+            <div class="brow brow-sep">
+              <span class="blbl">EMA 7 (4h)</span>
+              <span class="bval" id="bkE7" style="color: var(--accent)">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">EMA 21 (4h)</span>
+              <span class="bval" id="bkE21" style="color: #bc8aff">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">EMA 50 (4h)</span>
+              <span class="bval" id="bkE50" style="color: var(--yellow)">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl" id="atrLbl">ATR (14)</span>
+              <span class="bval" id="atrVal" style="color: var(--muted)">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl" id="rvolLbl">RVOL (20)</span>
+              <span class="bval" id="rvolVal" style="color: var(--accent)">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="animation-delay: 0.24s">
+          <div class="ct" id="srTitle">الدعوم والمقاومات</div>
+          <div class="brows">
+            <div class="brow">
+              <span class="blbl">R1</span><span class="bval bval-r1" id="srR1">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">R2</span><span class="bval bval-r2" id="srR2">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">R3</span><span class="bval bval-r3" id="srR3">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">R4</span><span class="bval bval-r4" id="srR4">—</span>
+            </div>
+            <div class="brow brow-sep">
+              <span class="blbl">S1</span><span class="bval bval-s1" id="srS1">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">S2</span><span class="bval bval-s2" id="srS2">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">S3</span><span class="bval bval-s3" id="srS3">—</span>
+            </div>
+            <div class="brow">
+              <span class="blbl">S4</span><span class="bval bval-s4" id="srS4">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RSI -->
+        <div class="card" style="animation-delay: 0.28s">
+          <div class="ct">RSI (14)</div>
+          <div class="gauge-wrap">
+            <svg class="gauge-svg" viewBox="0 0 200 108">
+              <defs>
+                <linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#ff3a5c" />
+                  <stop offset="30%" stop-color="#ffb830" />
+                  <stop offset="55%" stop-color="#00e896" />
+                  <stop offset="70%" stop-color="#ffb830" />
+                  <stop offset="100%" stop-color="#ff3a5c" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M18 98 A82 82 0 0 1 182 98"
+                fill="none"
+                stroke="#14202f"
+                stroke-width="12"
+                stroke-linecap="round"
+              />
+              <path
+                id="gF"
+                d="M18 98 A82 82 0 0 1 182 98"
+                fill="none"
+                stroke="url(#gg)"
+                stroke-width="12"
+                stroke-linecap="round"
+                stroke-dasharray="0 257.61"
+              />
+              <line
+                id="gN"
+                x1="100"
+                y1="98"
+                x2="100"
+                y2="28"
+                stroke="rgba(255,255,255,.85)"
+                stroke-width="2"
+                stroke-linecap="round"
+                style="transform-origin: 100px 98px; transform: rotate(-90deg);"
+              />
+              <circle
+                cx="100"
+                cy="98"
+                r="4.5"
+                fill="var(--surf)"
+                stroke="rgba(255,255,255,.6)"
+                stroke-width="1.5"
+              />
+              <text
+                x="10"
+                y="112"
+                fill="#ff3a5c"
+                font-size="9"
+                font-family="monospace"
+              >
+                0
+              </text>
+              <text
+                x="90"
+                y="14"
+                fill="#ffb830"
+                font-size="9"
+                font-family="monospace"
+              >
+                50
+              </text>
+              <text
+                x="179"
+                y="112"
+                fill="#00e896"
+                font-size="9"
+                font-family="monospace"
+              >
+                100
+              </text>
+            </svg>
+            <div class="gnum" id="rsiN">—</div>
+            <div class="glbl" id="rsiL">—</div>
+          </div>
+          <div class="stoch-row">
+            <span>StochRSI %K <span id="stochK" class="stoch-val">—</span></span>
+            <span>%D <span id="stochD" class="stoch-val">—</span></span>
+          </div>
+          <div id="stochState" class="stoch-state">—</div>
+        </div>
+
+        <!-- MACD -->
+        <div class="card" style="animation-delay: 0.32s">
+          <div class="ct">MACD (12/26/9) <span id="mDir" class="mdir-badge">—</span></div>
+          <div class="mhist" id="mHist"></div>
+          <div class="mnums">
+            <div>
+              <div class="mnum-lbl">MACD</div>
+              <div id="mM">—</div>
+            </div>
+            <div class="mnum-col--center">
+              <div class="mnum-lbl">Signal</div>
+              <div id="mS">—</div>
+            </div>
+            <div class="mnum-col--end">
+              <div class="mnum-lbl">Hist</div>
+              <div id="mH">—</div>
+            </div>
+          </div>
+          <div id="macdState" class="macd-state">—</div>
+        </div>
+
+        <!-- SL / TP -->
+        <div class="card" style="animation-delay: 0.36s">
+          <div class="ct">وقف الخسارة / جني الربح</div>
+          <div class="sltp">
+            <div class="sbox tp">
+              <div class="slbl">جني الربح</div>
+              <div class="sval" id="tpV">—</div>
+              <div class="spct" id="tpPct">—</div>
+            </div>
+            <div class="sbox sl">
+              <div class="slbl">وقف الخسارة</div>
+              <div class="sval" id="slV">—</div>
+              <div class="spct" id="slPct">—</div>
+            </div>
+          </div>
+          <div class="rr-row">
+            R:R =
+            <b class="rr-value" id="rrV">—</b>
+          </div>
+          <div class="risk-meta" id="riskMeta">—</div>
+          <div class="risk-state" id="riskState">—</div>
+        </div>
+
+
+        <!-- Fear & Greed Index -->
+        <div class="card" id="fngCard" style="animation-delay: 0.56s">
+          <div class="ct">مؤشر الخوف والطمع</div>
+          <div class="fng-layout">
+            <svg class="fng-gauge" viewBox="0 0 140 76">
+              <path d="M12 68 A58 58 0 0 1 128 68" fill="none" stroke="var(--bg3)" stroke-width="10" stroke-linecap="round"/>
+              <path id="fngArc" d="M12 68 A58 58 0 0 1 128 68" fill="none" stroke="#ff3a5c"
+                    stroke-width="10" stroke-linecap="round" stroke-dasharray="0 182.2"/>
+              <line id="fngNeedle" x1="70" y1="68" x2="70" y2="18"
+                    stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="70" cy="68" r="3.5" fill="var(--surf)" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/>
+              <text x="5"   y="78" class="fng-axis fng-axis-low">0</text>
+              <text x="62"  y="9"  class="fng-axis fng-axis-mid">50</text>
+              <text x="121" y="78" class="fng-axis fng-axis-high">100</text>
+            </svg>
+            <div class="fng-readout">
+              <div id="fngValue" class="fng-value">—</div>
+              <div id="fngLabel" class="fng-label">—</div>
+              <div id="fngDelta" class="fng-delta">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BTC Dominance -->
+        <div class="card" id="domCard" style="animation-delay: 0.6s">
+          <div class="ct">BTC Dominance</div>
+          <div style="margin-bottom:6px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:10px;margin-bottom:5px">
+              <span style="color:var(--muted)">Bitcoin</span>
+              <span id="domPct" style="font-family:var(--mono);font-size:18px;font-weight:700;color:#f7931a">—</span>
+            </div>
+            <div style="background:var(--bg3);border-radius:4px;height:8px;overflow:hidden">
+              <div id="domBar" style="height:100%;background:linear-gradient(90deg,#f7931a,#ffb830);border-radius:4px;width:0%;transition:width 0.8s ease"></div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:4px">
+            <span>Total Market Cap</span>
+            <span id="domMcap" style="font-family:var(--mono)">—</span>
+          </div>
+        </div>
+
+        <!-- AI Analysis Card -->
+        <div class="card is-collapsible" id="radarCard" style="animation-delay: 0.7s;" data-card-key="radarCard">
+          <div class="ct" title="انقر على السهم لطي/فتح البطاقة">
+            <span>نظام تحليل البيانات (AI Analysis)</span>
+          </div>
+
+          <div class="radar-native-wrap">
+            <input type="hidden" id="symbolsInput" value="BTCUSDT">
+            <div class="radar-symbol-line">
+              <span>العملة الحالية</span>
+              <b id="radarSymbol">BTCUSDT</b>
+            </div>
+
+            <!-- Section: Prompts -->
+            <div class="radar-section">
+              <div class="radar-section-title">نماذج الأوامر (Prompts)</div>
+              <div class="ai-radar-grid">
+                <button id="copyPromptBtn" class="tbtn" type="button" title="Master Spot">الرئيسي</button>
+                <button id="copyPrompt2Btn" class="tbtn" type="button" title="Strict Backup">الاحتياطي</button>
+                <button id="copyFastPromptBtn" class="tbtn" type="button" title="Fast Scan">السريع</button>
+                <button id="copyOtocoBtn" class="tbtn" type="button" title="OTOCO">OTOCO</button>
+              </div>
+            </div>
+
+            <!-- Section: Execution -->
+            <div class="radar-section">
+              <div class="ai-radar-actions">
+                <button id="buildBtn" class="tbtn pro-btn" type="button">إنشاء الحزمة</button>
+                <button id="clearBtn" class="tbtn" type="button" title="مسح السجل">مسح</button>
+                <button type="button" class="tbtn binance-btn" onclick="openBinance()">فتح Binance</button>
+              </div>
+            </div>
+
+            <!-- Progress & Status -->
+            <div id="progressWrap" class="progress-wrap" style="display: none;">
+              <div class="progress-text">
+                <span>جاري المعالجة...</span>
+                <span id="progressCount">0/0</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div id="progressBarFill" class="progress-bar-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="status-box">
+              <div id="statusLog">جاهز.</div>
+            </div>
+
+            <div id="summary" class="summary" style="display: none;"></div>
+
+            <div class="radar-footer">
+              <div class="note-text">الخيار الافتراضي: <strong>الرئيسي (Master Spot)</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Radar Card -->
+        <div class="card" id="radarCard" style="animation-delay: 0.7s; padding: 0; overflow: hidden; height: 460px; border: 1px solid var(--border);">
+          <iframe src="./radar/index.html" style="width: 100%; height: 100%; border: none; background: transparent; display: block;"></iframe>
+        </div>
+      </div>
+      <!-- /sidebar -->
+    </div>
+    <!-- /layout -->
+
+    <!-- Radar Scripts -->
+    <script src="./radar/assets/js/vendor/jszip.min.js"></script>
+    <script src="./radar/assets/js/api.js"></script>
+    <script src="./radar/assets/js/ui.js"></script>
+    <script src="./radar/assets/js/transforms.js"></script>
+    <script src="./radar/assets/js/collectors.js"></script>
+    <script src="./radar/assets/js/main.js"></script>
+    <script>
+      function openBinance() {
+        const symInput = document.getElementById("symbolsInput");
+        const rawSym = (symInput && symInput.value) ? symInput.value : "BTCUSDT";
+        const firstSym = rawSym.split(",")[0].trim().toUpperCase() || "BTCUSDT";
+        const formattedSym = firstSym.includes("_") ? firstSym : firstSym.replace("USDT", "_USDT");
+        const url = `https://www.binance.com/ar/trade/${formattedSym}`;
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+          window.location.href = "binance://";
+          setTimeout(() => { window.location.href = url; }, 500);
+        } else {
+          window.open(url, "_blank");
+        }
+      }
+    </script>
+
+    <div class="status-bar">
+      <div class="sdot"></div>
+      <span id="stTxt">في انتظار البيانات...</span>
+      <span id="stTime" class="st-time"></span>
+      <span id="stCountdown" class="st-countdown"></span>
+    </div>
+
+    <button class="btn-ref" id="refBtn">
+      <span id="refIco">⟳</span> تحديث
+    </button>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>

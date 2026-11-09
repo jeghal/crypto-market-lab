@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 7: الدعم والمقاومة</title>
+  <meta
+    name="description"
+    content="الدرس السابع في برنامج تعلم تداول العملات الرقمية: التعرف على مناطق الدعم والمقاومة وفهم دورها في حركة السعر."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 28px;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      margin-bottom: 16px;
+      max-width: 12ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .section-card h4,
+    .wide-card h4,
+    .question-card h4 {
+      margin: 18px 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    main section { padding: 18px 0; }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.3rem, 2.7vw, 2rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: 0.25s ease;
+    }
+
+    .lesson-chip:hover {
+      transform: translateY(-2px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .study-note {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(43, 208, 181, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .key-card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .key-card h3 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .next-step {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ── scroll progress ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform: scaleX(0);
+      transform-origin: right;
+      z-index: 100;
+    }
+
+    /* ── chip active ── */
+    .lesson-chip.is-active {
+      color: var(--gold);
+      border-color: rgba(248, 184, 78, 0.4);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    /* ── reveal block ── */
+    .reveal-block {
+      margin-top: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(43, 208, 181, 0.22);
+      overflow: hidden;
+    }
+
+    .reveal-block > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 16px;
+      background: rgba(43, 208, 181, 0.08);
+      color: var(--teal);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .reveal-block > summary::-webkit-details-marker { display: none; }
+
+    .reveal-block > summary::before {
+      content: "▶";
+      font-size: 0.68rem;
+      transition: transform 0.25s;
+    }
+
+    .reveal-block[open] > summary::before { transform: rotate(90deg); }
+    .reveal-block > summary:hover { background: rgba(43, 208, 181, 0.14); }
+
+    .reveal-content {
+      padding: 16px 18px;
+      animation: revealDown 0.28s ease;
+    }
+
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── support & resistance visual ── */
+    .sr-zone-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .sr-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sr-support-card { border-color: rgba(43, 208, 181, 0.35); }
+    .sr-resistance-card { border-color: rgba(248, 184, 78, 0.4); }
+
+    .sr-card h4 {
+      font-family: "Changa", sans-serif;
+      font-size: 1.05rem;
+      margin: 0;
+    }
+
+    .sr-support-card h4 { color: var(--teal); }
+    .sr-resistance-card h4 { color: var(--gold); }
+
+    .sr-mini {
+      position: relative;
+      height: 84px;
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sr-zone-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 3px;
+      border-radius: 2px;
+      z-index: 2;
+    }
+
+    .sr-support-card .sr-zone-line { bottom: 22px; background: rgba(43, 208, 181, 0.55); box-shadow: 0 0 8px rgba(43, 208, 181, 0.3); }
+    .sr-resistance-card .sr-zone-line { bottom: 60px; background: rgba(248, 184, 78, 0.55); box-shadow: 0 0 8px rgba(248, 184, 78, 0.3); }
+
+    .sr-b {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sr-support-card .sr-b { background: rgba(43, 208, 181, 0.45); }
+    .sr-resistance-card .sr-b { background: rgba(248, 184, 78, 0.45); }
+
+    .sr-zone-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .sr-support-card .sr-zone-tag { color: var(--teal); }
+    .sr-resistance-card .sr-zone-tag { color: var(--gold); }
+
+    /* Scenarios */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .scenario-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .scenario-card h4 {
+      font-family: "Changa", sans-serif;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .sc-bounce { border-color: rgba(43, 208, 181, 0.25); }
+    .sc-bounce h4 { color: var(--teal); }
+    .sc-break { border-color: rgba(248, 184, 78, 0.25); }
+    .sc-break h4 { color: var(--gold); }
+    .sc-fake { border-color: rgba(224, 82, 82, 0.25); }
+    .sc-fake h4 { color: #e05252; }
+
+    .sc-mini {
+      position: relative;
+      height: 70px;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      justify-content: center;
+    }
+
+    .sc-zone-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .sc-bounce .sc-zone-line { bottom: 22px; background: rgba(43, 208, 181, 0.5); }
+    .sc-break .sc-zone-line  { bottom: 40px; background: rgba(248, 184, 78, 0.5); }
+    .sc-fake .sc-zone-line   { bottom: 48px; background: rgba(224, 82, 82, 0.5); }
+
+    .sc-b { width: 8px; border-radius: 2px 2px 0 0; flex-shrink: 0; }
+    .sc-bounce .sc-b { background: rgba(43, 208, 181, 0.5); }
+    .sc-break .sc-b  { background: rgba(248, 184, 78, 0.5); }
+    .sc-fake .sc-b   { background: rgba(224, 82, 82, 0.5); }
+
+    .scenario-card p { font-size: 0.78rem; color: var(--muted); }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .key-grid,
+      .question-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sr-zone-grid { grid-template-columns: 1fr; }
+      .scenario-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+
+    /* ── Support & Resistance Visual ── */
+    .sr-section {
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      margin-bottom: 24px;
+    }
+    .sr-title {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+    .sr-chart {
+      position: relative;
+      height: 180px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .sr-level {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+    }
+    .sr-resistance {
+      background: rgba(255,100,100,0.7);
+      top: 30px;
+    }
+    .sr-price {
+      background: rgba(43,208,181,0.7);
+      top: 95px;
+    }
+    .sr-support {
+      background: rgba(80,200,100,0.7);
+      bottom: 30px;
+    }
+    .sr-label-wrap {
+      position: absolute;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-family: "Changa", sans-serif;
+    }
+    .sr-res-label { top: 22px; color: #ff9090; }
+    .sr-price-label { top: 87px; color: var(--teal); }
+    .sr-sup-label  { bottom: 22px; color: #b8f8c8; }
+    .sr-zone {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-radius: 0;
+    }
+    .sr-res-zone {
+      background: rgba(255,100,100,0.06);
+      top: 0;
+      height: 55px;
+    }
+    .sr-sup-zone {
+      background: rgba(80,200,100,0.06);
+      bottom: 0;
+      height: 55px;
+    }
+    .sr-candles {
+      position: absolute;
+      left: 20px;
+      bottom: 55px;
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+    }
+    .src {
+      width: 8px;
+      border-radius: 2px;
+    }
+    .src-up { background: var(--teal); }
+    .src-dn { background: #ff7575; }
+    .sr-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .sr-leg-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .sr-leg-dot {
+      width: 14px;
+      height: 3px;
+      border-radius: 1px;
+    }
+    .sr-leg-red   { background: rgba(255,100,100,0.8); }
+    .sr-leg-teal  { background: rgba(43,208,181,0.8); }
+    .sr-leg-green { background: rgba(80,200,100,0.8); }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+          <div class="lesson-rail-pager">
+            <a class="lesson-rail-action pager-prev" href="lesson-06.html">الحصة السابقة</a>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill current" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill" href="lesson-15.html">15</a>
+            </div>
+            <a class="lesson-rail-action pager-next" href="lesson-08.html">الحصة التالية</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 7 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>الدعم والمقاومة</h1>
+          <p>
+            هذه الحصة تشرح معنى مناطق الدعم والمقاومة، وكيف يتفاعل السعر معها،
+            ومتى يكون الكسر حقيقيًا أو كاذبًا، مع تقديم مفهوم إعادة الاختبار بشكل مبسط.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+          <div class="lesson-nav">
+            <a class="lesson-chip" href="#lesson-content">المحتوى</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">التطبيق</a>
+            <a class="lesson-chip" href="#review">المراجعة</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>التعرف على مناطق الدعم والمقاومة وفهم دورها في حركة السعر.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يفهم المتعلم معنى <strong>الدعم</strong> و<strong>المقاومة</strong>،
+              ويستطيع تحديد المناطق السعرية المهمة على الشارت، مع التمييز الأولي بين
+              <strong>الكسر الحقيقي</strong> و<strong>الكسر الكاذب</strong>.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <article class="section-card">
+            <h3>لماذا هذه الحصة مهمة؟</h3>
+            <p>
+              بعد تحديد الاتجاه العام، يحتاج المتعلم إلى معرفة الأماكن التي يتفاعل معها السعر
+              غالبًا. هنا تأتي أهمية الدعم والمقاومة، لأنهما يساعدان على فهم أين يمكن أن يتوقف
+              السعر أو يرتد أو يكسر المستوى.
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>تجعلك ترى الشارت كمناطق مهمة لا كخطوط وحركات عشوائية.</li>
+              <li>تساعدك على توقع مواضع التفاعل المحتملة قبل الدخول.</li>
+              <li>تمهد لفهم الحجم والاختراقات في الحصص التالية.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>أخطاء شائعة عند رسم الدعم والمقاومة</h3>
+            <ul>
+              <li>رسم خطوط كثيرة على الشارت حتى يصبح غير مفهوم.</li>
+              <li>التعامل مع المستوى كرقم دقيق جدًا لا كمنطقة.</li>
+              <li>الخلط بين الكسر الحقيقي والكسر الكاذب.</li>
+              <li>الدخول فور لمس المنطقة دون النظر إلى الاتجاه أو الإشارة.</li>
+            </ul>
+            <div class="study-note">
+              <strong>التصحيح:</strong>
+              اختر فقط المناطق التي تكرر عندها التفاعل بوضوح، وتذكر دائمًا أن القراءة الأفضل تكون
+              بدمج المنطقة مع الاتجاه والشموع والحجم.
+            </div>
+          </article>
+        </div>
+        <div class="study-note">
+          <div class="section-heading">
+            <h2>كيف تدرس هذه الحصة ذاتيًا؟</h2>
+            <p>ابدأ بفهم معنى المنطقة السعرية، ثم ارجع إلى الشارت ولاحظ أين تكرر الارتداد وأين فشل السعر في الاستمرار.</p>
+          </div>
+          <ul>
+            <li>اقرأ المحاور بالتسلسل من الدعم إلى الكسر وإعادة الاختبار.</li>
+            <li>دوّن أمثلة من الشارت على دعم واضح ومقاومة واضحة.</li>
+            <li>لا تتعامل مع المستوى كخط دقيق، بل كمنطقة تقريبية.</li>
+            <li>أنهِ الحصة بتطبيق عملي على BTC أو ETH قبل الانتقال للحصة التالية.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="الدعم والمقاومة بصريًا">
+      <div class="container">
+        <div class="section-heading">
+          <h2>الدعم والمقاومة — بصريًا</h2>
+          <p>كيف يبدو كل مفهوم على الشارت والسيناريوهات المحتملة عند لمس المنطقة.</p>
+        </div>
+
+        <!-- Support vs Resistance mini charts -->
+        <div class="sr-zone-grid">
+          <div class="sr-card sr-support-card">
+            <h4>🛡️ منطقة الدعم</h4>
+            <div class="sr-mini">
+              <div class="sr-zone-line"></div>
+              <div class="sr-b" style="height:62px"></div>
+              <div class="sr-b" style="height:44px"></div>
+              <div class="sr-b" style="height:30px"></div>
+              <div class="sr-b" style="height:22px"></div>
+              <div class="sr-b" style="height:30px"></div>
+              <div class="sr-b" style="height:48px"></div>
+              <div class="sr-b" style="height:66px"></div>
+            </div>
+            <span class="sr-zone-tag">السعر يهبط → يلمس الدعم → يرتد للأعلى</span>
+            <p>منطقة قد يتوقف عندها الهبوط ويظهر منها ارتداد محتمل.</p>
+          </div>
+
+          <div class="sr-card sr-resistance-card">
+            <h4>🚧 منطقة المقاومة</h4>
+            <div class="sr-mini">
+              <div class="sr-zone-line"></div>
+              <div class="sr-b" style="height:30px"></div>
+              <div class="sr-b" style="height:46px"></div>
+              <div class="sr-b" style="height:56px"></div>
+              <div class="sr-b" style="height:62px"></div>
+              <div class="sr-b" style="height:54px"></div>
+              <div class="sr-b" style="height:40px"></div>
+              <div class="sr-b" style="height:28px"></div>
+            </div>
+            <span class="sr-zone-tag">السعر يصعد → يلمس المقاومة → يتراجع</span>
+            <p>منطقة قد يتوقف عندها الصعود ويبدأ منها التراجع.</p>
+          </div>
+        </div>
+
+        <!-- 3 Scenarios -->
+        <div class="scenario-grid">
+          <div class="scenario-card sc-bounce">
+            <h4>↩ ارتداد من المنطقة</h4>
+            <div class="sc-mini">
+              <div class="sc-zone-line"></div>
+              <div class="sc-b" style="height:52px"></div>
+              <div class="sc-b" style="height:38px"></div>
+              <div class="sc-b" style="height:26px"></div>
+              <div class="sc-b" style="height:22px"></div>
+              <div class="sc-b" style="height:32px"></div>
+              <div class="sc-b" style="height:48px"></div>
+              <div class="sc-b" style="height:60px"></div>
+            </div>
+            <p>السعر يلمس المنطقة ويرتد دون أن يكسرها</p>
+          </div>
+
+          <div class="scenario-card sc-break">
+            <h4>✅ كسر حقيقي</h4>
+            <div class="sc-mini">
+              <div class="sc-zone-line"></div>
+              <div class="sc-b" style="height:28px"></div>
+              <div class="sc-b" style="height:36px"></div>
+              <div class="sc-b" style="height:42px"></div>
+              <div class="sc-b" style="height:46px"></div>
+              <div class="sc-b" style="height:50px"></div>
+              <div class="sc-b" style="height:58px"></div>
+              <div class="sc-b" style="height:66px"></div>
+            </div>
+            <p>يتجاوز المنطقة ويواصل الاتجاه الجديد بوضوح</p>
+          </div>
+
+          <div class="scenario-card sc-fake">
+            <h4>⚠️ كسر كاذب</h4>
+            <div class="sc-mini">
+              <div class="sc-zone-line"></div>
+              <div class="sc-b" style="height:30px"></div>
+              <div class="sc-b" style="height:42px"></div>
+              <div class="sc-b" style="height:52px"></div>
+              <div class="sc-b" style="height:58px"></div>
+              <div class="sc-b" style="height:46px"></div>
+              <div class="sc-b" style="height:34px"></div>
+              <div class="sc-b" style="height:24px"></div>
+            </div>
+            <p>يتجاوز المنطقة لفترة قصيرة ثم يعود سريعًا داخل النطاق</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="sr-section">
+          <div class="sr-title">الدعم والمقاومة — كيف يتفاعل السعر مع المناطق</div>
+          <div class="sr-chart">
+            <div class="sr-zone sr-res-zone"></div>
+            <div class="sr-zone sr-sup-zone"></div>
+            <div class="sr-level sr-resistance"></div>
+            <div class="sr-level sr-price"></div>
+            <div class="sr-level sr-support"></div>
+            <div class="sr-label-wrap sr-res-label">🔴 مقاومة — البائعون يتدخلون هنا</div>
+            <div class="sr-label-wrap sr-price-label">↕ السعر الحالي</div>
+            <div class="sr-label-wrap sr-sup-label">🟢 دعم — المشترون يتدخلون هنا</div>
+            <div class="sr-candles">
+              <div class="src src-up" style="height:20px;"></div>
+              <div class="src src-up" style="height:32px;"></div>
+              <div class="src src-dn" style="height:22px;"></div>
+              <div class="src src-up" style="height:18px;"></div>
+              <div class="src src-up" style="height:28px;"></div>
+            </div>
+          </div>
+          <div class="sr-legend">
+            <div class="sr-leg-item"><span class="sr-leg-dot sr-leg-red"></span>منطقة المقاومة</div>
+            <div class="sr-leg-item"><span class="sr-leg-dot sr-leg-teal"></span>السعر الحالي</div>
+            <div class="sr-leg-item"><span class="sr-leg-dot sr-leg-green"></span>منطقة الدعم</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>الدعم والمقاومة مناطق لا خطوط دقيقة تمامًا.</li>
+            <li>الكسر الحقيقي يختلف عن الكسر الكاذب في الاستمرار والثبات.</li>
+            <li>إعادة الاختبار قد تعطي قراءة أوضح من الاختراق الأول.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس يثبت المصطلحات التي تساعدك على قراءة المناطق السعرية المهمة قبل الانتقال إلى الحجم والسيولة.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <h3>الدعم</h3>
+            <p>منطقة قد يتوقف عندها الهبوط أو يظهر منها ارتداد محتمل.</p>
+          </article>
+          <article class="key-card">
+            <h3>المقاومة</h3>
+            <p>منطقة قد يتوقف عندها الصعود أو يبدأ منها التراجع.</p>
+          </article>
+          <article class="key-card">
+            <h3>الكسر الحقيقي</h3>
+            <p>اختراق واضح يتبعه استمرار نسبي في الاتجاه الجديد.</p>
+          </article>
+          <article class="key-card">
+            <h3>الكسر الكاذب</h3>
+            <p>اختراق مؤقت يعود بعده السعر بسرعة داخل النطاق السابق.</p>
+          </article>
+          <article class="key-card">
+            <h3>إعادة الاختبار</h3>
+            <p>رجوع السعر إلى المنطقة بعد كسرها ليتفاعل معها قبل متابعة الحركة.</p>
+          </article>
+          <article class="key-card">
+            <h3>منطقة سعرية</h3>
+            <p>نطاق تقريبي يتفاعل عنده السعر، وليس خطًا حرفيًا واحدًا فقط.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة، يصبح المتعلم قادرًا على قراءة المناطق السعرية المهمة بصورة أولية وواضحة.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يعرف معنى الدعم والمقاومة.</li>
+              <li>يحدد مناطق سعرية مهمة على الشارت.</li>
+              <li>يفرق بين الدعم والمقاومة.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يفهم معنى إعادة الاختبار.</li>
+              <li>يميز بشكل أولي بين الكسر الحقيقي والكسر الكاذب.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>لماذا يتوقف السعر أحيانًا عند مستوى معين ثم يرتد، بينما يخترقه أحيانًا أخرى ويواصل الصعود أو الهبوط؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم تُجمع الأجوبة لإبراز فكرة أن السوق يتفاعل غالبًا مع مناطق سعرية مهمة.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            لاحظ متعلم أن سعر عملة رقمية وصل إلى مستوى معين عدة مرات، وكان كلما اقترب منه
+            يرتد صعودًا أو هبوطًا. ثم في مرة أخرى اخترق السعر هذا المستوى وتحرك بقوة.
+          </p>
+          <p style="margin-top: 14px;">
+            <strong>ما هذه المستويات؟ ولماذا يرتد السعر منها أحيانًا ويكسرها أحيانًا أخرى؟</strong>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>المحتوى التالي يشرح كيف نقرأ المناطق التي يتفاعل معها السعر بدل التعامل مع الشارت بشكل عشوائي.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>1) ما هو الدعم؟</h3>
+            <p>
+              الدعم هو <strong>منطقة سعرية</strong> يميل فيها السعر إلى التوقف عن الهبوط
+              أو الارتداد إلى الأعلى.
+            </p>
+            <p style="margin-top: 14px;">
+              ويحدث ذلك لأن هذه المنطقة قد تشهد اهتمامًا أكبر بالشراء، فيقل ضغط الهبوط أو يتوقف مؤقتًا.
+            </p>
+            <h4>الفكرة المبسطة</h4>
+            <p>الدعم هو منطقة يرى عندها السوق أن السعر أصبح منخفضًا نسبيًا، فيظهر احتمال الارتداد.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>2) ما هي المقاومة؟</h3>
+            <p>
+              المقاومة هي <strong>منطقة سعرية</strong> يميل فيها السعر إلى التوقف عن الصعود
+              أو التراجع إلى الأسفل.
+            </p>
+            <p style="margin-top: 14px;">
+              ويحدث ذلك لأن هذه المنطقة قد تشهد زيادة في البيع أو ضعفًا في استمرار الصعود.
+            </p>
+            <h4>الفكرة المبسطة</h4>
+            <p>المقاومة هي منطقة يرى عندها السوق أن السعر أصبح مرتفعًا نسبيًا، فيظهر احتمال التراجع.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>3) لماذا نقول "منطقة" لا "خط"؟</h3>
+            <p>
+              في كثير من الأحيان لا يتوقف السعر عند رقم دقيق تمامًا، بل يتفاعل داخل <strong>نطاق صغير</strong>.
+            </p>
+            <p style="margin-top: 14px;">لذلك من الأفضل أن نتعامل مع الدعم والمقاومة على أنهما:</p>
+            <ul style="margin-top: 14px;">
+              <li><strong>مناطق</strong>.</li>
+              <li>لا خطوط دقيقة جدًا.</li>
+            </ul>
+            <h4>قاعدة مهمة</h4>
+            <p><strong>السوق لا يحترم الأرقام دائمًا بشكل حرفي، بل يتفاعل غالبًا مع مناطق تقريبية.</strong></p>
+          </article>
+
+          <article class="section-card">
+            <h3>4) كيف نحدد الدعم والمقاومة؟</h3>
+            <p>يمكن تحديدها من خلال ملاحظة:</p>
+            <ul style="margin-top: 14px;">
+              <li>الأماكن التي ارتد منها السعر سابقًا.</li>
+              <li>القمم السابقة.</li>
+              <li>القيعان السابقة.</li>
+              <li>المستويات التي تكرر عندها التفاعل أكثر من مرة.</li>
+            </ul>
+            <h4>مثال</h4>
+            <p>
+              إذا هبط السعر إلى مستوى قريب من سعر معين عدة مرات ثم ارتد، فهذه منطقة دعم محتملة.
+              وإذا صعد إلى مستوى معين عدة مرات ثم تراجع، فهذه منطقة مقاومة محتملة.
+            </p>
+          </article>
+
+          <article class="section-card">
+            <h3>5) ما الفرق بين الدعم والمقاومة؟</h3>
+            <ul>
+              <li><strong>الدعم:</strong> منطقة قد توقف الهبوط وتدفع السعر إلى الارتداد.</li>
+              <li><strong>المقاومة:</strong> منطقة قد توقف الصعود وتدفع السعر إلى التراجع.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>6) ما معنى الكسر؟</h3>
+            <p>الكسر يحدث عندما يتجاوز السعر منطقة دعم أو مقاومة بشكل واضح.</p>
+            <h4>كسر المقاومة</h4>
+            <p>عندما يخترق السعر منطقة مقاومة إلى الأعلى.</p>
+            <h4>كسر الدعم</h4>
+            <p>عندما يهبط السعر أسفل منطقة الدعم.</p>
+            <p style="margin-top: 14px;">والكسر قد يكون:</p>
+            <ul style="margin-top: 14px;">
+              <li>حقيقيًا.</li>
+              <li>أو كاذبًا.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>7) ما هو الكسر الحقيقي؟</h3>
+            <p>
+              الكسر الحقيقي هو تجاوز السعر لمنطقة مهمة ثم استمراره بعد ذلك في الاتجاه الجديد بشكل واضح نسبيًا.
+            </p>
+            <h4>مثال</h4>
+            <ul>
+              <li>يخترق مقاومة.</li>
+              <li>ثم يواصل الصعود.</li>
+              <li>أو يعيد اختبارها وينطلق من جديد.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>8) ما هو الكسر الكاذب؟</h3>
+            <p>الكسر الكاذب يحدث عندما:</p>
+            <ul style="margin-top: 14px;">
+              <li>يتجاوز السعر منطقة دعم أو مقاومة لفترة قصيرة.</li>
+              <li>ثم يعود بسرعة داخل النطاق السابق.</li>
+            </ul>
+            <p style="margin-top: 14px;">وهذا من أكثر الأمور التي تربك المبتدئين.</p>
+            <h4>مثال</h4>
+            <p>قد يخترق السعر مقاومة، فيظن المتداول أن الصعود بدأ، ثم يعود السعر أسفلها من جديد.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>9) ما معنى إعادة الاختبار؟</h3>
+            <p>
+              إعادة الاختبار تحدث عندما يكسر السعر منطقة مهمة، ثم يعود إليها مرة أخرى ليتفاعل معها،
+              قبل أن يواصل الحركة.
+            </p>
+            <h4>مثال</h4>
+            <ul>
+              <li>السعر يكسر مقاومة.</li>
+              <li>ثم يعود إلى نفس المنطقة.</li>
+              <li>ثم يرتد منها صعودًا.</li>
+            </ul>
+            <p style="margin-top: 14px;">عندها قد تتحول المقاومة القديمة إلى دعم جديد.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>10) كيف نستفيد من الدعم والمقاومة؟</h3>
+            <p>تساعدنا هذه المناطق على:</p>
+            <ul style="margin-top: 14px;">
+              <li>فهم أين يمكن أن يتفاعل السعر.</li>
+              <li>توقع أماكن الارتداد المحتملة.</li>
+              <li>تحسين قراءة السوق.</li>
+              <li>تجنب الدخول العشوائي.</li>
+            </ul>
+            <p style="margin-top: 14px;">لكن لا يجب الاعتماد عليها وحدها، بل مع:</p>
+            <ul style="margin-top: 14px;">
+              <li>الاتجاه العام.</li>
+              <li>الشموع.</li>
+              <li>حجم التداول.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>تبسيط المفاهيم</h3>
+          <ul>
+            <li><strong>الدعم:</strong> منطقة قد توقف الهبوط.</li>
+            <li><strong>المقاومة:</strong> منطقة قد توقف الصعود.</li>
+            <li><strong>الكسر الحقيقي:</strong> اختراق واضح يتبعه استمرار.</li>
+            <li><strong>الكسر الكاذب:</strong> اختراق مؤقت ثم عودة.</li>
+            <li><strong>إعادة الاختبار:</strong> رجوع السعر إلى المنطقة بعد كسرها.</li>
+          </ul>
+        </article>
+
+        <article class="wide-card">
+          <h3>النشاط التطبيقي 1</h3>
+          <p style="margin-bottom: 16px;">أكمل بما يناسب:</p>
+          <ul>
+            <li>المنطقة التي قد يتوقف عندها الهبوط تسمى ..........</li>
+            <li>المنطقة التي قد يتوقف عندها الصعود تسمى ..........</li>
+            <li>عندما يعود السعر بسرعة بعد الاختراق فهذا يسمى ..........</li>
+            <li>عندما يرجع السعر إلى المنطقة المكسورة ثم يتفاعل معها فهذا يسمى ..........</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>دعم.</li>
+                <li>مقاومة.</li>
+                <li>كسرًا كاذبًا.</li>
+                <li>إعادة اختبار.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            إذا صعد السعر إلى منطقة معينة ثلاث مرات ثم تراجع منها في كل مرة، فهذه ليست مصادفة
+            بسيطة غالبًا، بل مقاومة تستحق الانتباه. وإذا عاد لاحقًا وكسرها ثم رجع إليها وارتد،
+            فهنا تبدأ بفهم معنى الكسر وإعادة الاختبار عمليًا.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>التكرار يوحي بأهمية المنطقة.</li>
+            <li>الاختراق وحده لا يكفي؛ يجب مراقبة ما بعده.</li>
+            <li>العودة إلى المنطقة قد تؤكد أو تنفي قوة الكسر.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>كيف ترتبط هذه الحصة بما بعدها؟</h3>
+          <p>
+            بعد أن عرفت أين توجد المناطق المهمة، تأتي الحصة الثامنة لتشرح كيف يساعدك
+            <strong>حجم التداول والسيولة</strong> على معرفة ما إذا كان الارتداد أو الاختراق
+            قويًا فعلًا أم مجرد حركة ضعيفة.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            الحصة 7 تجيب عن "أين يتفاعل السعر؟"، والحصة 8 ستجيب عن "هل هذا التفاعل قوي فعلًا؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container question-grid">
+        <article class="question-card">
+          <h3>النشاط التطبيقي 2</h3>
+          <p style="margin-bottom: 14px;">صنف الحالات التالية:</p>
+          <ol class="numbered">
+            <li data-step="1">السعر وصل إلى مستوى معين ثم ارتد إلى الأعلى عدة مرات.</li>
+            <li data-step="2">السعر وصل إلى مستوى معين ثم تراجع إلى الأسفل عدة مرات.</li>
+            <li data-step="3">السعر اخترق المقاومة ثم عاد أسفلها مباشرة.</li>
+            <li data-step="4">السعر كسر المقاومة ثم عاد إليها ثم واصل الصعود.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>دعم.</li>
+                <li>مقاومة.</li>
+                <li>كسر كاذب.</li>
+                <li>كسر حقيقي مع إعادة اختبار.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="question-card">
+          <h3>النشاط التطبيقي 3: تطبيق على الشارت</h3>
+          <p>
+            يُطلب من المتعلم فتح شارت <strong>BTC/USDT</strong> أو <strong>ETH/USDT</strong> ثم:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>تحديد منطقتين للدعم.</li>
+            <li>تحديد منطقتين للمقاومة.</li>
+            <li>ملاحظة هل حدث كسر أو إعادة اختبار في أحد المواضع.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز للانتقال إلى الحصة الثامنة؟</h3>
+          <ul>
+            <li>أفهم الفرق بين الدعم والمقاومة بوضوح.</li>
+            <li>أستطيع التعامل مع المستوى كمنطقة لا كخط دقيق جدًا.</li>
+            <li>أعرف معنى الكسر الحقيقي والكسر الكاذب بشكل أولي.</li>
+            <li>أفهم معنى إعادة الاختبار ولماذا هي مهمة.</li>
+            <li>أدرك أن المنطقة وحدها لا تكفي دون سياق الاتجاه وبقية الأدوات.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الانتقال:</strong>
+            إذا كنت ما زلت ترسم مستويات كثيرة بلا سبب واضح، فأعد هذه الحصة قبل الانتقال إلى
+            الحجم والسيولة.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">ما الفرق المختصر بين الدعم والمقاومة؟</li>
+            <li data-step="2">لماذا نتعامل مع المستوى كمنطقة لا كخط؟</li>
+            <li data-step="3">متى يكون الكسر كاذبًا؟</li>
+            <li data-step="4">ما معنى إعادة الاختبار؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات المختصرة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>الدعم قد يوقف الهبوط، والمقاومة قد توقف الصعود.</li>
+                <li>لأن السعر يتفاعل غالبًا داخل نطاق صغير لا عند رقم حرفي واحد.</li>
+                <li>عندما يخترق السعر المستوى لفترة قصيرة ثم يعود سريعًا داخله.</li>
+                <li>رجوع السعر إلى المنطقة المكسورة قبل متابعة الحركة.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-3">
+        <article class="section-card">
+          <h3>أسئلة الفهم</h3>
+          <ul>
+            <li>ما المقصود بالدعم؟</li>
+            <li>ما المقصود بالمقاومة؟</li>
+            <li>لماذا نتعامل معهما كمناطق لا كخطوط دقيقة؟</li>
+            <li>ما الفرق بين الكسر الحقيقي والكسر الكاذب؟</li>
+            <li>ما معنى إعادة الاختبار؟</li>
+          </ul>
+        </article>
+
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>
+            الدعم والمقاومة من أهم المفاهيم الأساسية في قراءة الشارت، لأنهما يساعدان على تحديد
+            <strong>المناطق التي قد يتفاعل معها السعر</strong>.
+          </p>
+          <p style="margin-top: 14px;">ومن خلالهما يمكن فهم:</p>
+          <ul style="margin-top: 14px;">
+            <li>أين قد يرتد السعر.</li>
+            <li>وأين قد يواجه صعوبة في الاستمرار.</li>
+            <li>ومتى يكون الاختراق حقيقيًا أو كاذبًا.</li>
+          </ul>
+          <p style="margin-top: 14px;">لكن القراءة الأفضل تكون دائمًا بدمجهما مع الاتجاه العام وبقية أدوات التحليل.</p>
+        </article>
+
+        <article class="section-card">
+          <h3>التقويم</h3>
+          <p style="margin-bottom: 14px;"><strong>صحح أو أكمل:</strong></p>
+          <ol class="numbered">
+            <li data-step="1">الدعم منطقة قد يتوقف عندها الصعود.</li>
+            <li data-step="2">المقاومة منطقة قد يتوقف عندها الصعود.</li>
+            <li data-step="3">الكسر الكاذب يعني أن السعر اخترق المستوى ثم عاد سريعًا.</li>
+            <li data-step="4">إعادة الاختبار قد تحدث بعد كسر مستوى مهم.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>خطأ.</li>
+                <li>صحيح.</li>
+                <li>صحيح.</li>
+                <li>صحيح.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>
+            افتح شارت <strong>BTC/USDT</strong> أو <strong>ETH/USDT</strong>، ثم:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>ارسم 3 مناطق دعم أو مقاومة.</li>
+            <li>اكتب لماذا اعتبرت كل منطقة مهمة.</li>
+            <li>حاول ملاحظة هل كانت هناك إعادة اختبار أو كسر كاذب.</li>
+          </ul>
+        </article>
+
+        <article class="quote-card">
+          <h3>الرسالة الأساسية في هذه الحصة</h3>
+          <p class="message">السعر لا يتحرك عشوائيًا تمامًا، بل يتفاعل كثيرًا مع مناطق دعم ومقاومة مهمة.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <div class="section-card next-step">
+          <div>
+            <h2>الخطوة التالية</h2>
+            <p>بعد فهم مناطق الدعم والمقاومة، انتقل إلى الحصة الثامنة لتتعلم كيف يكشف الحجم والسيولة قوة الحركة الحقيقية.</p>
+          </div>
+          <a class="button button-primary" href="lesson-08.html">الانتقال إلى الحصة 8</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      صفحة الحصة السابعة مرتبطة بالبرنامج الرئيسي ويمكن الرجوع منها مباشرة إلى قائمة الحصص.
+    </div>
+  </footer>
+  <script>
+    const bar = document.querySelector(".scroll-progress");
+    window.addEventListener("scroll", () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+    }, { passive: true });
+
+    const chips = document.querySelectorAll(".lesson-chip[href^='#']");
+    const targets = [...chips].map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+    if (targets.length) {
+      const spy = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            chips.forEach(c => c.classList.remove("is-active"));
+            const active = [...chips].find(c => c.getAttribute("href") === "#" + e.target.id);
+            if (active) active.classList.add("is-active");
+          }
+        });
+      }, { rootMargin: "-30% 0px -60% 0px" });
+      targets.forEach(t => spy.observe(t));
+    }
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+

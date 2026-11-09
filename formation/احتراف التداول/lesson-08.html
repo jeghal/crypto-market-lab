@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 8: حجم التداول والسيولة</title>
+  <meta
+    name="description"
+    content="الدرس الثامن في برنامج تعلم تداول العملات الرقمية: فهم حجم التداول والسيولة ودورهما في قوة الحركة السعرية."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 28px;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      margin-bottom: 16px;
+      max-width: 12ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .section-card h4,
+    .wide-card h4,
+    .question-card h4 {
+      margin: 18px 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    main section { padding: 18px 0; }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.3rem, 2.7vw, 2rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: 0.25s ease;
+    }
+
+    .lesson-chip:hover {
+      transform: translateY(-2px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .study-note {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(43, 208, 181, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .key-card {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .key-card h3 {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .next-step {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      grid-column: 2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ── scroll progress ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform: scaleX(0);
+      transform-origin: right;
+      z-index: 100;
+    }
+
+    /* ── chip active ── */
+    .lesson-chip.is-active {
+      color: var(--gold);
+      border-color: rgba(248, 184, 78, 0.4);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    /* ── reveal block ── */
+    .reveal-block {
+      margin-top: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(43, 208, 181, 0.22);
+      overflow: hidden;
+    }
+
+    .reveal-block > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 16px;
+      background: rgba(43, 208, 181, 0.08);
+      color: var(--teal);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .reveal-block > summary::-webkit-details-marker { display: none; }
+
+    .reveal-block > summary::before {
+      content: "▶";
+      font-size: 0.68rem;
+      transition: transform 0.25s;
+    }
+
+    .reveal-block[open] > summary::before { transform: rotate(90deg); }
+    .reveal-block > summary:hover { background: rgba(43, 208, 181, 0.14); }
+
+    .reveal-content {
+      padding: 16px 18px;
+      animation: revealDown 0.28s ease;
+    }
+
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── volume & liquidity visual ── */
+    .vol-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .vol-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .vol-strong { border-color: rgba(43, 208, 181, 0.35); }
+    .vol-weak   { border-color: rgba(224, 82, 82, 0.3); }
+
+    .vol-card h4 { font-family: "Changa", sans-serif; font-size: 1.05rem; margin: 0; }
+    .vol-strong h4 { color: var(--teal); }
+    .vol-weak   h4 { color: #e05252; }
+
+    .vol-price-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .vol-vol-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 28px;
+    }
+
+    .vol-pb, .vol-vb { flex: 1; border-radius: 2px 2px 0 0; }
+
+    .vol-strong .vol-pb { background: rgba(43, 208, 181, 0.5); }
+    .vol-strong .vol-vb { background: rgba(43, 208, 181, 0.35); }
+    .vol-strong .vol-vb.spike { background: var(--teal); }
+
+    .vol-weak .vol-pb { background: rgba(224, 82, 82, 0.45); }
+    .vol-weak .vol-vb { background: rgba(224, 82, 82, 0.25); }
+
+    .vol-divider-label {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: -6px;
+    }
+
+    .vol-tag { font-size: 0.78rem; color: var(--muted); }
+
+    /* Liquidity grid */
+    .liq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .liq-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .liq-high { border-color: rgba(43, 208, 181, 0.3); }
+    .liq-low  { border-color: rgba(224, 82, 82, 0.3); }
+
+    .liq-card h4 { font-family: "Changa", sans-serif; font-size: 1.05rem; margin: 0; }
+    .liq-high h4 { color: var(--teal); }
+    .liq-low  h4 { color: #e05252; }
+
+    .liq-bar-track {
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .liq-bar-fill { height: 100%; border-radius: 4px; }
+    .liq-high .liq-bar-fill { width: 84%; background: var(--teal); }
+    .liq-low  .liq-bar-fill { width: 20%; background: #e05252; }
+
+    .liq-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .liq-row:last-child { border-bottom: none; }
+
+    .liq-val { font-weight: 600; font-family: "Changa", sans-serif; }
+    .liq-high .liq-val { color: var(--teal); }
+    .liq-low  .liq-val { color: #e05252; }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .key-grid,
+      .question-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .vol-compare, .liq-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+
+    /* ── Volume Visual ── */
+    .vol-section {
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      margin-bottom: 24px;
+    }
+    .vol-title {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+    .vol-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .vol-card {
+      padding: 18px 14px;
+      border-radius: 18px;
+    }
+    .vc-weak   { background: rgba(255,100,100,0.08); border: 1px solid rgba(255,100,100,0.22); }
+    .vc-strong { background: rgba(43,208,181,0.08);  border: 1px solid rgba(43,208,181,0.22); }
+    .vol-card-title {
+      font-family: "Changa", sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .vc-weak .vol-card-title   { color: #ff9090; }
+    .vc-strong .vol-card-title { color: var(--teal); }
+    .vol-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 70px;
+      justify-content: center;
+    }
+    .vb {
+      width: 14px;
+      border-radius: 3px 3px 0 0;
+      transition: height 0.3s;
+    }
+    .vb-price-up   { background: var(--teal); }
+    .vb-price-dn   { background: #ff7575; }
+    .vb-vol-low    { background: rgba(255,255,255,0.18); }
+    .vb-vol-high   { background: rgba(43,208,181,0.5); }
+    .vol-bars-label {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 4px;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .vol-verdict {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .vc-weak .vol-verdict   { background: rgba(255,100,100,0.1); color: #ffaaaa; }
+    .vc-strong .vol-verdict { background: rgba(43,208,181,0.1); color: #b8f8f0; }
+    .vol-vs {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+
+          <div class="lesson-rail-pager">
+            <a class="lesson-rail-action pager-prev" href="lesson-07.html">الحصة السابقة</a>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill current" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill" href="lesson-15.html">15</a>
+            </div>
+            <a class="lesson-rail-action pager-next" href="lesson-09.html">الحصة التالية</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 8 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>حجم التداول والسيولة</h1>
+          <p>
+            هذه الحصة تشرح معنى حجم التداول والسيولة، وتوضح كيف يؤثران في قوة الحركة
+            السعرية، ولماذا قد تبدو بعض الحركات قوية في الشكل لكنها ضعيفة فعليًا.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+          <div class="lesson-nav">
+            <a class="lesson-chip" href="#lesson-content">المحتوى</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">التطبيق</a>
+            <a class="lesson-chip" href="#review">المراجعة</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>فهم حجم التداول والسيولة ودورهما في قوة الحركة السعرية.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يفهم المتعلم معنى <strong>حجم التداول</strong> و<strong>السيولة</strong>،
+              ويدرك كيف يساعدان على تقييم قوة الحركة السعرية، حتى لا ينخدع بحركات تبدو قوية
+              في الشكل لكنها ضعيفة في الواقع.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <article class="section-card">
+            <h3>لماذا هذه الحصة مهمة؟</h3>
+            <p>
+              بعد أن تعلّمت الاتجاه والمناطق، تحتاج الآن إلى معرفة إن كانت الحركة السعرية
+              مدعومة فعلًا بنشاط حقيقي في السوق أم لا. هنا يظهر دور الحجم والسيولة.
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>تساعدك على التمييز بين الحركة المقنعة والحركة الشكلية.</li>
+              <li>تجعلك أكثر وعيًا بخطورة العملات الضعيفة.</li>
+              <li>تمهّد لفهم المؤشرات الفنية لاحقًا بطريقة أكثر نضجًا.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <h3>أخطاء شائعة عند فهم الحجم والسيولة</h3>
+            <ul>
+              <li>الاعتقاد أن كل حركة كبيرة على الشارت تعني قوة حقيقية.</li>
+              <li>تجاهل أعمدة الحجم والتركيز على الشموع فقط.</li>
+              <li>الدخول في عملات ضعيفة السيولة لأنها تتحرك بعنف.</li>
+              <li>الخلط بين ارتفاع السعر ووجود اهتمام حقيقي من السوق.</li>
+            </ul>
+            <div class="study-note">
+              <strong>التصحيح:</strong>
+              انظر دائمًا إلى الشكل والحجم معًا. الحركة التي لا يدعمها حجم مناسب تحتاج إلى حذر،
+              خصوصًا في العملات الصغيرة.
+            </div>
+          </article>
+        </div>
+        <div class="study-note">
+          <div class="section-heading">
+            <h2>كيف تدرس هذه الحصة ذاتيًا؟</h2>
+            <p>اقرأ المفاهيم ثم افتح الشارت مباشرة، لأن هذه الحصة لا تكتمل إلا بملاحظة أعمدة الحجم وحركة السعر معًا.</p>
+          </div>
+          <ul>
+            <li>قارن بين حركة قوية بحجم مرتفع وحركة ضعيفة بحجم منخفض.</li>
+            <li>ركّز على BTC وETH حتى ترى السيولة بوضوح بعيدًا عن تشويش العملات الصغيرة.</li>
+            <li>دوّن كيف يغيّر الحجم تفسيرك لنفس الحركة السعرية.</li>
+            <li>أنهِ الحصة بتطبيق عملي قبل الانتقال إلى المؤشرات الفنية.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="الحجم والسيولة بصريًا">
+      <div class="container">
+        <div class="section-heading">
+          <h2>الحجم والسيولة — بصريًا</h2>
+          <p>الفرق بين الحركة القوية والضعيفة، وبين السيولة المرتفعة والمنخفضة.</p>
+        </div>
+
+        <!-- Strong vs Weak Volume -->
+        <div class="vol-compare">
+          <div class="vol-card vol-strong">
+            <h4>✅ حركة قوية — حجم مرتفع</h4>
+            <div class="vol-price-row">
+              <div class="vol-pb" style="height:30px"></div>
+              <div class="vol-pb" style="height:40px"></div>
+              <div class="vol-pb" style="height:50px"></div>
+              <div class="vol-pb" style="height:46px"></div>
+              <div class="vol-pb" style="height:56px"></div>
+              <div class="vol-pb" style="height:60px"></div>
+              <div class="vol-pb" style="height:58px"></div>
+            </div>
+            <div class="vol-divider-label">Volume ↓</div>
+            <div class="vol-vol-row">
+              <div class="vol-vb" style="height:10px"></div>
+              <div class="vol-vb" style="height:12px"></div>
+              <div class="vol-vb" style="height:14px"></div>
+              <div class="vol-vb" style="height:13px"></div>
+              <div class="vol-vb spike" style="height:28px"></div>
+              <div class="vol-vb spike" style="height:26px"></div>
+              <div class="vol-vb spike" style="height:24px"></div>
+            </div>
+            <p class="vol-tag">السعر يصعد ويصاحبه ارتفاع واضح في الحجم عند الاختراق</p>
+          </div>
+
+          <div class="vol-card vol-weak">
+            <h4>⚠️ حركة ضعيفة — حجم منخفض</h4>
+            <div class="vol-price-row">
+              <div class="vol-pb" style="height:28px"></div>
+              <div class="vol-pb" style="height:36px"></div>
+              <div class="vol-pb" style="height:44px"></div>
+              <div class="vol-pb" style="height:48px"></div>
+              <div class="vol-pb" style="height:40px"></div>
+              <div class="vol-pb" style="height:34px"></div>
+              <div class="vol-pb" style="height:28px"></div>
+            </div>
+            <div class="vol-divider-label">Volume ↓</div>
+            <div class="vol-vol-row">
+              <div class="vol-vb" style="height:7px"></div>
+              <div class="vol-vb" style="height:6px"></div>
+              <div class="vol-vb" style="height:8px"></div>
+              <div class="vol-vb" style="height:5px"></div>
+              <div class="vol-vb" style="height:7px"></div>
+              <div class="vol-vb" style="height:6px"></div>
+              <div class="vol-vb" style="height:7px"></div>
+            </div>
+            <p class="vol-tag">السعر يتحرك لكن الحجم يبقى ضعيفًا — الحركة أقل إقناعًا</p>
+          </div>
+        </div>
+
+        <!-- High vs Low Liquidity -->
+        <div class="liq-grid">
+          <div class="liq-card liq-high">
+            <h4>🌊 سيولة مرتفعة — BTC / ETH</h4>
+            <div class="liq-bar-track"><div class="liq-bar-fill"></div></div>
+            <div class="liq-row"><span>الدخول والخروج</span><span class="liq-val">سهل</span></div>
+            <div class="liq-row"><span>القفزات المفاجئة</span><span class="liq-val">أقل</span></div>
+            <div class="liq-row"><span>خطر التلاعب</span><span class="liq-val">أقل</span></div>
+            <div class="liq-row"><span>مناسب للمبتدئ</span><span class="liq-val">✔ نعم</span></div>
+          </div>
+
+          <div class="liq-card liq-low">
+            <h4>⚡ سيولة منخفضة — عملات صغيرة</h4>
+            <div class="liq-bar-track"><div class="liq-bar-fill"></div></div>
+            <div class="liq-row"><span>الدخول والخروج</span><span class="liq-val">أصعب</span></div>
+            <div class="liq-row"><span>القفزات المفاجئة</span><span class="liq-val">أكثر</span></div>
+            <div class="liq-row"><span>خطر التلاعب</span><span class="liq-val">أعلى</span></div>
+            <div class="liq-row"><span>مناسب للمبتدئ</span><span class="liq-val">✘ تجنب</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="vol-section">
+          <div class="vol-title">الحجم والسعر — الحركة القوية مقابل الضعيفة</div>
+          <div class="vol-grid">
+            <div class="vol-card vc-weak">
+              <div class="vol-card-title">⚠️ حركة بحجم ضعيف</div>
+              <div class="vol-bars">
+                <div class="vb vb-price-up" style="height:40px;"></div>
+                <div class="vb vb-price-up" style="height:52px;"></div>
+                <div class="vb vb-price-up" style="height:44px;"></div>
+              </div>
+              <div class="vol-bars">
+                <div class="vb vb-vol-low" style="height:12px;"></div>
+                <div class="vb vb-vol-low" style="height:10px;"></div>
+                <div class="vb vb-vol-low" style="height:14px;"></div>
+              </div>
+              <div class="vol-bars-label"><span>حجم</span><span>منخفض</span><span>جدًا</span></div>
+              <div class="vol-verdict">اختراق غير مقنع — قد يكون كاذبًا</div>
+            </div>
+            <div class="vol-vs">VS</div>
+            <div class="vol-card vc-strong">
+              <div class="vol-card-title">✅ حركة بحجم قوي</div>
+              <div class="vol-bars">
+                <div class="vb vb-price-up" style="height:36px;"></div>
+                <div class="vb vb-price-up" style="height:56px;"></div>
+                <div class="vb vb-price-up" style="height:50px;"></div>
+              </div>
+              <div class="vol-bars">
+                <div class="vb vb-vol-high" style="height:20px;"></div>
+                <div class="vb vb-vol-high" style="height:48px;"></div>
+                <div class="vb vb-vol-high" style="height:36px;"></div>
+              </div>
+              <div class="vol-bars-label"><span>حجم</span><span>مرتفع</span><span>واضح</span></div>
+              <div class="vol-verdict">حركة مدعومة — أكثر مصداقية</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>شكل الحركة وحده لا يكفي للحكم على قوتها.</li>
+            <li>الحجم والسيولة يساعدان على تمييز الحركة المقنعة من الضعيفة.</li>
+            <li>العملات الأعلى سيولة أنسب للتعلم في البداية.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس يثبت المفاهيم التي تحتاجها لتقدير قوة الحركة السعرية قبل الانتقال إلى المؤشرات الفنية.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <h3>حجم التداول</h3>
+            <p>كمية البيع والشراء التي حدثت خلال فترة محددة.</p>
+          </article>
+          <article class="key-card">
+            <h3>السيولة</h3>
+            <p>سهولة الدخول والخروج من السوق دون تأثير كبير في السعر.</p>
+          </article>
+          <article class="key-card">
+            <h3>حركة قوية</h3>
+            <p>تحرك سعري واضح تدعمه مشاركة جيدة من السوق وحجم مناسب.</p>
+          </article>
+          <article class="key-card">
+            <h3>حركة ضعيفة</h3>
+            <p>تحرك شكلي لا يسانده حجم واضح وقد يفشل بسرعة.</p>
+          </article>
+          <article class="key-card">
+            <h3>عملة ضعيفة السيولة</h3>
+            <p>عملة قد يصعب الدخول والخروج منها بسهولة وتكون أكثر حساسية للأوامر الصغيرة.</p>
+          </article>
+          <article class="key-card">
+            <h3>Volume</h3>
+            <p>اسم أعمدة الحجم التي تظهر عادة أسفل الشارت وتوضح نشاط السوق.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة، يصبح المتعلم قادرًا على ربط شكل الحركة السعرية بنشاط السوق الحقيقي خلفها.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يعرف معنى حجم التداول.</li>
+              <li>يفهم معنى السيولة.</li>
+              <li>يربط بين حركة السعر وحجم التداول.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يميز بين الحركة القوية والحركة الضعيفة.</li>
+              <li>يدرك خطورة العملات ضعيفة السيولة.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>هل كل صعود قوي في الشارت يعني فعلًا أن السوق قوي؟ أم أن بعض الحركات السعرية تبدو قوية لكنها في الحقيقة ضعيفة؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم تُجمع الأجوبة لبيان أن شكل الشمعة وحده لا يكفي، بل يجب النظر أيضًا إلى حجم التداول والسيولة.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            لاحظ متعلم أن عملة رقمية ارتفعت بسرعة في وقت قصير، فظن أن هذا دليل على قوتها.
+            لكن بعد وقت قصير عادت للهبوط بسرعة كبيرة.
+          </p>
+          <p style="margin-top: 14px;">
+            ثم لاحظ أن عملة أخرى تتحرك بهدوء أكبر، ولكن حركتها كانت أكثر ثباتًا.
+          </p>
+          <p style="margin-top: 14px;">
+            <strong>ما الذي يجعل بعض الحركات قوية فعلًا، وبعضها الآخر مجرد حركة ضعيفة أو مضللة؟</strong>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>المحتوى التالي يوضح كيف نقرأ قوة الحركة من خلال الحجم والسيولة، لا من الشكل وحده.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>1) ما هو حجم التداول؟</h3>
+            <p>
+              حجم التداول هو مقدار التداول الذي حدث على العملة خلال فترة زمنية معينة.
+            </p>
+            <p style="margin-top: 14px;">
+              بمعنى مبسط: هو عدد أو كمية الوحدات التي تم بيعها وشراؤها خلال تلك المدة.
+            </p>
+            <p style="margin-top: 14px;">
+              وعادة يظهر على الشارت في شكل <strong>أعمدة volume</strong> أسفل الرسم البياني.
+            </p>
+          </article>
+
+          <article class="section-card">
+            <h3>2) ماذا يدل حجم التداول؟</h3>
+            <p>حجم التداول يساعدنا على فهم:</p>
+            <ul style="margin-top: 14px;">
+              <li>مدى نشاط السوق.</li>
+              <li>قوة الحركة السعرية.</li>
+              <li>هل هناك اهتمام واضح بالعملة أم لا.</li>
+            </ul>
+            <h4>قاعدة مبسطة</h4>
+            <ul>
+              <li>حركة سعرية مع حجم قوي = اهتمام أكبر من السوق.</li>
+              <li>حركة سعرية مع حجم ضعيف = اهتمام أقل، وحذر أكبر.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>3) ما هي السيولة؟</h3>
+            <p>
+              السيولة تعني سهولة شراء العملة أو بيعها دون أن يؤدي ذلك إلى تحريك السعر بشكل كبير جدًا.
+            </p>
+            <h4>كلما كانت السيولة مرتفعة</h4>
+            <ul>
+              <li>كان الدخول والخروج أسهل.</li>
+              <li>كانت الحركة أكثر انتظامًا.</li>
+              <li>كان السعر أقل عرضة للقفزات العنيفة بسبب أوامر صغيرة.</li>
+            </ul>
+            <h4>كلما كانت السيولة ضعيفة</h4>
+            <ul>
+              <li>أصبح السعر أكثر حساسية.</li>
+              <li>زادت القفزات المفاجئة.</li>
+              <li>صار الخروج والدخول أصعب أحيانًا.</li>
+              <li>ارتفع خطر التلاعب والحركات الحادة.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>4) ما العلاقة بين السعر وحجم التداول؟</h3>
+            <p>
+              عندما يتحرك السعر بقوة ومعه حجم تداول مرتفع، فهذا قد يعني أن الحركة مدعومة
+              بمشاركة أكبر من المتداولين.
+            </p>
+            <p style="margin-top: 14px;">
+              أما إذا تحرك السعر دون حجم واضح، فقد تكون الحركة:
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>ضعيفة.</li>
+              <li>مؤقتة.</li>
+              <li>أقل موثوقية.</li>
+            </ul>
+            <h4>مثال مبسط</h4>
+            <ul>
+              <li><strong>بحجم قوي</strong> عند الاختراق → يكون الاختراق غالبًا أكثر إقناعًا.</li>
+              <li><strong>بحجم ضعيف</strong> → قد يكون الاختراق أقل قوة، وربما يفشل.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>5) متى تكون الحركة قوية؟</h3>
+            <p>تكون الحركة أقوى نسبيًا عندما:</p>
+            <ul style="margin-top: 14px;">
+              <li>يتحرك السعر بوضوح.</li>
+              <li>ويصاحب ذلك ارتفاع في حجم التداول.</li>
+              <li>خاصة عند الاختراقات أو الارتدادات المهمة.</li>
+            </ul>
+            <p style="margin-top: 14px;">
+              وهذا لا يعني ضمان النجاح، لكنه يعطي إشارة أقوى من الحركة التي بلا حجم داعم.
+            </p>
+          </article>
+
+          <article class="section-card">
+            <h3>6) متى تكون الحركة ضعيفة؟</h3>
+            <p>قد تكون الحركة ضعيفة عندما:</p>
+            <ul style="margin-top: 14px;">
+              <li>يرتفع السعر أو ينخفض دون حجم كافٍ.</li>
+              <li>تكون الشموع موجودة لكن السوق لا يشارك بقوة.</li>
+              <li>تظهر اختراقات شكلية ثم يعود السعر بسرعة.</li>
+            </ul>
+            <h4>الخلاصة</h4>
+            <p><strong>ليس كل تحرك واضح في الشارت يعني أنه قوي فعلًا.</strong></p>
+          </article>
+
+          <article class="section-card">
+            <h3>7) ما خطورة العملات ضعيفة السيولة؟</h3>
+            <p>العملات ضعيفة السيولة قد تكون أخطر على المبتدئ لأنها:</p>
+            <ul style="margin-top: 14px;">
+              <li>تتحرك بعنف كبير.</li>
+              <li>قد تتأثر بأوامر صغيرة.</li>
+              <li>قد يصعب الخروج منها في الوقت المناسب.</li>
+              <li>قد تظهر عليها اختراقات مضللة.</li>
+              <li>قد تكون أكثر عرضة للتلاعب.</li>
+            </ul>
+            <h4>قاعدة مهمة</h4>
+            <p><strong>كلما كانت العملة أكثر شهرة وأعلى سيولة، كانت أنسب للتعلم في البداية.</strong></p>
+            <p style="margin-top: 14px;">ولهذا يُنصح المبتدئ غالبًا بالتركيز على:</p>
+            <ul style="margin-top: 14px;">
+              <li><strong>Bitcoin</strong>.</li>
+              <li><strong>Ethereum</strong>.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>8) ما المقصود بالتجميع والتصريف بشكل أولي؟</h3>
+            <h4>التجميع</h4>
+            <p>قد يكون مرحلة يتحرك فيها السعر في نطاق معين، مع استعداد لاحتمال حركة لاحقة.</p>
+            <h4>التصريف</h4>
+            <p>قد يكون مرحلة يبدأ فيها ضعف الحركة بعد صعود سابق، مع احتمال زيادة البيع أو التراجع.</p>
+            <p style="margin-top: 14px;">
+              في هذه المرحلة لا يحتاج المبتدئ إلى التعمق، لكن المهم أن يفهم أن:
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>الحركة ليست دائمًا عشوائية.</li>
+              <li>وقد يسبق التحرك الكبير مرحلة هدوء نسبي.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>9) كيف نستفيد من حجم التداول والسيولة؟</h3>
+            <p>يساعدنا فهمهما على:</p>
+            <ul style="margin-top: 14px;">
+              <li>تقييم قوة الاختراق أو الارتداد.</li>
+              <li>تجنب العملات الضعيفة والمضللة.</li>
+              <li>تحسين قراءة السوق.</li>
+              <li>تقليل الدخول العشوائي.</li>
+            </ul>
+            <p style="margin-top: 14px;">لكن لا نعتمد عليهما وحدهما، بل مع:</p>
+            <ul style="margin-top: 14px;">
+              <li>الاتجاه العام.</li>
+              <li>الدعم والمقاومة.</li>
+              <li>الشموع.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>تبسيط المفاهيم</h3>
+          <ul>
+            <li><strong>حجم التداول:</strong> هو كمية البيع والشراء خلال فترة معينة.</li>
+            <li><strong>السيولة:</strong> هي سهولة الدخول والخروج من السوق دون تأثير كبير في السعر.</li>
+            <li><strong>حركة قوية:</strong> سعر يتحرك بوضوح مع حجم جيد.</li>
+            <li><strong>حركة ضعيفة:</strong> سعر يتحرك دون دعم واضح من الحجم.</li>
+          </ul>
+        </article>
+
+        <article class="wide-card">
+          <h3>النشاط التطبيقي 1</h3>
+          <p style="margin-bottom: 16px;">أكمل بما يناسب:</p>
+          <ul>
+            <li>الأعمدة الموجودة أسفل الشارت غالبًا تمثل ..........</li>
+            <li>سهولة بيع وشراء العملة دون تأثير كبير في السعر تسمى ..........</li>
+            <li>الاختراق المصحوب بحجم جيد يكون غالبًا أكثر ..........</li>
+            <li>العملات الضعيفة السيولة قد تكون أكثر ..........</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>حجم التداول.</li>
+                <li>السيولة.</li>
+                <li>قوة.</li>
+                <li>خطورة.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            إذا اخترقت عملة مقاومة مهمة لكن أعمدة الحجم بقيت ضعيفة، فليس كل اختراق يعني أن
+            السوق مقتنع بالحركة. أما إذا جاء الاختراق نفسه مع حجم مرتفع، فهنا تصبح الحركة
+            أكثر إقناعًا نسبيًا.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>الشكل وحده لا يكفي.</li>
+            <li>الحجم يضيف معنى للحركة.</li>
+            <li>السيولة تحدد مدى موثوقية السوق وسهولة التعامل معه.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>كيف ترتبط هذه الحصة بما بعدها؟</h3>
+          <p>
+            بعد أن فهمت كيف تقرأ قوة الحركة من خلال الحجم والسيولة، ستنتقل إلى الحصة التاسعة
+            لتتعلم كيف تستخدم المؤشرات الفنية كمساعد، لا كبديل عن فهم السوق نفسه.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            الحصة 8 تجيب عن "هل الحركة قوية فعلًا؟"، والحصة 9 ستجيب عن "كيف أستعمل EMA وRSI وVolume بشكل منظم؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container question-grid">
+        <article class="question-card">
+          <h3>النشاط التطبيقي 2</h3>
+          <p style="margin-bottom: 14px;">صنف الحالات التالية:</p>
+          <ol class="numbered">
+            <li data-step="1">عملة اخترقت مقاومة بحجم تداول مرتفع.</li>
+            <li data-step="2">عملة ارتفعت قليلًا لكن بحجم ضعيف جدًا.</li>
+            <li data-step="3">عملة يصعب بيعها أو شراؤها بسرعة دون تحرك حاد في السعر.</li>
+            <li data-step="4">عملة معروفة ونشاطها كبير في السوق.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>حركة أقوى نسبيًا.</li>
+                <li>حركة أضعف نسبيًا.</li>
+                <li>سيولة ضعيفة.</li>
+                <li>سيولة أعلى غالبًا.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="question-card">
+          <h3>النشاط التطبيقي 3: تطبيق على الشارت</h3>
+          <p>
+            يُطلب من المتعلم فتح شارت <strong>BTC/USDT</strong> أو <strong>ETH/USDT</strong> ثم:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>ملاحظة أعمدة الحجم أسفل الشارت.</li>
+            <li>تحديد شمعة قوية صاحبها حجم مرتفع.</li>
+            <li>مقارنة ذلك بحركة أخرى كان حجمها ضعيفًا.</li>
+            <li>محاولة استنتاج أي الحركتين كانت أكثر إقناعًا.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز للانتقال إلى الحصة التاسعة؟</h3>
+          <ul>
+            <li>أفهم معنى حجم التداول والسيولة بشكل واضح.</li>
+            <li>أستطيع التمييز بين الحركة القوية والحركة الضعيفة نسبيًا.</li>
+            <li>أدرك خطورة العملات ضعيفة السيولة على المبتدئ.</li>
+            <li>أعرف لماذا لا يكفي النظر إلى الشمعة وحدها.</li>
+            <li>أفهم أن الحجم والسيولة جزء من قراءة السوق لا عنصرًا منفصلًا عنه.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الانتقال:</strong>
+            إذا كنت ما زلت ترى أن كل حركة سريعة تعني فرصة جيدة، فأعد هذه الحصة قبل الانتقال
+            إلى المؤشرات الفنية.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">ما المقصود بحجم التداول؟</li>
+            <li data-step="2">ما المقصود بالسيولة؟</li>
+            <li data-step="3">لماذا تكون العملات ضعيفة السيولة أكثر خطورة؟</li>
+            <li data-step="4">هل يكفي شكل الشمعة وحده للحكم على قوة الحركة؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات المختصرة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>هو كمية البيع والشراء خلال فترة معينة.</li>
+                <li>هي سهولة الدخول والخروج من السوق دون تأثير كبير في السعر.</li>
+                <li>لأنها أكثر حساسية وقد تكون أصعب في الخروج وأكثر عرضة للتلاعب.</li>
+                <li>لا، يجب النظر أيضًا إلى الحجم والسيولة.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-3">
+        <article class="section-card">
+          <h3>أسئلة الفهم</h3>
+          <ul>
+            <li>ما المقصود بحجم التداول؟</li>
+            <li>ما المقصود بالسيولة؟</li>
+            <li>ما العلاقة بين حجم التداول وقوة الحركة؟</li>
+            <li>لماذا تعد العملات ضعيفة السيولة أكثر خطورة؟</li>
+            <li>لماذا لا يكفي النظر إلى شكل الشمعة وحده؟</li>
+          </ul>
+        </article>
+
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>
+            حجم التداول والسيولة عنصران مهمان في فهم حركة السوق. فالسعر قد يتحرك،
+            لكن قوة هذه الحركة تصبح أوضح عندما ننظر إلى:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>هل هناك حجم تداول داعم؟</li>
+            <li>وهل العملة تتمتع بسيولة مناسبة؟</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            ومن هنا يتعلم المتداول ألا ينخدع بالحركة الشكلية فقط، بل يبحث عن الحركة
+            التي يدعمها نشاط حقيقي في السوق.
+          </p>
+        </article>
+
+        <article class="section-card">
+          <h3>التقويم</h3>
+          <p style="margin-bottom: 14px;"><strong>صحح أو أكمل:</strong></p>
+          <ol class="numbered">
+            <li data-step="1">حجم التداول يوضح نشاط السوق خلال مدة معينة.</li>
+            <li data-step="2">السيولة الضعيفة تجعل التداول أسهل وأكثر أمانًا.</li>
+            <li data-step="3">الحركة المدعومة بحجم جيد تكون غالبًا أكثر قوة من الحركة الضعيفة الحجم.</li>
+            <li data-step="4">العملات المشهورة غالبًا أعلى سيولة من العملات الصغيرة جدًا.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>صحيح.</li>
+                <li>خطأ.</li>
+                <li>صحيح.</li>
+                <li>صحيح.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>
+            افتح شارت <strong>BTC/USDT</strong> أو <strong>ETH/USDT</strong>، ثم:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>اختر حركتين سعريتين مختلفتين.</li>
+            <li>لاحظ حجم التداول في كل واحدة.</li>
+            <li>اكتب أي الحركتين بدت أقوى، ولماذا.</li>
+          </ul>
+        </article>
+
+        <article class="quote-card">
+          <h3>الرسالة الأساسية في هذه الحصة</h3>
+          <p class="message">شكل الحركة وحده لا يكفي، فالحجم والسيولة يكشفان قوة الحركة الحقيقية.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <div class="section-card next-step">
+          <div>
+            <h2>الخطوة التالية</h2>
+            <p>بعد فهم الحجم والسيولة، انتقل إلى الحصة التاسعة لتتعلم كيف تستعمل المؤشرات الفنية كمساعد منظم لا كبديل عن فهم السوق.</p>
+          </div>
+          <a class="button button-primary" href="lesson-09.html">الانتقال إلى الحصة 9</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      صفحة الحصة الثامنة مرتبطة بالبرنامج الرئيسي ويمكن الرجوع منها مباشرة إلى قائمة الحصص.
+    </div>
+  </footer>
+  <script>
+    const bar = document.querySelector(".scroll-progress");
+    window.addEventListener("scroll", () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+    }, { passive: true });
+
+    const chips = document.querySelectorAll(".lesson-chip[href^='#']");
+    const targets = [...chips].map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+    if (targets.length) {
+      const spy = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            chips.forEach(c => c.classList.remove("is-active"));
+            const active = [...chips].find(c => c.getAttribute("href") === "#" + e.target.id);
+            if (active) active.classList.add("is-active");
+          }
+        });
+      }, { rootMargin: "-30% 0px -60% 0px" });
+      targets.forEach(t => spy.observe(t));
+    }
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+
+

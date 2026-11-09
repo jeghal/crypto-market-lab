@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binance Spot Scanner - Two Layers</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #111827;
+        --card2: #1f2937;
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --border: #374151;
+        --ok: #10b981;
+        --warn: #f59e0b;
+        --bad: #ef4444;
+        --accent: #60a5fa;
+        --accent2: #22c55e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .wrap { max-width: 1400px; margin: auto; padding: 20px; }
+      h1 { margin: 0 0 8px; }
+      .sub { color: var(--muted); margin-bottom: 18px; line-height: 1.7; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .field { display: flex; flex-direction: column; gap: 6px; }
+      .field label { font-size: 13px; color: var(--muted); }
+      input, select, button {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--card2);
+        color: var(--text);
+        font-size: 14px;
+      }
+      button { cursor: pointer; }
+      button:disabled { cursor: not-allowed; opacity: 0.65; }
+      button.primary {
+        background: var(--accent);
+        color: #06111f;
+        font-weight: bold;
+        border: none;
+      }
+      .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .stat {
+        background: var(--card2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .stat small { display: block; color: var(--muted); margin-bottom: 5px; }
+      .stat strong { font-size: 22px; }
+      .status { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+      .pill {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--card2);
+      }
+      .good { color: var(--ok); }
+      .warn { color: var(--warn); }
+      .bad { color: var(--bad); }
+      .info { color: var(--accent); }
+      .tablewrap { overflow: auto; border: 1px solid var(--border); border-radius: 12px; }
+      table {
+        width: 100%;
+        min-width: 1100px;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+        text-align: center;
+      }
+      th:first-child, td:first-child { text-align: right; }
+      th { background: var(--card2); position: sticky; top: 0; }
+      .logs {
+        background: #060b14;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        min-height: 120px;
+        max-height: 250px;
+        overflow: auto;
+        white-space: pre-wrap;
+        font-family: Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .section-title { margin: 0 0 12px; }
+      .empty-state { text-align: center; color: var(--muted); }
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(96, 165, 250, 0.1);
+        color: var(--accent);
+      }
+      .badge-good {
+        background: rgba(34, 197, 94, 0.1);
+        color: var(--accent2);
+      }
+      .help {
+        color: var(--muted);
+        line-height: 1.7;
+        margin-top: 8px;
+        font-size: 13px;
+      }
+      .clickable-row {
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+      }
+      .clickable-row:hover {
+        background: rgba(96, 165, 250, 0.08);
+      }
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr auto auto;
+        gap: 10px;
+        align-items: end;
+      }
+      .summary-banner {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .summary-box {
+        background: linear-gradient(180deg, rgba(96, 165, 250, 0.08), rgba(17, 24, 39, 0.6));
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .summary-box strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 18px;
+      }
+      .summary-box small,
+      .muted-small {
+        color: var(--muted);
+      }
+      .mini-actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn-link {
+        border: 1px solid var(--border);
+        background: rgba(96, 165, 250, 0.08);
+        color: var(--text);
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .btn-link:hover {
+        background: rgba(96, 165, 250, 0.16);
+      }
+      .sortable {
+        cursor: pointer;
+        user-select: none;
+      }
+      .sortable:hover {
+        background: rgba(96, 165, 250, 0.10);
+      }
+      .row-strong {
+        box-shadow: inset 3px 0 0 var(--accent2);
+        background: rgba(34, 197, 94, 0.06);
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .table-note {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      @media (max-width: 1200px) {
+        .toolbar,
+        .summary-banner { grid-template-columns: 1fr; }
+        .grid, .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (max-width: 700px) {
+        .grid, .stats { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>ماسح Binance Spot Momentum - طبقتان</h1>
+      <div class="sub">
+        الطبقة الأولى تبني <strong>قائمة مراقبة مبكرة</strong> للعملات التي تبدو قريبة من الانطلاق،
+        والطبقة الثانية تعطي <strong>إشارة مؤكدة</strong> فقط إذا ظهر اختراق نظيف مع حجم وزخم مناسبين.
+      </div>
+
+      <div class="card">
+        <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+          <div class="field">
+            <label for="interval">الإطار الزمني</label>
+            <select id="interval">
+              <option>1m</option>
+              <option>3m</option>
+              <option selected>5m</option>
+              <option>15m</option>
+              <option>30m</option>
+              <option>1h</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="presetLevel">مستوى المراقبة والفرص</label>
+            <select id="presetLevel">
+              <option value="conservative">متحفظ (فلترة أشد)</option>
+              <option value="balanced" selected>متوازن (ينصح به)</option>
+              <option value="aggressive">مغامر (فرص أكثر)</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="scanNowBtn" class="primary">فحص الآن</button>
+          <button id="startBtn">تشغيل مستمر</button>
+          <button id="stopBtn" disabled>إيقاف</button>
+        </div>
+        <div class="help">
+          المتحفظ يضيق قائمة المراقبة ويرفض الشموع المتمددة أكثر. المغامر يسمح بفرص أكثر لكنه أكثر حساسية للضجيج.
+          نقرة واحدة على أي صف تفتح Binance Spot، والنقرة المزدوجة تفتح TradingView.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="status">
+          <span id="engineStatus" class="pill warn">الحالة: متوقف</span>
+          <span id="lastScanStatus" class="pill">آخر فحص: لا يوجد</span>
+          <span id="candleStatus" class="pill">الشمعة: غير معروفة</span>
+          <span id="btcStatus" class="pill">BTC: غير معروفة</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><small>إجمالي الرموز</small><strong id="statTotalSymbols">0</strong></div>
+          <div class="stat"><small>الرموز السائلة</small><strong id="statLiquidSymbols">0</strong></div>
+          <div class="stat"><small>الرموز القابلة للتداول</small><strong id="statTradableSymbols">0</strong></div>
+          <div class="stat"><small>قائمة المراقبة</small><strong id="statWatchlist">0</strong></div>
+          <div class="stat"><small>الإشارات المؤكدة</small><strong id="statSignals">0</strong></div>
+          <div class="stat"><small>مدة الفحص</small><strong id="statElapsed">0.00s</strong></div>
+          <div class="stat"><small>قوة BTC القصيرة</small><strong id="statBtcChange">0.00%</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="summary-banner">
+          <div class="summary-box">
+            <small>أفضل عنصر في المراقبة</small>
+            <strong id="bestWatchSymbol">—</strong>
+            <div class="muted-small" id="bestWatchText">لا توجد بيانات بعد</div>
+          </div>
+          <div class="summary-box">
+            <small>أفضل إشارة مؤكدة</small>
+            <strong id="bestSignalSymbol">—</strong>
+            <div class="muted-small" id="bestSignalText">لا توجد بيانات بعد</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="toolbar">
+          <div class="field">
+            <label for="searchSymbol">بحث سريع عن الرمز</label>
+            <input id="searchSymbol" type="text" placeholder="مثال: BTC أو SOL" />
+          </div>
+          <div class="field">
+            <label for="focusMode">تركيز العرض</label>
+            <select id="focusMode">
+              <option value="all" selected>كل النتائج</option>
+              <option value="strong">الأقوى فقط</option>
+            </select>
+          </div>
+          <button id="clearFiltersBtn">مسح الفلاتر</button>
+          <button id="exportSignalsBtn">تصدير الإشارات CSV</button>
+        </div>
+        <div class="help">
+          يمكنك ترتيب أي جدول بالضغط على عنوان العمود. أزرار Binance و TradingView في كل سطر تعطيك فتحًا مباشرًا بدون الحاجة إلى النقر على الصف كله.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <h3 class="section-title">الطبقة 1: قائمة المراقبة المبكرة</h3>
+          <div class="table-note" id="watchlistCountText">0 عنصر</div>
+        </div>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="sortable" data-table="watchlist" data-sort="symbol">الرمز</th>
+                <th class="sortable" data-table="watchlist" data-sort="earlyScore">النتيجة المبكرة</th>
+                <th class="sortable" data-table="watchlist" data-sort="price">السعر</th>
+                <th class="sortable" data-table="watchlist" data-sort="distanceToHighPct">البعد عن القمة%</th>
+                <th class="sortable" data-table="watchlist" data-sort="volumeBuildupRatio">حجم 3/10</th>
+                <th class="sortable" data-table="watchlist" data-sort="relativeStrength">قوة نسبية ضد BTC</th>
+                <th class="sortable" data-table="watchlist" data-sort="spreadPct">السبريد%</th>
+                <th>الحالة</th>
+                <th>الأسباب</th>
+                <th>فتح</th>
+              </tr>
+            </thead>
+            <tbody id="watchlistBody">
+              <tr><td colspan="10" class="empty-state">لا توجد نتائج بعد</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <h3 class="section-title">الطبقة 2: الإشارات المؤكدة</h3>
+          <div class="table-note" id="signalsCountText">0 إشارة</div>
+        </div>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="sortable" data-table="signals" data-sort="symbol">الرمز</th>
+                <th class="sortable" data-table="signals" data-sort="price">السعر</th>
+                <th class="sortable" data-table="signals" data-sort="candleChangePct">تغير% (الشمعة)</th>
+                <th class="sortable" data-table="signals" data-sort="rangePct">النطاق%</th>
+                <th class="sortable" data-table="signals" data-sort="volumeRatio">الحجم مضاعف</th>
+                <th class="sortable" data-table="signals" data-sort="spreadPct">السبريد%</th>
+                <th class="sortable" data-table="signals" data-sort="closeFromHighPct">من القمة%</th>
+                <th class="sortable" data-table="signals" data-sort="entry">الدخول</th>
+                <th class="sortable" data-table="signals" data-sort="stop">الوقف</th>
+                <th class="sortable" data-table="signals" data-sort="takeProfit1R">هدف 1</th>
+                <th class="sortable" data-table="signals" data-sort="takeProfit2R">هدف 2</th>
+                <th>فتح</th>
+              </tr>
+            </thead>
+            <tbody id="signalsBody">
+              <tr><td colspan="12" class="empty-state">لا توجد نتائج بعد</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="section-title">السجل</h3>
+        <div id="logs" class="logs"></div>
+      </div>
+    </div>
+
+    <script>
+      const leveragedSuffixes = ["UP", "DOWN", "BULL", "BEAR"];
+      const STORAGE_KEY = "binanceSpotScannerTwoLayersSettingsV1";
+      const REQUEST_TIMEOUT_MS = 12000;
+      const REQUEST_RETRIES = 3;
+      const MAX_LOG_LINES = 250;
+      const trackedSettingIds = ["interval", "presetLevel", "focusMode", "searchSymbol"];
+      const $ = (id) => document.getElementById(id);
+
+      let isRunning = false;
+      let isCycleRunning = false;
+      let timer = null;
+      let lastPrintedCandleOpenTimeMs = null;
+      let currentReport = null;
+      const sortState = {
+        watchlist: { key: "earlyScore", dir: "desc" },
+        signals: { key: "earlyScore", dir: "desc" },
+      };
+
+      function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
+      function safeFloat(v, d = 0) {
+        const n = Number(v);
+        return Number.isFinite(n) ? n : d;
+      }
+      function mean(arr) {
+        return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+      }
+      function log(msg) {
+        const box = $("logs");
+        const existing = box.textContent.trimEnd();
+        const lines = existing ? existing.split("\n") : [];
+        lines.push(`[${new Date().toLocaleString()}] ${msg}`);
+        if (lines.length > MAX_LOG_LINES) lines.splice(0, lines.length - MAX_LOG_LINES);
+        box.textContent = `${lines.join("\n")}\n`;
+        box.scrollTop = box.scrollHeight;
+      }
+      function intervalToSeconds(interval) {
+        if (!interval || interval.length < 2) return null;
+        const unit = interval.slice(-1).toLowerCase();
+        const value = Number(interval.slice(0, -1));
+        const mult = { s: 1, m: 60, h: 3600, d: 86400, w: 604800 }[unit];
+        return Number.isFinite(value) && mult ? value * mult : null;
+      }
+      function formatTimestampMs(ms) {
+        if (!ms) return "unknown";
+        return new Date(ms).toLocaleString();
+      }
+      function formatPrice(v) {
+        const a = Math.abs(v);
+        let p = 8;
+        if (a >= 1000) p = 2;
+        else if (a >= 100) p = 3;
+        else if (a >= 1) p = 4;
+        else if (a >= 0.01) p = 6;
+        return Number(v).toFixed(p);
+      }
+      function saveSettings() {
+        const payload = {};
+        for (const id of trackedSettingIds) {
+          const el = $(id);
+          if (!el) continue;
+          payload[id] = el.type === "checkbox" ? el.checked : el.value;
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      }
+      function restoreSettings() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        try {
+          const saved = JSON.parse(raw);
+          for (const id of trackedSettingIds) {
+            if (!(id in saved)) continue;
+            const el = $(id);
+            if (!el) continue;
+            if (el.type === "checkbox") el.checked = Boolean(saved[id]);
+            else el.value = String(saved[id]);
+          }
+        } catch {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+      function bindSettingPersistence() {
+        for (const id of trackedSettingIds) {
+          const el = $(id);
+          if (!el) continue;
+          const eventName = el.tagName === "INPUT" ? "input" : "change";
+          el.addEventListener(eventName, saveSettings);
+        }
+      }
+      function getSearchTerm() {
+        return ($("searchSymbol")?.value || "").trim().toUpperCase();
+      }
+      function getFocusMode() {
+        return $("focusMode")?.value || "all";
+      }
+      function filterByUi(items, type) {
+        const term = getSearchTerm();
+        const focusMode = getFocusMode();
+        return (items || []).filter((item, index) => {
+          if (term && !String(item.symbol || "").toUpperCase().includes(term)) return false;
+          if (focusMode === "strong") {
+            if (type === "watchlist") return item.earlyScore >= 7;
+            if (type === "signals") return index < 10 || item.earlyScore >= 7;
+          }
+          return true;
+        });
+      }
+      function sortItems(items, tableName) {
+        const { key, dir } = sortState[tableName];
+        const multiplier = dir === "asc" ? 1 : -1;
+        return [...items].sort((a, b) => {
+          const av = a?.[key];
+          const bv = b?.[key];
+          if (typeof av === "string" || typeof bv === "string") {
+            return String(av ?? "").localeCompare(String(bv ?? "")) * multiplier;
+          }
+          const an = Number(av ?? 0);
+          const bn = Number(bv ?? 0);
+          if (bn === an) return String(a.symbol || "").localeCompare(String(b.symbol || ""));
+          return (an - bn) * multiplier;
+        });
+      }
+      function escapeCsv(value) {
+        const raw = String(value ?? "");
+        if (/[",\n]/.test(raw)) return `"${raw.replace(/"/g, '""')}"`;
+        return raw;
+      }
+      function downloadCsv(filename, rows) {
+        const csv = rows.map((row) => row.map(escapeCsv).join(",")).join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      const PRESETS = {
+        conservative: {
+          min24hQuoteVolume: 2000000,
+          maxSpreadPct: 0.45,
+          candleChangePctMin: 0.9,
+          rangePctMin: 1.2,
+          volumeLookback: 10,
+          volumeRatioMin: 1.4,
+          breakoutLookback: 8,
+          maxCloseFromHighPct: 0.9,
+          minBodyToRangeRatio: 0.32,
+          watchlistTopN: 15,
+          earlyScoreMin: 6,
+          earlyNearHighPct: 0.8,
+          earlyVolumeRatioMin: 1.25,
+          earlyRelativeStrengthMin: 0.35,
+          maxOverextensionPct: 3.8,
+        },
+        balanced: {
+          min24hQuoteVolume: 500000,
+          maxSpreadPct: 1.0,
+          candleChangePctMin: 0.6,
+          rangePctMin: 0.8,
+          volumeLookback: 10,
+          volumeRatioMin: 1.15,
+          breakoutLookback: 5,
+          maxCloseFromHighPct: 1.5,
+          minBodyToRangeRatio: 0.2,
+          watchlistTopN: 20,
+          earlyScoreMin: 5,
+          earlyNearHighPct: 1.2,
+          earlyVolumeRatioMin: 1.15,
+          earlyRelativeStrengthMin: 0.2,
+          maxOverextensionPct: 4.5,
+        },
+        aggressive: {
+          min24hQuoteVolume: 100000,
+          maxSpreadPct: 1.5,
+          candleChangePctMin: 0.3,
+          rangePctMin: 0.45,
+          volumeLookback: 10,
+          volumeRatioMin: 0.9,
+          breakoutLookback: 3,
+          maxCloseFromHighPct: 2.2,
+          minBodyToRangeRatio: 0.1,
+          watchlistTopN: 30,
+          earlyScoreMin: 4,
+          earlyNearHighPct: 1.8,
+          earlyVolumeRatioMin: 1.05,
+          earlyRelativeStrengthMin: 0.0,
+          maxOverextensionPct: 5.5,
+        },
+      };
+
+      function getSettings() {
+        const presetLevel = $("presetLevel") ? $("presetLevel").value : "balanced";
+        const preset = PRESETS[presetLevel] || PRESETS.balanced;
+        return {
+          baseUrl: "https://data-api.binance.vision",
+          interval: $("interval").value.trim(),
+          quoteAsset: "USDT",
+          topN: 30,
+          maxWorkers: 8,
+          scanEverySeconds: 60,
+          postCloseBufferSeconds: 2,
+          excludeLeveragedTokens: true,
+          onlyNewCandles: true,
+          klineLimit: 40,
+          ...preset,
+        };
+      }
+
+      async function fetchJson(s, path, params = {}) {
+        const url = new URL(s.baseUrl + path);
+        Object.entries(params).forEach(([k, v]) => {
+          if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
+        });
+
+        let lastError = null;
+        for (let attempt = 1; attempt <= REQUEST_RETRIES; attempt++) {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+          try {
+            const response = await fetch(url.toString(), {
+              headers: { Accept: "application/json" },
+              signal: controller.signal,
+            });
+            if (response.status === 429 && attempt < REQUEST_RETRIES) {
+              const retryAfter = Number(response.headers.get("Retry-After"));
+              const delay = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : attempt * 1500;
+              await sleep(delay);
+              continue;
+            }
+            if (!response.ok) throw new Error(`HTTP ${response.status} on ${path}`);
+            return await response.json();
+          } catch (error) {
+            lastError = error;
+            if (attempt >= REQUEST_RETRIES) {
+              const message = error?.name === "AbortError" ? `Timeout after ${REQUEST_TIMEOUT_MS}ms on ${path}` : error?.message || `Request failed on ${path}`;
+              throw new Error(message);
+            }
+            await sleep(attempt * 600);
+          } finally {
+            clearTimeout(timeoutId);
+          }
+        }
+        throw new Error(lastError?.message || `Request failed on ${path}`);
+      }
+
+      function isLeveragedSymbol(baseAsset, s) {
+        return s.excludeLeveragedTokens && leveragedSuffixes.some((x) => baseAsset.endsWith(x));
+      }
+      async function getSpotQuoteSymbols(s) {
+        const data = await fetchJson(s, "/api/v3/exchangeInfo", {
+          permissions: "SPOT",
+          symbolStatus: "TRADING",
+          showPermissionSets: "false",
+        });
+        const out = [];
+        for (const info of data.symbols || []) {
+          if (info.quoteAsset !== s.quoteAsset) continue;
+          if (info.status !== "TRADING") continue;
+          if (!info.isSpotTradingAllowed) continue;
+          if (isLeveragedSymbol(info.baseAsset || "", s)) continue;
+          out.push(info.symbol);
+        }
+        return out.sort();
+      }
+      async function getSymbolMap(s, path, symbols, params = {}) {
+        const data = await fetchJson(s, path, params);
+        const arr = Array.isArray(data) ? data : [data];
+        const want = new Set(symbols);
+        const map = new Map();
+        for (const item of arr) {
+          if (item && want.has(item.symbol)) map.set(item.symbol, item);
+        }
+        return map;
+      }
+      async function get24hStats(s, symbols) {
+        return getSymbolMap(s, "/api/v3/ticker/24hr", symbols, { symbolStatus: "TRADING" });
+      }
+      async function getBookTickers(s, symbols) {
+        return getSymbolMap(s, "/api/v3/ticker/bookTicker", symbols, { symbolStatus: "TRADING" });
+      }
+      function filterLiquidSymbols(symbols, stats, s) {
+        return symbols.filter((sym) => {
+          const st = stats.get(sym);
+          return st && safeFloat(st.quoteVolume) >= s.min24hQuoteVolume;
+        });
+      }
+      function filterTradableSymbols(symbols, books, s) {
+        const tradable = [];
+        const spreads = new Map();
+        for (const sym of symbols) {
+          const item = books.get(sym);
+          if (!item) continue;
+          const bid = safeFloat(item.bidPrice);
+          const ask = safeFloat(item.askPrice);
+          if (bid <= 0 || ask <= 0 || ask <= bid) continue;
+          const spreadPct = ((ask - bid) / ask) * 100;
+          if (spreadPct <= s.maxSpreadPct) {
+            tradable.push(sym);
+            spreads.set(sym, spreadPct);
+          }
+        }
+        return { tradable, spreads };
+      }
+      async function mapWithConcurrency(items, concurrency, fn) {
+        const results = [];
+        let index = 0;
+        async function worker() {
+          while (true) {
+            const i = index++;
+            if (i >= items.length) return;
+            try {
+              results[i] = await fn(items[i], i);
+            } catch (error) {
+              results[i] = { __error: error, __item: items[i] };
+            }
+          }
+        }
+        const workers = Array.from({ length: Math.min(concurrency, items.length) }, () => worker());
+        await Promise.all(workers);
+        return results;
+      }
+
+      function requiredKlineLimit(s) {
+        return Math.max(s.volumeLookback + 5, s.breakoutLookback + 5, s.klineLimit);
+      }
+
+      async function getBtcContext(s) {
+        const klines = await fetchJson(s, "/api/v3/klines", {
+          symbol: "BTCUSDT",
+          interval: s.interval,
+          limit: 25,
+        });
+        if (!Array.isArray(klines) || klines.length < 22) {
+          return {
+            marketHealthy: true,
+            entryAllowed: true,
+            shortChangePct: 0,
+            stateText: "BTC: بيانات غير كافية",
+            className: "pill warn",
+          };
+        }
+        const closed = klines.slice(0, -1);
+        const last = closed[closed.length - 1];
+        const ref = closed[closed.length - 4] || closed[0];
+        const close = safeFloat(last[4]);
+        const open = safeFloat(last[1]);
+        const shortBase = safeFloat(ref[4]) || close;
+        const shortChangePct = shortBase > 0 ? ((close - shortBase) / shortBase) * 100 : 0;
+        const lastCandlePct = open > 0 ? ((close - open) / open) * 100 : 0;
+        const sma20 = mean(closed.slice(-20).map((x) => safeFloat(x[4])));
+        const belowSma = close < sma20;
+        const panicDrop = lastCandlePct < -0.45 || shortChangePct < -0.9;
+        const marketHealthy = !panicDrop;
+        const entryAllowed = marketHealthy && !(belowSma && shortChangePct < -0.35);
+        let stateText = "BTC: طبيعي";
+        let className = "pill good";
+        if (!marketHealthy) {
+          stateText = "BTC: ضغط هابط - حظر إشارات";
+          className = "pill bad";
+        } else if (!entryAllowed) {
+          stateText = "BTC: حذر - تقليل الدخول";
+          className = "pill warn";
+        }
+        return { marketHealthy, entryAllowed, shortChangePct, stateText, className };
+      }
+
+      function mapReason(reason) {
+        const dict = {
+          spread_good: "سبريد جيد",
+          above_sma20: "فوق SMA20",
+          volume_buildup: "تراكم حجم",
+          near_breakout: "قرب اختراق",
+          relative_strength: "قوة نسبية",
+          tight_structure: "تماسك جيد",
+        };
+        return dict[reason] || reason;
+      }
+
+      async function computeEarlyCandidate(s, symbol, spreadPct, btcContext) {
+        const klines = await fetchJson(s, "/api/v3/klines", {
+          symbol,
+          interval: s.interval,
+          limit: 30,
+        });
+        if (!Array.isArray(klines) || klines.length < 20) return null;
+
+        const closed = klines.slice(0, -1);
+        const last = closed[closed.length - 1];
+        const last3 = closed.slice(-3);
+        const prev10 = closed.slice(-13, -3);
+        const prev8 = closed.slice(-9, -1);
+        const close = safeFloat(last[4]);
+        const sma20 = mean(closed.slice(-20).map((x) => safeFloat(x[4])));
+        const avgVol3 = mean(last3.map((x) => safeFloat(x[5])));
+        const avgVol10 = mean(prev10.map((x) => safeFloat(x[5])));
+        const recentHigh = Math.max(...prev8.map((x) => safeFloat(x[2])));
+        const distanceToHighPct = recentHigh > 0 ? ((recentHigh - close) / recentHigh) * 100 : 999;
+        const coinBase = safeFloat(closed[closed.length - 4]?.[4]) || close;
+        const coinChangePct = coinBase > 0 ? ((close - coinBase) / coinBase) * 100 : 0;
+        const relativeStrength = coinChangePct - btcContext.shortChangePct;
+
+        const recentRanges = last3.map((x) => {
+          const high = safeFloat(x[2]);
+          const low = safeFloat(x[3]);
+          return low > 0 ? ((high - low) / low) * 100 : 0;
+        });
+        const avgRange3 = mean(recentRanges);
+        const prevRanges = prev10.map((x) => {
+          const high = safeFloat(x[2]);
+          const low = safeFloat(x[3]);
+          return low > 0 ? ((high - low) / low) * 100 : 0;
+        });
+        const avgRange10 = mean(prevRanges);
+        const tightStructure = avgRange10 > 0 ? avgRange3 <= avgRange10 * 1.2 : false;
+
+        let score = 0;
+        const reasons = [];
+        if (spreadPct <= s.maxSpreadPct * 0.8) { score += 1; reasons.push("spread_good"); }
+        if (close > sma20) { score += 1; reasons.push("above_sma20"); }
+        if (avgVol10 > 0 && avgVol3 / avgVol10 >= s.earlyVolumeRatioMin) { score += 2; reasons.push("volume_buildup"); }
+        if (distanceToHighPct <= s.earlyNearHighPct) { score += 2; reasons.push("near_breakout"); }
+        if (relativeStrength >= s.earlyRelativeStrengthMin) { score += 2; reasons.push("relative_strength"); }
+        if (tightStructure) { score += 1; reasons.push("tight_structure"); }
+        if (score < s.earlyScoreMin) return null;
+
+        return {
+          symbol,
+          spreadPct,
+          earlyScore: score,
+          reasons,
+          price: close,
+          distanceToHighPct,
+          volumeBuildupRatio: avgVol10 > 0 ? avgVol3 / avgVol10 : 0,
+          relativeStrength,
+          candleOpenTimeMs: Number(last[0]),
+        };
+      }
+
+      async function computeConfirmedSignal(s, candidate, btcContext) {
+        const symbol = candidate.symbol;
+        const klines = await fetchJson(s, "/api/v3/klines", {
+          symbol,
+          interval: s.interval,
+          limit: requiredKlineLimit(s),
+        });
+        if (!Array.isArray(klines) || klines.length < 20) return null;
+
+        const closed = klines.slice(0, -1);
+        const candle = closed[closed.length - 1];
+        const prevVol = closed.slice(-(s.volumeLookback + 1), -1);
+        const prevBreak = closed.slice(-(s.breakoutLookback + 1), -1);
+        if (prevVol.length < s.volumeLookback || prevBreak.length < s.breakoutLookback) return null;
+
+        const open = safeFloat(candle[1]);
+        const high = safeFloat(candle[2]);
+        const low = safeFloat(candle[3]);
+        const close = safeFloat(candle[4]);
+        const volume = safeFloat(candle[5]);
+        if (Math.min(open, high, low, close) <= 0) return null;
+        if (close <= open) return null;
+
+        const candleChangePct = ((close - open) / open) * 100;
+        const rangePct = low > 0 ? ((high - low) / low) * 100 : 0;
+        const closeFromHighPct = high > 0 ? ((high - close) / high) * 100 : 999;
+        const bodyToRangeRatio = Math.abs(close - open) / Math.max(high - low, 1e-12);
+        const avgPrevVolume = mean(prevVol.map((x) => safeFloat(x[5])));
+        const volumeRatio = avgPrevVolume > 0 ? volume / avgPrevVolume : 0;
+        const breakoutLevel = Math.max(...prevBreak.map((x) => safeFloat(x[2])));
+        const breakout = close > breakoutLevel;
+        const sma20 = mean(closed.slice(-20).map((x) => safeFloat(x[4])));
+        const upperWick = high - close;
+        const lowerWick = open - low;
+        const body = close - open;
+        const safeRejection = upperWick <= (body + lowerWick);
+        const trendOk = close > sma20;
+        const notOverextended = candleChangePct <= s.maxOverextensionPct;
+
+        if (candleChangePct < s.candleChangePctMin) return null;
+        if (rangePct < s.rangePctMin) return null;
+        if (volumeRatio < s.volumeRatioMin) return null;
+        if (closeFromHighPct > s.maxCloseFromHighPct) return null;
+        if (bodyToRangeRatio < s.minBodyToRangeRatio) return null;
+        if (!breakout) return null;
+        if (!trendOk) return null;
+        if (!safeRejection) return null;
+        if (!notOverextended) return null;
+        if (!btcContext.entryAllowed) return null;
+
+        const entry = high * 1.001;
+        const stop = low * 0.999;
+        const risk = entry - stop;
+        if (risk <= 0) return null;
+
+        return {
+          symbol,
+          price: close,
+          candleChangePct,
+          rangePct,
+          volumeRatio,
+          spreadPct: candidate.spreadPct,
+          closeFromHighPct,
+          entry,
+          stop,
+          takeProfit1R: entry + risk,
+          takeProfit2R: entry + 2 * risk,
+          candleOpenTimeMs: Number(candle[0]),
+          earlyScore: candidate.earlyScore,
+          reasons: candidate.reasons,
+        };
+      }
+
+      function rankSignals(signals) {
+        return [...signals].sort((a, b) => {
+          if (b.earlyScore !== a.earlyScore) return b.earlyScore - a.earlyScore;
+          if (b.candleChangePct !== a.candleChangePct) return b.candleChangePct - a.candleChangePct;
+          if (b.volumeRatio !== a.volumeRatio) return b.volumeRatio - a.volumeRatio;
+          return a.spreadPct - b.spreadPct;
+        });
+      }
+
+      function resolveReportCandleTime(signals, watchlist, s) {
+        const bag = [...signals, ...watchlist];
+        if (bag.length) return Math.max(...bag.map((x) => x.candleOpenTimeMs || 0));
+        const sec = intervalToSeconds(s.interval);
+        if (!sec) return null;
+        const now = Math.floor(Date.now() / 1000);
+        return (Math.floor(now / sec) - 1) * sec * 1000;
+      }
+
+      async function scanOnce(s) {
+        const started = performance.now();
+        const btcContext = await getBtcContext(s);
+        if (!btcContext.marketHealthy) {
+          return {
+            totalSymbols: 0,
+            liquidSymbols: 0,
+            tradableSymbols: 0,
+            watchlist: [],
+            signals: [],
+            btcContext,
+            elapsedSeconds: (performance.now() - started) / 1000,
+            candleOpenTimeMs: null,
+          };
+        }
+
+        const symbols = await getSpotQuoteSymbols(s);
+        if (!symbols.length) {
+          return {
+            totalSymbols: 0,
+            liquidSymbols: 0,
+            tradableSymbols: 0,
+            watchlist: [],
+            signals: [],
+            btcContext,
+            elapsedSeconds: (performance.now() - started) / 1000,
+            candleOpenTimeMs: null,
+          };
+        }
+
+        const stats24h = await get24hStats(s, symbols);
+        const liquid = filterLiquidSymbols(symbols, stats24h, s);
+        const books = await getBookTickers(s, liquid);
+        const { tradable, spreads } = filterTradableSymbols(liquid, books, s);
+
+        const earlyRaw = await mapWithConcurrency(tradable, s.maxWorkers, (sym) =>
+          computeEarlyCandidate(s, sym, spreads.get(sym), btcContext)
+        );
+
+        const watchlist = earlyRaw
+          .filter(Boolean)
+          .filter((x) => !x.__error)
+          .sort((a, b) => {
+            if (b.earlyScore !== a.earlyScore) return b.earlyScore - a.earlyScore;
+            if (a.distanceToHighPct !== b.distanceToHighPct) return a.distanceToHighPct - b.distanceToHighPct;
+            return b.relativeStrength - a.relativeStrength;
+          })
+          .slice(0, s.watchlistTopN);
+
+        for (const item of earlyRaw) {
+          if (item && item.__error) log(`[warn] watchlist ${item.__item}: ${item.__error.message}`);
+        }
+
+        const confirmRaw = await mapWithConcurrency(watchlist, s.maxWorkers, (candidate) =>
+          computeConfirmedSignal(s, candidate, btcContext)
+        );
+        const signals = [];
+        for (const item of confirmRaw) {
+          if (!item) continue;
+          if (item.__error) {
+            log(`[warn] confirm ${item.__item?.symbol || "unknown"}: ${item.__error.message}`);
+            continue;
+          }
+          signals.push(item);
+        }
+
+        const rankedSignals = rankSignals(signals);
+        return {
+          totalSymbols: symbols.length,
+          liquidSymbols: liquid.length,
+          tradableSymbols: tradable.length,
+          watchlist,
+          signals: rankedSignals,
+          btcContext,
+          elapsedSeconds: (performance.now() - started) / 1000,
+          candleOpenTimeMs: resolveReportCandleTime(rankedSignals, watchlist, s),
+        };
+      }
+
+      function renderSummary(report) {
+        $("statTotalSymbols").textContent = report.totalSymbols;
+        $("statLiquidSymbols").textContent = report.liquidSymbols;
+        $("statTradableSymbols").textContent = report.tradableSymbols;
+        $("statWatchlist").textContent = report.watchlist.length;
+        $("statSignals").textContent = report.signals.length;
+        $("statElapsed").textContent = `${report.elapsedSeconds.toFixed(2)}s`;
+        $("statBtcChange").textContent = `${report.btcContext.shortChangePct.toFixed(2)}%`;
+        $("lastScanStatus").textContent = `آخر فحص: ${new Date().toLocaleString()}`;
+        $("candleStatus").textContent = `الشمعة: ${formatTimestampMs(report.candleOpenTimeMs)}`;
+        const btc = $("btcStatus");
+        btc.textContent = report.btcContext.stateText;
+        btc.className = report.btcContext.className;
+      }
+      function renderBestSummary(report) {
+        const bestWatch = report.watchlist?.[0];
+        const bestSignal = report.signals?.[0];
+        $("bestWatchSymbol").textContent = bestWatch ? bestWatch.symbol : "—";
+        $("bestWatchText").textContent = bestWatch
+          ? `Score ${bestWatch.earlyScore} | قرب القمة ${bestWatch.distanceToHighPct.toFixed(2)}% | قوة نسبية ${bestWatch.relativeStrength.toFixed(2)}`
+          : "لا توجد بيانات بعد";
+        $("bestSignalSymbol").textContent = bestSignal ? bestSignal.symbol : "—";
+        $("bestSignalText").textContent = bestSignal
+          ? `Score ${bestSignal.earlyScore} | تغير الشمعة ${bestSignal.candleChangePct.toFixed(2)}% | حجم ${bestSignal.volumeRatio.toFixed(2)}x`
+          : "لا توجد بيانات بعد";
+      }
+
+      function renderEmptyState(bodyId, colspan, message) {
+        const body = $(bodyId);
+        body.replaceChildren();
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = colspan;
+        td.className = "empty-state";
+        td.textContent = message;
+        tr.appendChild(td);
+        body.appendChild(tr);
+      }
+      function appendCell(row, value) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        row.appendChild(td);
+      }
+
+      let rowClickTimer = null;
+      function openBinanceSpot(symbol) {
+        if (!symbol) return;
+        const normalized = String(symbol).replace(/USDT$/, "_USDT");
+        const url = `https://www.binance.com/en/trade/${normalized}?type=spot`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+      function openTradingView(symbol) {
+        if (!symbol) return;
+        const normalized = String(symbol).replace(/[^A-Z0-9]/g, "");
+        const url = `https://www.tradingview.com/chart/?symbol=BINANCE:${normalized}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+      function makeRowOpenActions(row, symbol) {
+        row.classList.add("clickable-row");
+        row.title = "Clic: Binance Spot | Double-clic: TradingView";
+        row.addEventListener("click", () => {
+          clearTimeout(rowClickTimer);
+          rowClickTimer = setTimeout(() => openBinanceSpot(symbol), 220);
+        });
+        row.addEventListener("dblclick", () => {
+          clearTimeout(rowClickTimer);
+          openTradingView(symbol);
+        });
+      }
+      function createActionCell(symbol) {
+        const td = document.createElement("td");
+        const wrap = document.createElement("div");
+        wrap.className = "mini-actions";
+        const b1 = document.createElement("button");
+        b1.className = "btn-link";
+        b1.textContent = "Binance";
+        b1.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openBinanceSpot(symbol);
+        });
+        const b2 = document.createElement("button");
+        b2.className = "btn-link";
+        b2.textContent = "TV";
+        b2.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openTradingView(symbol);
+        });
+        wrap.appendChild(b1);
+        wrap.appendChild(b2);
+        td.appendChild(wrap);
+        return td;
+      }
+      function renderWatchlist(report) {
+        const body = $("watchlistBody");
+        body.replaceChildren();
+        const filtered = filterByUi(report.watchlist, "watchlist");
+        const rows = sortItems(filtered, "watchlist");
+        $("watchlistCountText").textContent = `${rows.length} عنصر`;
+        if (!rows.length) {
+          renderEmptyState("watchlistBody", 10, "لا توجد عملات ضمن قائمة المراقبة");
+          return;
+        }
+        rows.forEach((item, index) => {
+          const tr = document.createElement("tr");
+          makeRowOpenActions(tr, item.symbol);
+          if (index === 0) tr.classList.add("row-strong");
+          appendCell(tr, item.symbol);
+          appendCell(tr, item.earlyScore.toFixed(0));
+          appendCell(tr, formatPrice(item.price));
+          appendCell(tr, item.distanceToHighPct.toFixed(2));
+          appendCell(tr, item.volumeBuildupRatio.toFixed(2));
+          appendCell(tr, item.relativeStrength.toFixed(2));
+          appendCell(tr, item.spreadPct.toFixed(3));
+          const statusTd = document.createElement("td");
+          statusTd.innerHTML = '<span class="badge">مراقبة</span>';
+          tr.appendChild(statusTd);
+          appendCell(tr, item.reasons.map(mapReason).join(" + "));
+          tr.appendChild(createActionCell(item.symbol));
+          body.appendChild(tr);
+        });
+      }
+      function renderSignals(report, s) {
+        const body = $("signalsBody");
+        body.replaceChildren();
+        const filtered = filterByUi(report.signals, "signals");
+        const rows = sortItems(filtered, "signals").slice(0, s.topN);
+        $("signalsCountText").textContent = `${rows.length} إشارة`;
+        if (!rows.length) {
+          renderEmptyState("signalsBody", 12, "لا توجد إشارات مؤكدة");
+          return;
+        }
+        rows.forEach((signal, index) => {
+          const tr = document.createElement("tr");
+          makeRowOpenActions(tr, signal.symbol);
+          if (index === 0) tr.classList.add("row-strong");
+          appendCell(tr, signal.symbol);
+          appendCell(tr, formatPrice(signal.price));
+          appendCell(tr, signal.candleChangePct.toFixed(2));
+          appendCell(tr, signal.rangePct.toFixed(2));
+          appendCell(tr, signal.volumeRatio.toFixed(2));
+          appendCell(tr, signal.spreadPct.toFixed(3));
+          appendCell(tr, signal.closeFromHighPct.toFixed(3));
+          appendCell(tr, formatPrice(signal.entry));
+          appendCell(tr, formatPrice(signal.stop));
+          appendCell(tr, formatPrice(signal.takeProfit1R));
+          appendCell(tr, formatPrice(signal.takeProfit2R));
+          tr.appendChild(createActionCell(signal.symbol));
+          body.appendChild(tr);
+        });
+      }
+      function renderReport(report, s) {
+        currentReport = report;
+        renderSummary(report);
+        renderBestSummary(report);
+        renderWatchlist(report);
+        renderSignals(report, s);
+      }
+
+      function setUiState() {
+        $("scanNowBtn").disabled = isRunning || isCycleRunning;
+        $("startBtn").disabled = isRunning || isCycleRunning;
+        $("stopBtn").disabled = !isRunning;
+        const status = $("engineStatus");
+        if (isRunning && isCycleRunning) {
+          status.textContent = "الحالة: يعمل";
+          status.className = "pill good";
+          return;
+        }
+        if (isRunning) {
+          status.textContent = "الحالة: انتظار الدورة التالية";
+          status.className = "pill info";
+          return;
+        }
+        if (isCycleRunning) {
+          status.textContent = "الحالة: فحص يدوي";
+          status.className = "pill info";
+          return;
+        }
+        status.textContent = "الحالة: متوقف";
+        status.className = "pill warn";
+      }
+
+      function computeDelayToNextCycle(s) {
+        const sec = intervalToSeconds(s.interval);
+        if (sec) {
+          const now = Math.floor(Date.now() / 1000);
+          const nextBoundary = (Math.floor(now / sec) + 1) * sec;
+          const wakeAt = (nextBoundary + s.postCloseBufferSeconds) * 1000;
+          return Math.max(wakeAt - Date.now(), 0);
+        }
+        return s.scanEverySeconds * 1000;
+      }
+      function scheduleNextLoop(s) {
+        clearTimeout(timer);
+        timer = setTimeout(loop, computeDelayToNextCycle(s));
+      }
+
+      async function executeSingleCycle(options = {}) {
+        const { silentIfBusy = false } = options;
+        if (isCycleRunning) {
+          if (!silentIfBusy) log("الفحص السابق لم ينته بعد");
+          return null;
+        }
+        isCycleRunning = true;
+        setUiState();
+        const s = getSettings();
+        saveSettings();
+        log("جاري الفحص بطبقتين...");
+        try {
+          const report = await scanOnce(s);
+          const isNew = report.candleOpenTimeMs !== lastPrintedCandleOpenTimeMs;
+          renderSummary(report);
+          renderBestSummary(report);
+          if (!s.onlyNewCandles || isNew) {
+            renderWatchlist(report);
+            renderSignals(report, s);
+            currentReport = report;
+            lastPrintedCandleOpenTimeMs = report.candleOpenTimeMs;
+            log(`السوق: ${report.totalSymbols} | سيولة: ${report.liquidSymbols} | قابل للتداول: ${report.tradableSymbols} | مراقبة: ${report.watchlist.length} | إشارات: ${report.signals.length} | BTC: ${report.btcContext.shortChangePct.toFixed(2)}% | ${report.elapsedSeconds.toFixed(2)}ث`);
+          } else {
+            log(`تم تجاهل نفس الشمعة: ${formatTimestampMs(report.candleOpenTimeMs)}`);
+          }
+          return report;
+        } catch (error) {
+          log(`[error] ${error.message}`);
+          return null;
+        } finally {
+          isCycleRunning = false;
+          setUiState();
+        }
+      }
+
+      async function loop() {
+        if (!isRunning) return;
+        await executeSingleCycle({ silentIfBusy: true });
+        if (!isRunning) return;
+        scheduleNextLoop(getSettings());
+      }
+      function start() {
+        if (isRunning || isCycleRunning) return;
+        isRunning = true;
+        setUiState();
+        saveSettings();
+        log("تم تشغيل النظام المستمر بطبقتين");
+        loop();
+      }
+      function stop() {
+        isRunning = false;
+        clearTimeout(timer);
+        timer = null;
+        setUiState();
+        log("تم الإيقاف");
+      }
+
+      restoreSettings();
+      bindSettingPersistence();
+      setUiState();
+      renderEmptyState("watchlistBody", 10, "لا توجد نتائج بعد");
+      renderEmptyState("signalsBody", 12, "لا توجد نتائج بعد");
+      document.querySelectorAll(".sortable").forEach((th) => {
+        th.addEventListener("click", () => {
+          const tableName = th.dataset.table;
+          const key = th.dataset.sort;
+          if (!tableName || !key) return;
+          if (sortState[tableName].key === key) {
+            sortState[tableName].dir = sortState[tableName].dir === "asc" ? "desc" : "asc";
+          } else {
+            sortState[tableName].key = key;
+            sortState[tableName].dir = tableName === "watchlist" ? "desc" : "desc";
+          }
+          if (currentReport) {
+            renderWatchlist(currentReport);
+            renderSignals(currentReport, getSettings());
+          }
+        });
+      });
+      $("searchSymbol").addEventListener("input", () => {
+        if (currentReport) {
+          renderWatchlist(currentReport);
+          renderSignals(currentReport, getSettings());
+        }
+      });
+      $("focusMode").addEventListener("change", () => {
+        if (currentReport) {
+          renderWatchlist(currentReport);
+          renderSignals(currentReport, getSettings());
+        }
+      });
+      $("clearFiltersBtn").addEventListener("click", () => {
+        $("searchSymbol").value = "";
+        $("focusMode").value = "all";
+        saveSettings();
+        if (currentReport) {
+          renderWatchlist(currentReport);
+          renderSignals(currentReport, getSettings());
+        }
+      });
+      $("exportSignalsBtn").addEventListener("click", () => {
+        const report = currentReport || { signals: [] };
+        const rows = sortItems(filterByUi(report.signals || [], "signals"), "signals");
+        if (!rows.length) {
+          log("لا توجد إشارات لتصديرها");
+          return;
+        }
+        downloadCsv("confirmed_signals.csv", [
+          ["symbol","price","candle_change_pct","range_pct","volume_ratio","spread_pct","close_from_high_pct","entry","stop","tp1","tp2","early_score"],
+          ...rows.map((x) => [
+            x.symbol, x.price, x.candleChangePct, x.rangePct, x.volumeRatio, x.spreadPct, x.closeFromHighPct,
+            x.entry, x.stop, x.takeProfit1R, x.takeProfit2R, x.earlyScore
+          ])
+        ]);
+        log(`تم تصدير ${rows.length} إشارة إلى CSV`);
+      });
+      $("scanNowBtn").addEventListener("click", () => executeSingleCycle());
+      $("startBtn").addEventListener("click", start);
+      $("stopBtn").addEventListener("click", stop);
+      log("الواجهة المحسنة ذات الطبقتين جاهزة");
+    </script>
+  </body>
+</html>

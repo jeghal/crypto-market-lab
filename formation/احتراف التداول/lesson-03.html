@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الحصة 3: كيف يعمل سوق الكريبتو؟</title>
+  <meta
+    name="description"
+    content="الدرس الثالث في برنامج تعلم تداول العملات الرقمية: فهم طريقة عمل سوق العملات الرقمية وأنواع التداول الأساسية."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      --panel: rgba(8, 23, 31, 0.82);
+      --panel-strong: rgba(9, 28, 38, 0.96);
+      --line: rgba(154, 192, 207, 0.16);
+      --text: #ebf6f8;
+      --muted: #b6c9cf;
+      --gold: #f8b84e;
+      --gold-soft: rgba(248, 184, 78, 0.16);
+      --teal: #2bd0b5;
+      --danger: #ff9078;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --max: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(43, 208, 181, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(248, 184, 78, 0.16), transparent 30%),
+        linear-gradient(180deg, #041017 0%, #081923 45%, #051017 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(calc(100% - 32px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(18px);
+      background: rgba(4, 14, 20, 0.76);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Changa", sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #ffdb8a);
+      color: #17212a;
+      box-shadow: 0 12px 28px rgba(248, 184, 78, 0.28);
+    }
+
+    .back-link,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      transition: 0.25s ease;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .back-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      color: var(--text);
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--gold), #ffd98c);
+      color: #15222d;
+    }
+
+    .hero {
+      padding: 60px 0 28px;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .question-grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero-grid { grid-template-columns: 1.1fr 0.9fr; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .question-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-panel,
+    .info-panel,
+    .section-card,
+    .wide-card,
+    .question-card,
+    .quote-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      padding: 28px;
+    }
+
+    .quote-card {
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.12), transparent),
+        var(--panel-strong);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #ffd68d;
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Changa", sans-serif;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.8rem);
+      margin-bottom: 16px;
+      max-width: 12ch;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-item strong,
+    .section-card h3,
+    .wide-card h3,
+    .question-card h3,
+    .quote-card h3 {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text);
+      font-size: 1.05rem;
+    }
+
+    .section-card h4,
+    .wide-card h4,
+    .question-card h4 {
+      margin: 18px 0 10px;
+      color: var(--gold);
+      font-size: 1rem;
+    }
+
+    .lesson-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .lesson-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      transition: 0.2s ease;
+    }
+
+    .lesson-chip:hover {
+      color: var(--text);
+      border-color: rgba(248, 184, 78, 0.24);
+      background: rgba(248, 184, 78, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .key-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .key-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #ffe5ab;
+      font-family: "Changa", sans-serif;
+    }
+
+    .study-note {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(43, 208, 181, 0.08);
+      border: 1px solid rgba(43, 208, 181, 0.16);
+    }
+
+    .study-note strong {
+      color: var(--text);
+    }
+
+    .next-step {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .next-step p {
+      max-width: 60ch;
+    }
+
+    main section { padding: 18px 0; }
+
+    .section-heading {
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin-bottom: 10px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    li {
+      position: relative;
+      padding-right: 18px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    li::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--teal));
+    }
+
+    .numbered li {
+      padding-right: 52px;
+    }
+
+    .numbered li::before {
+      content: attr(data-step);
+      top: 0;
+      right: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 184, 78, 0.14);
+      color: #ffe4aa;
+      font-family: "Changa", sans-serif;
+    }
+
+    .message {
+      font-family: "Changa", sans-serif;
+      font-size: clamp(1.35rem, 2.7vw, 2rem);
+      color: #fff2cf;
+      line-height: 1.6;
+    }
+
+    .lesson-rail {
+      padding: 24px 0 0;
+    }
+
+    .lesson-rail-box {
+      padding: 24px 28px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(248, 184, 78, 0.08), rgba(255, 255, 255, 0.02)),
+        var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-rail-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .lesson-rail-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .lesson-rail-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .lesson-map {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .lesson-link-pill,
+    .lesson-rail-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .lesson-link-pill:hover,
+    .lesson-rail-action:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    .lesson-link-pill.current {
+      color: #fff4d2;
+      border-color: rgba(248, 184, 78, 0.45);
+      background: linear-gradient(135deg, rgba(248, 184, 78, 0.22), rgba(255, 144, 120, 0.18));
+      pointer-events: none;
+    }
+
+    .lesson-rail-pager {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pager-prev { justify-self: start; }
+    .pager-center { justify-self: center; }
+    .pager-next { justify-self: end; }
+
+    .pager-prev::before { content: "› "; }
+    .pager-next::after { content: " ‹"; }
+
+    .lesson-rail-action.is-disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .site-footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    /* ── Scroll progress ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transform-origin: right;
+      transform: scaleX(0);
+      z-index: 100;
+      transition: transform 0.08s linear;
+    }
+
+    /* ── Lesson chip active ── */
+    .lesson-chip.is-active {
+      color: #ffe5ab;
+      border-color: rgba(248, 184, 78, 0.35);
+      background: rgba(248, 184, 78, 0.1);
+    }
+
+    /* ── Reveal answers ── */
+    .reveal-block { margin-top: 16px; }
+
+    .reveal-block > summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(43, 208, 181, 0.07);
+      border: 1px solid rgba(43, 208, 181, 0.2);
+      color: var(--teal);
+      cursor: pointer;
+      font-family: "Changa", sans-serif;
+      font-size: 0.93rem;
+      list-style: none;
+      transition: 0.2s ease;
+      user-select: none;
+    }
+
+    .reveal-block > summary::-webkit-details-marker { display: none; }
+
+    .reveal-block > summary::before {
+      content: "▶";
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+    }
+
+    .reveal-block[open] > summary::before { transform: rotate(90deg); }
+
+    .reveal-block > summary:hover {
+      background: rgba(43, 208, 181, 0.14);
+      border-color: rgba(43, 208, 181, 0.38);
+    }
+
+    .reveal-content {
+      margin-top: 14px;
+      animation: revealDown 0.22s ease;
+    }
+
+    @keyframes revealDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Spot vs Futures compare ── */
+    .vs-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .vs-card {
+      padding: 22px 18px;
+      border-radius: 20px;
+    }
+
+    .vs-card.spot {
+      background: rgba(43, 208, 181, 0.08);
+      border: 1px solid rgba(43, 208, 181, 0.28);
+    }
+
+    .vs-card.futures {
+      background: rgba(255, 144, 120, 0.08);
+      border: 1px solid rgba(255, 144, 120, 0.28);
+    }
+
+    .vs-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-family: "Changa", sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+    }
+
+    .spot .vs-badge { background: rgba(43, 208, 181, 0.18); color: var(--teal); }
+    .futures .vs-badge { background: rgba(255, 144, 120, 0.18); color: var(--danger); }
+
+    .vs-separator {
+      font-family: "Changa", sans-serif;
+      font-size: 1.3rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .vs-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .vs-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .spot .vs-dot { background: var(--teal); }
+    .futures .vs-dot { background: var(--danger); }
+
+    /* ── Leverage risk meter ── */
+    .leverage-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .lev-card {
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      border: 1px solid;
+    }
+
+    .lev-card:nth-child(1) { background: rgba(43,208,181,0.08); border-color: rgba(43,208,181,0.25); }
+    .lev-card:nth-child(2) { background: rgba(248,184,78,0.08); border-color: rgba(248,184,78,0.25); }
+    .lev-card:nth-child(3) { background: rgba(255,144,120,0.1); border-color: rgba(255,144,120,0.3); }
+    .lev-card:nth-child(4) { background: rgba(255,80,80,0.12);  border-color: rgba(255,80,80,0.35); }
+
+    .lev-x {
+      font-family: "Changa", sans-serif;
+      font-size: 1.6rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .lev-card:nth-child(1) .lev-x { color: var(--teal); }
+    .lev-card:nth-child(2) .lev-x { color: var(--gold); }
+    .lev-card:nth-child(3) .lev-x { color: var(--danger); }
+    .lev-card:nth-child(4) .lev-x { color: #ff5050; }
+
+    .lev-label { font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+
+    @media (max-width: 1024px) {
+      .vs-grid { grid-template-columns: 1fr; }
+      .vs-separator { display: none; }
+      .leverage-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .question-grid,
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .key-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        padding: 14px 0;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .hero-panel,
+      .lesson-rail-box,
+      .info-panel,
+      .section-card,
+      .wide-card,
+      .question-card,
+      .quote-card {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      h1 { max-width: none; }
+    }
+
+    /* ── Spot vs Futures Visual ── */
+    .market-section {
+      padding: 28px;
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      margin-bottom: 24px;
+    }
+    .market-title {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 22px;
+    }
+    .market-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .market-card {
+      padding: 20px;
+      border-radius: 18px;
+      text-align: center;
+    }
+    .mc-spot    { background: rgba(43,208,181,0.10); border: 1px solid rgba(43,208,181,0.28); }
+    .mc-futures { background: rgba(255,100,100,0.10); border: 1px solid rgba(255,100,100,0.25); }
+    .mc-icon { font-size: 2rem; margin-bottom: 10px; }
+    .mc-name { font-family: "Changa", sans-serif; font-size: 1.1rem; color: var(--text); margin-bottom: 12px; }
+    .mc-rows { display: grid; gap: 8px; text-align: right; }
+    .mc-row { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .mc-row strong { color: var(--text); }
+    .mc-vs {
+      text-align: center;
+      font-family: "Changa", sans-serif;
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+    .market-rec {
+      text-align: center;
+      margin-top: 16px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(43,208,181,0.08);
+      border: 1px solid rgba(43,208,181,0.18);
+      font-size: 0.88rem;
+      color: var(--teal);
+    }
+  </style>
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">₿</span>
+        <span>احتراف التداول</span>
+      </a>
+      <a class="back-link" href="index.html#lessons">العودة إلى الصفحة الرئيسية</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="lesson-rail" aria-label="التنقل بين جميع الحصص">
+      <div class="container">
+        <div class="lesson-rail-box">
+          <div class="lesson-rail-pager">
+            <a class="lesson-rail-action pager-prev" href="lesson-02.html">الحصة السابقة</a>
+            <div class="lesson-map pager-center">
+              <a class="lesson-link-pill" href="lesson-01.html">1</a>
+              <a class="lesson-link-pill" href="lesson-02.html">2</a>
+              <a class="lesson-link-pill current" href="lesson-03.html">3</a>
+              <a class="lesson-link-pill" href="lesson-04.html">4</a>
+              <a class="lesson-link-pill" href="lesson-05.html">5</a>
+              <a class="lesson-link-pill" href="lesson-06.html">6</a>
+              <a class="lesson-link-pill" href="lesson-07.html">7</a>
+              <a class="lesson-link-pill" href="lesson-08.html">8</a>
+              <a class="lesson-link-pill" href="lesson-09.html">9</a>
+              <a class="lesson-link-pill" href="lesson-10.html">10</a>
+              <a class="lesson-link-pill" href="lesson-11.html">11</a>
+              <a class="lesson-link-pill" href="lesson-12.html">12</a>
+              <a class="lesson-link-pill" href="lesson-13.html">13</a>
+              <a class="lesson-link-pill" href="lesson-14.html">14</a>
+              <a class="lesson-link-pill" href="lesson-15.html">15</a>
+            </div>
+            <a class="lesson-rail-action pager-next" href="lesson-04.html">الحصة التالية</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <article class="hero-panel">
+          <span class="eyebrow">الحصة 3 من برنامج تعلّم تداول العملات الرقمية</span>
+          <h1>كيف يعمل سوق الكريبتو؟</h1>
+          <p>
+            هذه الحصة تشرح طريقة عمل سوق العملات الرقمية، وتوضح الفرق بين
+            <strong>Spot</strong> و <strong>Futures</strong>، مع تقديم مفهوم
+            <strong>الرافعة المالية</strong> ومخاطرها للمبتدئ بشكل مبسط.
+          </p>
+          <div class="lesson-nav" aria-label="التنقل داخل الحصة">
+            <a class="lesson-chip" href="#lesson-content">محتوى الحصة</a>
+            <a class="lesson-chip" href="#glossary">قاموس الحصة</a>
+            <a class="lesson-chip" href="#practice">النشاط التطبيقي</a>
+            <a class="lesson-chip" href="#review">أسئلة الفهم</a>
+            <a class="lesson-chip" href="#next-step">الخطوة التالية</a>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#lesson-content">ابدأ محتوى الحصة</a>
+            <a class="back-link" href="index.html#lessons">الرجوع إلى البرنامج</a>
+          </div>
+        </article>
+
+        <aside class="info-panel">
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>عنوان الحصة</strong>
+              <p>فهم طريقة عمل سوق العملات الرقمية وأنواع التداول الأساسية.</p>
+            </div>
+            <div class="meta-item">
+              <strong>المدة المقترحة</strong>
+              <p>45 إلى 60 دقيقة.</p>
+            </div>
+          </div>
+          <div class="section-card" style="margin-top: 16px;">
+            <h3>الهدف العام</h3>
+            <p>
+              أن يفهم المتعلم كيف يعمل سوق العملات الرقمية، ويتعرف على الفرق بين
+              <strong>التداول الفوري</strong> و<strong>العقود الآجلة</strong>، مع إدراك أولي
+              لمفهوم <strong>الرافعة المالية</strong> ومخاطرها.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>كيف تدرس هذه الحصة ذاتيًا؟</h3>
+          <ol class="numbered">
+            <li data-step="1">ابدأ بفهم معنى السوق أولًا، ثم فرّق بوضوح بين Spot وFutures قبل قراءة باقي المصطلحات.</li>
+            <li data-step="2">اربط كل مصطلح بمثال بسيط: امتلاك العملة في Spot، أو المضاربة على السعر في Futures.</li>
+            <li data-step="3">إذا شعرت أن العقود معقدة، لا تحاول التعمق فيها الآن؛ يكفي أن تفهم لماذا لا تناسب البداية.</li>
+          </ol>
+          <div class="study-note">
+            <strong>نصيحة تعلم ذاتي:</strong>
+            الهدف من هذه الحصة ليس أن تبدأ العقود، بل أن تفهم السوق بما يكفي لتختار البداية الأبسط والأكثر أمانًا.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>لماذا هذه الحصة مهمة؟</h3>
+          <p>
+            هذه الحصة تنقل المتعلم من فهم العملة والتقنية إلى فهم السوق نفسه. هنا يبدأ التمييز
+            بين التعلم المنظم والدخول العشوائي إلى التداول.
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>توضح الفرق بين امتلاك الأصل والمضاربة على حركته.</li>
+            <li>تكشف مبكرًا لماذا تكون العقود أخطر من التداول الفوري.</li>
+            <li>تمنحك لغة أساسية ستتكرر كثيرًا داخل المنصات.</li>
+          </ul>
+        </article>
+        <article class="section-card">
+          <h3>أخطاء شائعة عند فهم السوق</h3>
+          <ul>
+            <li>الاعتقاد أن Spot و Futures شيء واحد.</li>
+            <li>الانجذاب إلى الرافعة قبل فهم أصل المخاطرة.</li>
+            <li>الظن أن Long و Short أوامر سهلة للمبتدئ دون تدريب.</li>
+            <li>الدخول إلى العقود فقط لأن الأرباح تبدو أسرع.</li>
+          </ul>
+          <div class="study-note">
+            <strong>التصحيح:</strong>
+            إذا لم تكن تميز بوضوح بين امتلاك العملة والمضاربة على سعرها، فلا تنتقل إلى العقود
+            قبل تثبيت هذا الفرق.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-heading">
+          <h2>الأهداف التعلمية</h2>
+          <p>في نهاية الحصة، يصبح المتعلم قادرًا على قراءة المصطلحات الأساسية في السوق بشكل أوضح.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <ul>
+              <li>يفهم معنى سوق الكريبتو.</li>
+              <li>يميز بين <strong>Spot</strong> و <strong>Futures</strong>.</li>
+              <li>يعرف معنى الرافعة المالية.</li>
+            </ul>
+          </article>
+          <article class="section-card">
+            <ul>
+              <li>يفهم معنى الشراء والبيع على المكشوف بشكل مبسط.</li>
+              <li>يدرك مخاطر العقود بالنسبة للمبتدئ.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>التمهيد</h3>
+          <p>
+            يمكن البدء بالسؤال التالي:
+            <strong>عندما نشتري عملة رقمية، هل نمتلكها فعلًا؟ أم أننا فقط نراهن على ارتفاع سعرها؟</strong>
+          </p>
+          <p style="margin-top: 14px;">
+            ثم تُجمع الأجوبة لإبراز أن هناك أكثر من طريقة للتداول داخل السوق.
+          </p>
+        </article>
+        <article class="section-card">
+          <h3>وضعية الانطلاق</h3>
+          <p>
+            فتح أحد المبتدئين منصة تداول، فوجد نوعين من الأسواق: <strong>Spot</strong> و
+            <strong>Futures</strong>.
+          </p>
+          <p style="margin-top: 14px;">
+            كما وجد كلمات مثل: <strong>Leverage</strong> و<strong>Liquidation</strong> و
+            <strong>Long</strong> و<strong>Short</strong>.
+          </p>
+          <p style="margin-top: 14px;">
+            <strong>كيف يعمل سوق الكريبتو؟ وما الفرق بين هذه الأنواع؟</strong>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="lesson-content">
+      <div class="container">
+        <div class="section-heading">
+          <h2>مضمون الحصة</h2>
+          <p>المحاور التالية تشرح أبسط مفاهيم السوق التي يحتاجها المتعلم قبل الدخول في التطبيق العملي.</p>
+        </div>
+        <div class="grid-2">
+          <article class="section-card">
+            <h3>1) ما هو سوق الكريبتو؟</h3>
+            <p>سوق الكريبتو هو المكان الذي يتم فيه:</p>
+            <ul style="margin-top: 14px;">
+              <li>شراء العملات الرقمية.</li>
+              <li>بيعها.</li>
+              <li>تبادلها.</li>
+              <li>المضاربة على حركتها السعرية.</li>
+            </ul>
+            <p style="margin-top: 14px;">وتتحرك الأسعار فيه باستمرار حسب:</p>
+            <ul style="margin-top: 14px;">
+              <li>العرض والطلب.</li>
+              <li>الأخبار.</li>
+              <li>حجم التداول.</li>
+              <li>نفسية المتداولين.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>2) ما هو التداول الفوري Spot؟</h3>
+            <p>
+              في التداول الفوري، يقوم المتداول بشراء العملة الرقمية وامتلاكها مباشرة.
+            </p>
+            <p style="margin-top: 14px;">
+              مثال: إذا اشتريت <strong>BTC</strong> في سوق <strong>Spot</strong>، فأنت تملك البيتكوين فعلًا داخل حسابك.
+            </p>
+            <h4>خصائص Spot</h4>
+            <ul>
+              <li>تملك الأصل.</li>
+              <li>أبسط من العقود.</li>
+              <li>أقل خطورة نسبيًا للمبتدئ.</li>
+              <li>مناسب للتعلم والبداية.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>3) ما هي العقود الآجلة Futures؟</h3>
+            <p>
+              في العقود، لا يكون الهدف الأساسي هو امتلاك العملة، بل
+              <strong>المضاربة على حركة السعر</strong>.
+            </p>
+            <p style="margin-top: 14px;">يعني أن المتداول يمكنه:</p>
+            <ul style="margin-top: 14px;">
+              <li>الربح إذا صعد السعر.</li>
+              <li>أو الربح إذا هبط السعر، حسب نوع الصفقة.</li>
+            </ul>
+            <h4>خصائص Futures</h4>
+            <ul>
+              <li>يعتمد على توقع حركة السعر.</li>
+              <li>يسمح باستخدام الرافعة المالية.</li>
+              <li>مخاطره عالية.</li>
+              <li>قد يؤدي إلى خسائر سريعة جدًا.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>4) ما معنى الرافعة المالية Leverage؟</h3>
+            <p>
+              الرافعة المالية تسمح للمتداول بفتح صفقة أكبر من رأس ماله الحقيقي.
+            </p>
+            <p style="margin-top: 14px;">
+              مثال مبسط: إذا كان لديك <strong>100 دولار</strong> واستعملت رافعة
+              <strong>×10</strong>، تصبح قيمة الصفقة <strong>1000 دولار</strong>.
+            </p>
+            <h4>النتيجة</h4>
+            <ul>
+              <li>الربح قد يتضاعف.</li>
+              <li>والخسارة أيضًا قد تتضاعف.</li>
+            </ul>
+            <p style="margin-top: 14px;">لذلك فالرافعة المالية <strong>سلاح خطير جدًا</strong> عند المبتدئ.</p>
+          </article>
+
+          <article class="section-card">
+            <h3>5) ما معنى Long و Short؟</h3>
+            <h4>Long</h4>
+            <p>يعني أنك تدخل صفقة لأنك تتوقع <strong>صعود السعر</strong>.</p>
+            <h4>Short</h4>
+            <p>يعني أنك تدخل صفقة لأنك تتوقع <strong>هبوط السعر</strong>.</p>
+            <ul style="margin-top: 14px;">
+              <li>إذا كنت تتوقع الارتفاع → <strong>Long</strong>.</li>
+              <li>إذا كنت تتوقع الانخفاض → <strong>Short</strong>.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>6) ما معنى التصفية Liquidation؟</h3>
+            <p>
+              التصفية تحدث غالبًا في سوق العقود عندما يتحرك السعر ضد صفقتك بقوة، خاصة عند استخدام رافعة مالية.
+            </p>
+            <p style="margin-top: 14px;">
+              وعندها قد تخسر المنصة الجزء الكبير من الهامش المخصص للصفقة، وقد تُغلق الصفقة تلقائيًا.
+            </p>
+            <h4>الخلاصة</h4>
+            <ul>
+              <li>كلما كانت الرافعة أعلى، اقتربت التصفية أكثر.</li>
+              <li>وكلما زادت الرافعة، ازدادت خطورة الصفقة.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>7) ما معنى Funding بشكل مبسط؟</h3>
+            <p>
+              في العقود الآجلة، يوجد أحيانًا ما يسمى <strong>التمويل Funding</strong>،
+              وهو مبلغ دوري يُدفع بين المتداولين حسب وضع السوق.
+            </p>
+            <p style="margin-top: 14px;">
+              لا يحتاج المبتدئ إلى التعمق فيه في البداية، لكن المهم أن يعرف أن:
+            </p>
+            <ul style="margin-top: 14px;">
+              <li>العقود ليست مجرد دخول وخروج فقط.</li>
+              <li>بل فيها عناصر إضافية يجب فهمها قبل استخدامها.</li>
+            </ul>
+          </article>
+
+          <article class="section-card">
+            <h3>8) لماذا يُنصح المبتدئ بالبدء بـ Spot؟</h3>
+            <p>لأن Spot:</p>
+            <ul style="margin-top: 14px;">
+              <li>أبسط.</li>
+              <li>أوضح.</li>
+              <li>أقل تعقيدًا.</li>
+              <li>أقل خطرًا من العقود.</li>
+              <li>يساعد على فهم السوق دون ضغط الرافعة والتصفية.</li>
+            </ul>
+            <h4>قاعدة مهمة</h4>
+            <p><strong>من الخطأ أن يبدأ المبتدئ من أكثر أبواب السوق خطورة.</strong></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>Spot مقابل Futures — مقارنة بصرية</h3>
+          <p>الفرق الجوهري بين النوعين في لمحة واحدة.</p>
+          <div class="vs-grid">
+            <div class="vs-card spot">
+              <div class="vs-badge">Spot</div>
+              <div class="vs-row"><span class="vs-dot"></span>تملك العملة مباشرة</div>
+              <div class="vs-row"><span class="vs-dot"></span>لا رافعة مالية</div>
+              <div class="vs-row"><span class="vs-dot"></span>لا خطر تصفية</div>
+              <div class="vs-row"><span class="vs-dot"></span>مناسب للمبتدئ</div>
+              <div class="vs-row"><span class="vs-dot"></span>أبسط وأوضح</div>
+            </div>
+            <div class="vs-separator">VS</div>
+            <div class="vs-card futures">
+              <div class="vs-badge">Futures</div>
+              <div class="vs-row"><span class="vs-dot"></span>مضاربة على السعر</div>
+              <div class="vs-row"><span class="vs-dot"></span>رافعة مالية متاحة</div>
+              <div class="vs-row"><span class="vs-dot"></span>خطر التصفية قائم</div>
+              <div class="vs-row"><span class="vs-dot"></span>يحتاج خبرة أكبر</div>
+              <div class="vs-row"><span class="vs-dot"></span>أكثر تعقيدًا وخطرًا</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="wide-card">
+          <h3>مقياس خطر الرافعة المالية</h3>
+          <p>كلما زادت الرافعة، زاد خطر التصفية وزادت سرعة الخسارة المحتملة.</p>
+          <div class="leverage-grid">
+            <div class="lev-card">
+              <span class="lev-x">×1</span>
+              <div class="lev-label">بدون رافعة<br>خطر طبيعي</div>
+            </div>
+            <div class="lev-card">
+              <span class="lev-x">×5</span>
+              <div class="lev-label">رافعة منخفضة<br>خطر متزايد</div>
+            </div>
+            <div class="lev-card">
+              <span class="lev-x">×20</span>
+              <div class="lev-label">رافعة عالية<br>خطر كبير جدًا</div>
+            </div>
+            <div class="lev-card">
+              <span class="lev-x">×100</span>
+              <div class="lev-label">رافعة قصوى<br>احتمال تصفية سريع</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="market-section">
+          <div class="market-title">Spot مقابل Futures — المقارنة الجوهرية</div>
+          <div class="market-grid">
+            <div class="market-card mc-spot">
+              <div class="mc-icon">🟢</div>
+              <div class="mc-name">Spot — تداول فوري</div>
+              <div class="mc-rows">
+                <div class="mc-row"><strong>الملكية:</strong> تمتلك العملة فعلًا</div>
+                <div class="mc-row"><strong>الرافعة:</strong> لا رافعة بالتداول الفوري</div>
+                <div class="mc-row"><strong>الخسارة:</strong> محدودة بما استثمرت</div>
+                <div class="mc-row"><strong>للمبتدئ:</strong> ✅ الأنسب والأبسط</div>
+              </div>
+            </div>
+            <div class="mc-vs">VS</div>
+            <div class="market-card mc-futures">
+              <div class="mc-icon">🔴</div>
+              <div class="mc-name">Futures — عقود آجلة</div>
+              <div class="mc-rows">
+                <div class="mc-row"><strong>الملكية:</strong> عقد على سعر مستقبلي</div>
+                <div class="mc-row"><strong>الرافعة:</strong> قد تصل x100 أو أكثر</div>
+                <div class="mc-row"><strong>الخسارة:</strong> قد تتجاوز رأس المال</div>
+                <div class="mc-row"><strong>للمبتدئ:</strong> ⚠️ خطير جدًا في البداية</div>
+              </div>
+            </div>
+          </div>
+          <div class="market-rec">💡 ابدأ بـ Spot على BTC أو ETH — اكتسب الخبرة قبل أي رافعة</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="section-card">
+          <h3>ما الذي يجب أن تتذكره من الحصة؟</h3>
+          <ul>
+            <li>Spot أبسط وأنسب للمبتدئ من Futures.</li>
+            <li>الرافعة تضخم الخسارة مثلما قد تضخم الربح.</li>
+            <li>البداية الصحيحة تكون بفهم السوق لا بمطاردة العقود.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="glossary">
+      <div class="container">
+        <div class="section-heading">
+          <h2>قاموس الحصة</h2>
+          <p>هذا القاموس يثبت أهم الكلمات التي يراها المبتدئ داخل المنصة حتى لا يخلط بين المفاهيم.</p>
+        </div>
+        <div class="key-grid">
+          <article class="key-card">
+            <strong>Spot</strong>
+            <p>شراء وامتلاك مباشر للعملة الرقمية.</p>
+          </article>
+          <article class="key-card">
+            <strong>Futures</strong>
+            <p>مضاربة على حركة السعر دون أن يكون الهدف امتلاك الأصل نفسه.</p>
+          </article>
+          <article class="key-card">
+            <strong>Leverage</strong>
+            <p>رافعة مالية تضخم حجم الصفقة، وبالتالي تضخم الربح والخسارة معًا.</p>
+          </article>
+          <article class="key-card">
+            <strong>Long</strong>
+            <p>صفقة تقوم على توقع صعود السعر.</p>
+          </article>
+          <article class="key-card">
+            <strong>Short</strong>
+            <p>صفقة تقوم على توقع هبوط السعر.</p>
+          </article>
+          <article class="key-card">
+            <strong>Liquidation</strong>
+            <p>تصفية تلقائية قد تحدث في العقود إذا تحرك السوق ضد الصفقة بقوة.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice">
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>تبسيط المفاهيم</h3>
+          <p style="margin-bottom: 16px;">يمكن تلخيص الفرق كما يلي:</p>
+          <div class="grid-2">
+            <div class="section-card" style="padding: 20px;">
+              <h4 style="margin-top: 0;">Spot</h4>
+              <ul>
+                <li>شراء حقيقي للعملة.</li>
+                <li>مناسب للمبتدئ.</li>
+                <li>أقل خطورة.</li>
+              </ul>
+            </div>
+            <div class="section-card" style="padding: 20px;">
+              <h4 style="margin-top: 0;">Futures</h4>
+              <ul>
+                <li>مضاربة على السعر.</li>
+                <li>قد تربح في الصعود أو الهبوط.</li>
+                <li>يحتاج خبرة أكبر.</li>
+                <li>أكثر خطورة بسبب الرافعة.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="wide-card">
+          <h3>النشاط التطبيقي 1</h3>
+          <p style="margin-bottom: 16px;">ضع كل عبارة في مكانها الصحيح: <strong>Spot</strong> أو <strong>Futures</strong>.</p>
+          <ul>
+            <li>امتلاك العملة مباشرة.</li>
+            <li>استعمال الرافعة المالية.</li>
+            <li>مناسب أكثر للمبتدئ.</li>
+            <li>إمكانية التصفية.</li>
+            <li>المضاربة على صعود أو هبوط السعر.</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة</summary>
+            <div class="reveal-content">
+              <p><strong>Spot:</strong></p>
+              <ul style="margin-top: 10px;">
+                <li>امتلاك العملة مباشرة.</li>
+                <li>مناسب أكثر للمبتدئ.</li>
+              </ul>
+              <p style="margin-top: 14px;"><strong>Futures:</strong></p>
+              <ul style="margin-top: 10px;">
+                <li>استعمال الرافعة المالية.</li>
+                <li>إمكانية التصفية.</li>
+                <li>المضاربة على صعود أو هبوط السعر.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="section-card">
+          <h3>مثال سريع من الواقع</h3>
+          <p>
+            إذا كان لديك <strong>100 دولار</strong> واشتريت بها BTC في <strong>Spot</strong>،
+            فأنت تملك أصلًا حقيقيًا داخل حسابك.
+          </p>
+          <p style="margin-top: 14px;">
+            أما إذا دخلت صفقة <strong>Futures</strong> برافعة <strong>×10</strong>، فأنت لا
+            تتعامل بنفس البساطة، بل تدخل في مضاعفة للمخاطرة مع احتمال التصفية.
+          </p>
+          <div class="study-note">
+            <strong>النتيجة التعليمية:</strong>
+            ليس كل دخول إلى السوق يعني الشيء نفسه، ونوع السوق يغيّر مستوى الخطر بالكامل.
+          </div>
+        </article>
+        <article class="section-card">
+          <h3>كيف ترتبط هذه الحصة بما بعدها؟</h3>
+          <p>
+            بعد أن فهمت أنواع السوق، تأتي الحصة الرابعة لتشرح أين يتم هذا التداول عمليًا:
+            ما هي المنصات، ما أنواع المحافظ، وكيف تحمي الحساب والأموال من الخطأ والاختراق.
+          </p>
+          <div class="study-note">
+            <strong>الربط المنهجي:</strong>
+            الحصة 3 تجيب عن "كيف يعمل السوق؟"، والحصة 4 ستجيب عن "أين أتداول وكيف أحمي أصولي؟"
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="container question-grid">
+        <article class="question-card">
+          <h3>النشاط التطبيقي 2</h3>
+          <p style="margin-bottom: 14px;">أكمل بما يناسب:</p>
+          <ul>
+            <li>التداول الفوري يعني .......... الأصل.</li>
+            <li>العقود الآجلة تعتمد على .......... حركة السعر.</li>
+            <li>الرافعة المالية قد تضخم .......... و ..........</li>
+            <li>إذا توقعت صعود السعر فإنك تدخل صفقة ..........</li>
+          </ul>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة المتوقعة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>امتلاك.</li>
+                <li>توقع.</li>
+                <li>الربح والخسارة.</li>
+                <li>Long.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="question-card">
+          <h3>أسئلة الفهم</h3>
+          <ul>
+            <li>ما المقصود بسوق الكريبتو؟</li>
+            <li>ما الفرق بين Spot و Futures؟</li>
+            <li>ماذا تعني الرافعة المالية؟</li>
+            <li>ما معنى Long و Short؟</li>
+            <li>لماذا تعتبر العقود أكثر خطورة من التداول الفوري؟</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="wide-card">
+          <h3>هل أنت جاهز للانتقال إلى الحصة الرابعة؟</h3>
+          <ul>
+            <li>أستطيع شرح الفرق بين Spot و Futures بوضوح.</li>
+            <li>أعرف معنى الرافعة المالية ولماذا هي خطيرة على المبتدئ.</li>
+            <li>أميز بين Long و Short دون خلط.</li>
+            <li>أفهم معنى التصفية بشكل أولي.</li>
+            <li>أدرك لماذا تكون البداية الأنسب غالبًا من Spot.</li>
+          </ul>
+          <div class="study-note">
+            <strong>قاعدة الانتقال:</strong>
+            إذا كنت ما زلت ترى العقود مجرد طريق أسرع للربح، فأعد قراءة أجزاء Spot وLeverage وLiquidation
+            قبل المتابعة.
+          </div>
+        </article>
+        <article class="wide-card">
+          <h3>اختبار ذاتي سريع</h3>
+          <ol class="numbered">
+            <li data-step="1">هل امتلاك العملة مباشرة يكون في Spot أم Futures؟</li>
+            <li data-step="2">ماذا تعني الرافعة المالية بشكل مبسط؟</li>
+            <li data-step="3">متى تكون الصفقة Long؟</li>
+            <li data-step="4">لماذا لا يُنصح المبتدئ بالبدء بالعقود؟</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الإجابات</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>في Spot.</li>
+                <li>فتح صفقة أكبر من رأس المال الحقيقي، مع تضخيم الربح والخسارة.</li>
+                <li>عند توقع صعود السعر.</li>
+                <li>لأن العقود أكثر تعقيدًا وخطرًا بسبب الرافعة والتصفية.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-3">
+        <article class="section-card">
+          <h3>الخلاصة</h3>
+          <p>يعمل سوق الكريبتو بطريقتين أساسيتين:</p>
+          <ul style="margin-top: 14px;">
+            <li><strong>التداول الفوري Spot:</strong> وفيه يمتلك المتداول العملة.</li>
+            <li><strong>العقود الآجلة Futures:</strong> وفيها يضارب المتداول على حركة السعر.</li>
+          </ul>
+          <p style="margin-top: 14px;">
+            أما الرافعة المالية، فهي تضخم حجم الصفقة، لكنها تزيد المخاطر بشكل كبير.
+            ولهذا فإن البداية الصحيحة للمبتدئ تكون غالبًا من <strong>Spot</strong> لا من <strong>Futures</strong>.
+          </p>
+        </article>
+
+        <article class="section-card">
+          <h3>التقويم</h3>
+          <p style="margin-bottom: 14px;"><strong>صحح أو أكمل:</strong></p>
+          <ol class="numbered">
+            <li data-step="1">في Spot يمتلك المتداول العملة مباشرة.</li>
+            <li data-step="2">Futures أقل خطورة من Spot.</li>
+            <li data-step="3">الرافعة المالية تضخم فقط الربح ولا تضخم الخسارة.</li>
+            <li data-step="4">Long تعني توقع صعود السعر.</li>
+          </ol>
+          <details class="reveal-block">
+            <summary>إظهار الأجوبة</summary>
+            <div class="reveal-content">
+              <ul>
+                <li>صحيح.</li>
+                <li>خطأ — Futures أكثر خطورة.</li>
+                <li>خطأ — الرافعة تضخم الاثنين معًا.</li>
+                <li>صحيح.</li>
+              </ul>
+            </div>
+          </details>
+        </article>
+
+        <article class="section-card">
+          <h3>واجب أو تدريب منزلي</h3>
+          <p>
+            اكتب مقارنة قصيرة بين <strong>Spot</strong> و <strong>Futures</strong> من حيث:
+          </p>
+          <ul style="margin-top: 14px;">
+            <li>طريقة العمل.</li>
+            <li>درجة الخطورة.</li>
+            <li>مدى مناسبة كل نوع للمبتدئ.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <article class="quote-card">
+          <h3>الرسالة الأساسية في هذه الحصة</h3>
+          <p class="message">تعلم السوق أولًا، وابدأ بالتداول الفوري قبل التفكير في العقود والرافعة.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="next-step">
+      <div class="container">
+        <article class="wide-card next-step">
+          <div>
+            <h3>ماذا بعد الحصة الثالثة؟</h3>
+            <p>
+              بعد أن فهمت طبيعة السوق والفرق بين Spot وFutures، تصبح الخطوة التالية منطقية:
+              كيف تنشئ حسابك، وأين تحفظ أصولك، وكيف تحمي نفسك من الأخطاء والاختراقات.
+            </p>
+          </div>
+          <a class="button button-primary" href="lesson-04.html">انتقل إلى الحصة الرابعة</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      صفحة الحصة الثالثة مرتبطة بالبرنامج الرئيسي ويمكن الرجوع منها مباشرة إلى قائمة الحصص.
+    </div>
+  </footer>
+  <script>
+    (() => {
+      const bar = document.querySelector(".scroll-progress");
+      const updateScroll = () => {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+      };
+      window.addEventListener("scroll", updateScroll, { passive: true });
+      updateScroll();
+
+      const chips = Array.from(document.querySelectorAll(".lesson-chip[href^='#']"));
+      const targets = chips.map(c => document.querySelector(c.getAttribute("href"))).filter(Boolean);
+      const spy = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter(e => e.isIntersecting);
+          if (!visible.length) return;
+          visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          const id = visible[0].target.id;
+          chips.forEach(c => c.classList.toggle("is-active", c.getAttribute("href") === `#${id}`));
+        },
+        { rootMargin: "-30% 0px -50% 0px", threshold: [0.1, 0.3, 0.5] }
+      );
+      targets.forEach(t => spy.observe(t));
+    })();
+  </script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+

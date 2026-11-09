@@ -1,0 +1,3058 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="أكاديمية التحليل الفني الشامل — تعلّم الشموع اليابانية، المؤشرات، الأنماط، والدعم والمقاومة بأمثلة تفاعلية من أسواق العملات الرقمية." />
+    <title>أكاديمية التحليل الفني | TA Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="readProgress"></div>
+    <button type="button" id="backToTop" aria-label="العودة للأعلى" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">TA<span> Academy</span></div>
+      <ul class="nav-links">
+        <li><a href="#candles">الشموع</a></li>
+        <li><a href="#patterns">الأنماط</a></li>
+        <li><a href="#indicators">المؤشرات</a></li>
+        <li><a href="#sr">الدعم والمقاومة</a></li>
+        <li><a href="#marketPulse">السوق الآن</a></li>
+        <li><a href="#quiz">اختبر نفسك</a></li>
+        <li><a href="#calculator">الحاسبة</a></li>
+        <li><a href="#journal">السجل</a></li>
+        <li><a href="#glossary">المصطلحات</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <button type="button" id="shortcutHelpBtn" aria-label="اختصارات لوحة المفاتيح" title="اختصارات لوحة المفاتيح">?</button>
+        <button type="button" id="themeToggle" aria-label="تبديل المظهر" title="تبديل المظهر">🌙</button>
+        <button class="nav-hamburger" id="navHamburger" aria-label="فتح القائمة" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+    <nav class="nav-mobile-menu" id="navMobileMenu" aria-label="القائمة الرئيسية">
+      <a href="#candles" onclick="closeMobileMenu()">الشموع</a>
+      <a href="#patterns" onclick="closeMobileMenu()">الأنماط</a>
+      <a href="#indicators" onclick="closeMobileMenu()">المؤشرات</a>
+      <a href="#sr" onclick="closeMobileMenu()">الدعم والمقاومة</a>
+      <a href="#marketPulse" onclick="closeMobileMenu()">السوق الآن</a>
+      <a href="#quiz" onclick="closeMobileMenu()">اختبر نفسك</a>
+      <a href="#calculator" onclick="closeMobileMenu()">الحاسبة</a>
+      <a href="#journal" onclick="closeMobileMenu()">السجل</a>
+      <a href="#glossary" onclick="closeMobileMenu()">المصطلحات</a>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="hero-badge">أكاديمية التحليل الفني الشامل</div>
+        <h1>
+          تعلّم <span class="highlight">التحليل الفني</span> من الصفر حتى
+          الاحتراف
+        </h1>
+        <p>
+          دليلك التفاعلي الشامل لفهم الشموع اليابانية، المؤشرات، الأنماط، والدعم
+          والمقاومة — مع أمثلة حقيقية من أسواق العملات الرقمية.
+        </p>
+        <div class="hero-btns">
+          <a href="#candles" class="btn-primary">ابدأ التعلم</a>
+          <a href="#quiz" class="btn-outline">اختبر نفسك</a>
+        </div>
+        <div class="hero-quicklinks reveal">
+          <a href="#marketPulse" class="hero-quicklink">
+            <span>Live</span>
+            <strong>السوق الآن</strong>
+          </a>
+          <a href="#calculator" class="hero-quicklink">
+            <span>Risk</span>
+            <strong>حاسبة الصفقة</strong>
+          </a>
+          <a href="#journal" class="hero-quicklink">
+            <span>Journal</span>
+            <strong>سجل تداولك</strong>
+          </a>
+          <a href="#quiz" class="hero-quicklink">
+            <span>Quiz</span>
+            <strong>اختبر مستواك</strong>
+          </a>
+        </div>
+      </div>
+      <div class="hero-chart">
+        <div id="liveChart">
+          <div class="chart-header">
+            <div class="chart-market">
+              <span class="chart-live-dot" aria-hidden="true"></span>
+              <div>
+                <span class="chart-pair">BTC / USDT</span>
+                <div class="chart-meta">
+                  <span class="chart-timeframe" id="chartTimeframeLabel">1D</span>
+                  <span class="chart-source">CoinGecko</span>
+                </div>
+              </div>
+            </div>
+            <div class="chart-price-wrap">
+              <span class="chart-price" id="livePrice">$67,430</span>
+              <span class="chart-change" id="livePriceChange">Chargement...</span>
+            </div>
+          </div>
+          <div class="chart-toolbar">
+            <div class="chart-timeframes" role="tablist" aria-label="الفاصل الزمني">
+              <button type="button" class="chart-time-btn" data-timeframe="1H" aria-pressed="false">1H</button>
+              <button type="button" class="chart-time-btn" data-timeframe="4H" aria-pressed="false">4H</button>
+              <button type="button" class="chart-time-btn active" data-timeframe="1D" aria-pressed="true">1D</button>
+            </div>
+            <div class="chart-bias neutral" id="chartBiasBadge">Neutral</div>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="heroCanvas"></canvas>
+          </div>
+          <div class="chart-stat-grid">
+            <div class="chart-stat-card">
+              <span class="chart-stat-label">High</span>
+              <strong class="chart-stat-value" id="liveHigh">--</strong>
+            </div>
+            <div class="chart-stat-card">
+              <span class="chart-stat-label">Low</span>
+              <strong class="chart-stat-value" id="liveLow">--</strong>
+            </div>
+            <div class="chart-stat-card">
+              <span class="chart-stat-label">Volume</span>
+              <strong class="chart-stat-value" id="liveVolume">--</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-item reveal">
+        <div class="stat-number">8</div>
+        <div class="stat-label">وحدات تعليمية</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">نمط شموع ياباني</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">6</div>
+        <div class="stat-label">مؤشرات فنية</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">أمثلة تفاعلية</div>
+      </div>
+    </div>
+
+    <section id="marketPulse">
+      <div class="section-tag">السوق الآن</div>
+      <h2 class="section-title">نظرة سريعة قبل البدء</h2>
+      <p class="section-desc">
+        أسعار BTC وETH وBNB يتم تحديثها من CoinGecko، مع مؤشر Fear &amp; Greed لمعاينة المزاج العام للسوق.
+      </p>
+
+      <div class="market-grid">
+        <div class="market-card">
+          <div class="market-card-header">
+            <div>
+              <div class="market-card-title">قيمة العملات الرئيسة مباشرة</div>
+              <div class="market-card-subtitle" id="marketUpdatedAt">جاري تحميل الأسعار...</div>
+            </div>
+            <button type="button" class="market-refresh-btn" onclick="refreshMarketData(true)">تحديث</button>
+          </div>
+          <div class="market-ticker-grid">
+            <div class="ticker-chip">
+              <div class="ticker-symbol">BTC</div>
+              <div class="ticker-price" id="btcPrice">--</div>
+              <div class="ticker-change" id="btcChange">--</div>
+            </div>
+            <div class="ticker-chip">
+              <div class="ticker-symbol">ETH</div>
+              <div class="ticker-price" id="ethPrice">--</div>
+              <div class="ticker-change" id="ethChange">--</div>
+            </div>
+            <div class="ticker-chip">
+              <div class="ticker-symbol">BNB</div>
+              <div class="ticker-price" id="bnbPrice">--</div>
+              <div class="ticker-change" id="bnbChange">--</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="market-card fear-card">
+          <div class="market-card-header">
+            <div>
+              <div class="market-card-title">Fear &amp; Greed Index</div>
+              <div class="market-card-subtitle" id="fearGreedUpdatedAt">جاري تحميل المؤشر...</div>
+            </div>
+            <div class="fear-badge" id="fearGreedBadge">--</div>
+          </div>
+          <div class="fear-score-wrap">
+            <div class="fear-score" id="fearGreedValue">--</div>
+            <div class="fear-score-label" id="fearGreedLabel">لا توجد بيانات بعد</div>
+          </div>
+          <div class="fear-meter">
+            <div class="fear-meter-bar" id="fearGreedBar"></div>
+          </div>
+          <p class="fear-note" id="fearGreedNote">
+            المؤشر يساعدك على تقدير المزاج النفسي العام، وليس على استبدال خطتك الفنية.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     1. CANDLESTICKS
+════════════════════════════════════════ -->
+    <section id="candles">
+      <div class="section-tag">الوحدة الأولى</div>
+      <h2 class="section-title">الشمعة اليابانية — القراءة والتفسير</h2>
+      <p class="section-desc">
+        كل شمعة هي قصة كاملة عن صراع المشترين والبائعين في فترة زمنية محددة.
+        تعلّم كيف تقرأها.
+      </p>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('candles', 'anatomy', this)">
+          تشريح الشمعة
+        </button>
+        <button class="tab" onclick="switchTab('candles', 'types', this)">
+          أنواع الشموع
+        </button>
+        <button class="tab" onclick="switchTab('candles', 'timeframes', this)">
+          الأطر الزمنية
+        </button>
+      </div>
+
+      <!-- Anatomy -->
+      <div class="tab-panel active" id="candles-anatomy">
+        <div class="candle-lesson">
+          <div class="candle-diagram" id="candleDiagram">
+            <!-- Bullish -->
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+              "
+            >
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--gray);
+                  margin-bottom: 4px;
+                  font-weight: 700;
+                "
+              >
+                High
+              </div>
+              <div
+                class="wick"
+                style="height: 35px; background: var(--green)"
+              ></div>
+              <div style="font-size: 0.7rem; color: var(--lgray); margin: 2px">
+                ← إغلاق
+              </div>
+              <div
+                class="body"
+                style="height: 90px; background: var(--green)"
+              ></div>
+              <div style="font-size: 0.7rem; color: var(--lgray); margin: 2px">
+                ← افتتاح
+              </div>
+              <div
+                class="wick"
+                style="height: 25px; background: var(--green)"
+              ></div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--gray);
+                  margin-top: 4px;
+                  font-weight: 700;
+                "
+              >
+                Low
+              </div>
+              <div class="candle-title" style="color: var(--green)">
+                صعودي ↑
+              </div>
+            </div>
+            <!-- Bearish -->
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+              "
+            >
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--gray);
+                  margin-bottom: 4px;
+                  font-weight: 700;
+                "
+              >
+                High
+              </div>
+              <div
+                class="wick"
+                style="height: 30px; background: var(--red)"
+              ></div>
+              <div style="font-size: 0.7rem; color: var(--lgray); margin: 2px">
+                ← افتتاح
+              </div>
+              <div
+                class="body"
+                style="height: 90px; background: var(--red)"
+              ></div>
+              <div style="font-size: 0.7rem; color: var(--lgray); margin: 2px">
+                ← إغلاق
+              </div>
+              <div
+                class="wick"
+                style="height: 40px; background: var(--red)"
+              ></div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--gray);
+                  margin-top: 4px;
+                  font-weight: 700;
+                "
+              >
+                Low
+              </div>
+              <div class="candle-title" style="color: var(--red)">هبوطي ↓</div>
+            </div>
+            <!-- Doji -->
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+              "
+            >
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--gray);
+                  margin-bottom: 4px;
+                  font-weight: 700;
+                "
+              >
+                High
+              </div>
+              <div
+                class="wick"
+                style="height: 55px; background: var(--gold)"
+              ></div>
+              <div
+                class="body"
+                style="
+                  height: 4px;
+                  background: var(--gold);
+                  width: 28px;
+                  border-radius: 2px;
+                  margin: 2px 0;
+                "
+              ></div>
+              <div
+                class="wick"
+                style="height: 55px; background: var(--gold)"
+              ></div>
+              <div
+                style="
+                  font-size: 0.75rem;
+                  color: var(--gray);
+                  margin-top: 4px;
+                  font-weight: 700;
+                "
+              >
+                Low
+              </div>
+              <div class="candle-title" style="color: var(--gold)">دوجي ↔</div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; flex-direction: column; gap: 1rem">
+              <div
+                style="
+                  background: var(--card);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 1.25rem;
+                "
+              >
+                <div
+                  style="
+                    color: var(--teal);
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    font-family: var(--mono);
+                  "
+                >
+                  Open | الافتتاح
+                </div>
+                <div style="font-size: 0.875rem; color: var(--lgray)">
+                  أول سعر تم التداول به في بداية الفترة الزمنية. في الشمعة
+                  الخضراء يكون أسفل الجسم.
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--card);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 1.25rem;
+                "
+              >
+                <div
+                  style="
+                    color: var(--teal);
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    font-family: var(--mono);
+                  "
+                >
+                  Close | الإغلاق
+                </div>
+                <div style="font-size: 0.875rem; color: var(--lgray)">
+                  آخر سعر في نهاية الفترة.
+                  <strong style="color: var(--white)">أهم من الافتتاح!</strong>
+                  يحدد لون الشمعة وزخم السوق.
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--card);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 1.25rem;
+                "
+              >
+                <div
+                  style="
+                    color: var(--teal);
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    font-family: var(--mono);
+                  "
+                >
+                  High / Low | الفتائل
+                </div>
+                <div style="font-size: 0.875rem; color: var(--lgray)">
+                  الفتيل الطويل يعني رفض السعر لمستوى ما. فتيل سفلي طويل = رفض
+                  الهبوط → قوة شرائية.
+                </div>
+              </div>
+              <div
+                style="
+                  background: rgba(0, 212, 168, 0.06);
+                  border: 1px solid rgba(0, 212, 168, 0.2);
+                  border-radius: 12px;
+                  padding: 1.25rem;
+                "
+              >
+                <div
+                  style="
+                    color: var(--teal);
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  💡 القاعدة الذهبية
+                </div>
+                <div style="font-size: 0.875rem; color: var(--lgray)">
+                  الشمعة لوحدها لا تكفي. دائماً انظر للشمعة في سياق الشموع
+                  المجاورة ومستوى السعر الحالي.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Types -->
+      <div class="tab-panel" id="candles-types">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+          "
+        >
+          <div
+            style="
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 1.25rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                height: 80px;
+                gap: 6px;
+                margin-bottom: 1rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+              >
+                <div
+                  style="width: 3px; height: 15px; background: var(--green)"
+                ></div>
+                <div
+                  style="
+                    width: 22px;
+                    height: 55px;
+                    background: var(--green);
+                    border-radius: 3px;
+                  "
+                ></div>
+                <div
+                  style="width: 3px; height: 8px; background: var(--green)"
+                ></div>
+              </div>
+            </div>
+            <div
+              style="font-weight: 700; color: var(--green); font-size: 0.95rem"
+            >
+              Marubozu
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              جسم بلا فتائل = سيطرة كاملة للمشترين
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 1.25rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                height: 80px;
+                gap: 6px;
+                margin-bottom: 1rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+              >
+                <div
+                  style="width: 3px; height: 5px; background: var(--green)"
+                ></div>
+                <div
+                  style="
+                    width: 22px;
+                    height: 20px;
+                    background: var(--green);
+                    border-radius: 3px;
+                  "
+                ></div>
+                <div
+                  style="width: 3px; height: 50px; background: var(--green)"
+                ></div>
+              </div>
+            </div>
+            <div
+              style="font-weight: 700; color: var(--green); font-size: 0.95rem"
+            >
+              Hammer 🔨
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              فتيل سفلي طويل = رفض الهبوط
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 1.25rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                height: 80px;
+                gap: 6px;
+                margin-bottom: 1rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+              >
+                <div
+                  style="width: 3px; height: 50px; background: var(--red)"
+                ></div>
+                <div
+                  style="
+                    width: 22px;
+                    height: 20px;
+                    background: var(--red);
+                    border-radius: 3px;
+                  "
+                ></div>
+                <div
+                  style="width: 3px; height: 5px; background: var(--red)"
+                ></div>
+              </div>
+            </div>
+            <div
+              style="font-weight: 700; color: var(--red); font-size: 0.95rem"
+            >
+              Shooting Star ⭐
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              فتيل علوي طويل = رفض الصعود
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 1.25rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                height: 80px;
+                gap: 6px;
+                margin-bottom: 1rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+              >
+                <div
+                  style="width: 3px; height: 30px; background: var(--gold)"
+                ></div>
+                <div
+                  style="
+                    width: 22px;
+                    height: 4px;
+                    background: var(--gold);
+                    border-radius: 2px;
+                  "
+                ></div>
+                <div
+                  style="width: 3px; height: 30px; background: var(--gold)"
+                ></div>
+              </div>
+            </div>
+            <div
+              style="font-weight: 700; color: var(--gold); font-size: 0.95rem"
+            >
+              Doji
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              توازن = تردد السوق وانتظار قرار
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 1.25rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                height: 80px;
+                gap: 6px;
+                margin-bottom: 1rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+              >
+                <div
+                  style="width: 3px; height: 8px; background: var(--green)"
+                ></div>
+                <div
+                  style="
+                    width: 22px;
+                    height: 30px;
+                    background: var(--green);
+                    border-radius: 3px;
+                  "
+                ></div>
+                <div
+                  style="width: 3px; height: 35px; background: var(--green)"
+                ></div>
+              </div>
+            </div>
+            <div
+              style="font-weight: 700; color: var(--green); font-size: 0.95rem"
+            >
+              Inverted Hammer
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              محاولة صعود + رفض سفلي ضعيف
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--card);
+              border: 1px solid var(--border);
+              border-radius: 12px;
+              padding: 1.25rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                height: 80px;
+                gap: 6px;
+                margin-bottom: 1rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+              >
+                <div
+                  style="width: 3px; height: 10px; background: var(--blue)"
+                ></div>
+                <div
+                  style="
+                    width: 22px;
+                    height: 10px;
+                    background: var(--blue);
+                    border-radius: 3px;
+                  "
+                ></div>
+                <div
+                  style="width: 3px; height: 10px; background: var(--blue)"
+                ></div>
+              </div>
+            </div>
+            <div
+              style="font-weight: 700; color: var(--blue); font-size: 0.95rem"
+            >
+              Spinning Top
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              جسم صغير وفتائل = تردد ولاحسم
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeframes -->
+      <div class="tab-panel" id="candles-timeframes">
+        <table class="strategy-table">
+          <tr>
+            <th>الإطار الزمني</th>
+            <th>كل شمعة تمثل</th>
+            <th>يُستخدم من</th>
+            <th>الغرض</th>
+          </tr>
+          <tr>
+            <td
+              style="
+                color: var(--white);
+                font-weight: 700;
+                font-family: var(--mono);
+              "
+            >
+              1M / 5M
+            </td>
+            <td>1 أو 5 دقائق</td>
+            <td>Scalpers</td>
+            <td>صفقات سريعة جداً، دقائق أو ساعات</td>
+          </tr>
+          <tr>
+            <td
+              style="
+                color: var(--white);
+                font-weight: 700;
+                font-family: var(--mono);
+              "
+            >
+              15M / 30M
+            </td>
+            <td>15 أو 30 دقيقة</td>
+            <td>Day Traders</td>
+            <td>إشارات نهاية الجلسة اليومية</td>
+          </tr>
+          <tr>
+            <td
+              style="
+                color: var(--teal);
+                font-weight: 700;
+                font-family: var(--mono);
+              "
+            >
+              1H / 4H ⭐
+            </td>
+            <td>1 أو 4 ساعات</td>
+            <td>Swing Traders</td>
+            <td>أفضل توازن بين الإشارة والضوضاء</td>
+          </tr>
+          <tr>
+            <td
+              style="
+                color: var(--gold);
+                font-weight: 700;
+                font-family: var(--mono);
+              "
+            >
+              1D ⭐⭐
+            </td>
+            <td>يوم كامل</td>
+            <td>الجميع</td>
+            <td>الاتجاه الرئيسي — الأهم على الإطلاق</td>
+          </tr>
+          <tr>
+            <td
+              style="
+                color: var(--white);
+                font-weight: 700;
+                font-family: var(--mono);
+              "
+            >
+              1W / 1M
+            </td>
+            <td>أسبوع / شهر</td>
+            <td>Position Traders</td>
+            <td>تحديد الاتجاه الكبير جداً طويل المدى</td>
+          </tr>
+        </table>
+        <div
+          style="
+            margin-top: 1rem;
+            padding: 1rem 1.25rem;
+            background: rgba(0, 212, 168, 0.06);
+            border: 1px solid rgba(0, 212, 168, 0.2);
+            border-radius: 10px;
+            font-size: 0.875rem;
+            color: var(--lgray);
+          "
+        >
+          💡
+          <strong style="color: var(--teal)">Multi-Timeframe Analysis:</strong>
+          ابدأ دائماً بالتحليل على الإطار الكبير (1D) لتحديد الاتجاه، ثم انزل
+          للأصغر (4H) للبحث عن نقطة الدخول.
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     2. PATTERNS
+════════════════════════════════════════ -->
+    <div class="section-full">
+      <section id="patterns">
+        <div class="section-tag">الوحدة الثانية</div>
+        <h2 class="section-title">أنماط الشموع — إشارات الشراء والبيع</h2>
+        <p class="section-desc">
+          تعلّم أبرز أنماط الشموع التي تشير إلى انعكاس أو استمرار الاتجاه مع
+          أمثلة حقيقية.
+        </p>
+
+        <div style="margin-bottom:1rem">
+          <input type="text" id="patternSearch" placeholder="🔍 ابحث عن نمط... (مثال: hammer, engulfing)"
+            aria-label="البحث في الأنماط"
+            oninput="filterPatterns(this.value)"
+            style="width:100%; max-width:380px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 16px; color:var(--white); font-family:var(--font); font-size:0.9rem; outline:none; transition:border-color 0.2s"
+            onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'" />
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('patterns', 'bullish', this)">
+            أنماط الصعود 🟢
+          </button>
+          <button class="tab" onclick="switchTab('patterns', 'bearish', this)">
+            أنماط الهبوط 🔴
+          </button>
+          <button class="tab" onclick="switchTab('patterns', 'continuation', this)">
+            أنماط الاستمرار
+          </button>
+        </div>
+
+        <div class="tab-panel active" id="patterns-bullish">
+          <div class="pattern-grid">
+            <div class="pattern-card bullish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bull">صعودي</div>
+                <span style="font-size: 1.4rem">🔨</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="30" height="60" viewBox="0 0 30 60">
+                  <line
+                    x1="15"
+                    y1="0"
+                    x2="15"
+                    y2="10"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="10"
+                    width="14"
+                    height="14"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="24"
+                    x2="15"
+                    y2="58"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Hammer</div>
+              <div class="pattern-ar">المطرقة</div>
+              <div class="pattern-desc">
+                شمعة بجسم صغير في الأعلى وفتيل سفلي طويل جداً (ضعف الجسم على
+                الأقل). البائعون حاولوا الهبوط لكن المشترين رفضوا بقوة.
+              </div>
+              <div class="pattern-example">
+                📌 BTC عند $26,000 → ظهرت مطرقة على H4 → ارتفع 18% في أسبوع
+              </div>
+            </div>
+
+            <div class="pattern-card bullish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bull">صعودي قوي</div>
+                <span style="font-size: 1.4rem">💪</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <line
+                    x1="15"
+                    y1="5"
+                    x2="15"
+                    y2="15"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="15"
+                    width="14"
+                    height="28"
+                    fill="#ff4d6a"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="43"
+                    x2="15"
+                    y2="55"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="37"
+                    y1="3"
+                    x2="37"
+                    y2="10"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="30"
+                    y="10"
+                    width="14"
+                    height="42"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="37"
+                    y1="52"
+                    x2="37"
+                    y2="58"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Bullish Engulfing</div>
+              <div class="pattern-ar">الابتلاع الصعودي</div>
+              <div class="pattern-desc">
+                شمعة خضراء كبيرة تبتلع الشمعة الحمراء السابقة بالكامل. تدل على
+                دخول قوة شرائية ضخمة وتحول في زخم السوق.
+              </div>
+              <div class="pattern-example">
+                📌 ETH عند $1,500 → ابتلاع صعودي → ارتفع لـ $1,800 (+20%)
+              </div>
+            </div>
+
+            <div class="pattern-card bullish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bull">انعكاس 3 شموع</div>
+                <span style="font-size: 1.4rem">🌅</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="90" height="60" viewBox="0 0 90 60">
+                  <line
+                    x1="15"
+                    y1="5"
+                    x2="15"
+                    y2="12"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="12"
+                    width="14"
+                    height="35"
+                    fill="#ff4d6a"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="47"
+                    x2="15"
+                    y2="55"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="45"
+                    y1="38"
+                    x2="45"
+                    y2="42"
+                    stroke="#f5c842"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="38"
+                    y="42"
+                    width="14"
+                    height="8"
+                    fill="#f5c842"
+                    rx="2"
+                  />
+                  <line
+                    x1="45"
+                    y1="50"
+                    x2="45"
+                    y2="56"
+                    stroke="#f5c842"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="75"
+                    y1="5"
+                    x2="75"
+                    y2="12"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="68"
+                    y="12"
+                    width="14"
+                    height="35"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="75"
+                    y1="47"
+                    x2="75"
+                    y2="55"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Morning Star</div>
+              <div class="pattern-ar">نجمة الصباح</div>
+              <div class="pattern-desc">
+                ثلاث شموع: حمراء كبيرة ← صغيرة (تردد) ← خضراء كبيرة. يشير إلى
+                نهاية الاتجاه الهبوطي وبداية الصعود.
+              </div>
+              <div class="pattern-example">
+                📌 BNB عند $220 → نجمة الصباح → صعد لـ $290 (+32%)
+              </div>
+            </div>
+
+            <div class="pattern-card bullish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bull">نادر وقوي</div>
+                <span style="font-size: 1.4rem">⚡</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="90" height="60" viewBox="0 0 90 60">
+                  <line
+                    x1="15"
+                    y1="8"
+                    x2="15"
+                    y2="15"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="15"
+                    width="14"
+                    height="20"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="35"
+                    x2="15"
+                    y2="55"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="45"
+                    y1="8"
+                    x2="45"
+                    y2="15"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="38"
+                    y="15"
+                    width="14"
+                    height="20"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="45"
+                    y1="35"
+                    x2="45"
+                    y2="55"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="75"
+                    y1="5"
+                    x2="75"
+                    y2="12"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="68"
+                    y="12"
+                    width="14"
+                    height="30"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="75"
+                    y1="42"
+                    x2="75"
+                    y2="55"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Three White Soldiers</div>
+              <div class="pattern-ar">ثلاثة جنود بيض</div>
+              <div class="pattern-desc">
+                ثلاث شموع خضراء كبيرة متتالية تفتح كل منها أعلى من الأخرى. دليل
+                على زخم صعودي قوي ومستمر.
+              </div>
+              <div class="pattern-example">
+                📌 SOL بعد انخفاض حاد → ثلاثة جنود بيض → انطلق +60%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="patterns-bearish">
+          <div class="pattern-grid">
+            <div class="pattern-card bearish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bear">هبوطي</div>
+                <span style="font-size: 1.4rem">⭐</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="30" height="60" viewBox="0 0 30 60">
+                  <line
+                    x1="15"
+                    y1="0"
+                    x2="15"
+                    y2="42"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="42"
+                    width="14"
+                    height="12"
+                    fill="#ff4d6a"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="54"
+                    x2="15"
+                    y2="60"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Shooting Star</div>
+              <div class="pattern-ar">نجمة الرماية</div>
+              <div class="pattern-desc">
+                شمعة بجسم صغير في الأسفل وفتيل علوي طويل جداً. المشترون حاولوا
+                الصعود لكن البائعين رفضوا بقوة عند القمة.
+              </div>
+              <div class="pattern-example">
+                📌 BTC عند $35,000 → نجمة رماية → هبط لـ $27,000
+              </div>
+            </div>
+
+            <div class="pattern-card bearish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bear">هبوطي قوي</div>
+                <span style="font-size: 1.4rem">🐻</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <line
+                    x1="15"
+                    y1="3"
+                    x2="15"
+                    y2="10"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="10"
+                    width="14"
+                    height="35"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="45"
+                    x2="15"
+                    y2="57"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="37"
+                    y1="2"
+                    x2="37"
+                    y2="8"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="30"
+                    y="8"
+                    width="14"
+                    height="45"
+                    fill="#ff4d6a"
+                    rx="2"
+                  />
+                  <line
+                    x1="37"
+                    y1="53"
+                    x2="37"
+                    y2="58"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Bearish Engulfing</div>
+              <div class="pattern-ar">الابتلاع الهبوطي</div>
+              <div class="pattern-desc">
+                شمعة حمراء كبيرة تبتلع الشمعة الخضراء السابقة. ضغط بيعي ضخم دخل
+                بعد صعود — إشارة تحول هبوطي قوية جداً.
+              </div>
+              <div class="pattern-example">
+                📌 ADA عند $0.45 → ابتلاع هبوطي → هبط لـ $0.31
+              </div>
+            </div>
+
+            <div class="pattern-card bearish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bear">انعكاس 3 شموع</div>
+                <span style="font-size: 1.4rem">🌆</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="90" height="60" viewBox="0 0 90 60">
+                  <line
+                    x1="15"
+                    y1="5"
+                    x2="15"
+                    y2="10"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="10"
+                    width="14"
+                    height="38"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="48"
+                    x2="15"
+                    y2="55"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="45"
+                    y1="3"
+                    x2="45"
+                    y2="8"
+                    stroke="#f5c842"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="38"
+                    y="8"
+                    width="14"
+                    height="10"
+                    fill="#f5c842"
+                    rx="2"
+                  />
+                  <line
+                    x1="45"
+                    y1="18"
+                    x2="45"
+                    y2="24"
+                    stroke="#f5c842"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="75"
+                    y1="5"
+                    x2="75"
+                    y2="10"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="68"
+                    y="10"
+                    width="14"
+                    height="38"
+                    fill="#ff4d6a"
+                    rx="2"
+                  />
+                  <line
+                    x1="75"
+                    y1="48"
+                    x2="75"
+                    y2="55"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Evening Star</div>
+              <div class="pattern-ar">نجمة المساء</div>
+              <div class="pattern-desc">
+                ثلاث شموع: خضراء كبيرة ← صغيرة (تردد عند القمة) ← حمراء كبيرة.
+                نهاية الصعود وبداية الهبوط.
+              </div>
+              <div class="pattern-example">
+                📌 ETH عند $2,100 → نجمة المساء → هبط لـ $1,650
+              </div>
+            </div>
+
+            <div class="pattern-card bearish">
+              <div class="pattern-header">
+                <div class="pattern-badge badge-bear">ضعف صعودي</div>
+                <span style="font-size: 1.4rem">🌩</span>
+              </div>
+              <div class="mini-candles">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                  <line
+                    x1="15"
+                    y1="5"
+                    x2="15"
+                    y2="10"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="8"
+                    y="10"
+                    width="14"
+                    height="40"
+                    fill="#2ecc71"
+                    rx="2"
+                  />
+                  <line
+                    x1="15"
+                    y1="50"
+                    x2="15"
+                    y2="57"
+                    stroke="#2ecc71"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="37"
+                    y1="3"
+                    x2="37"
+                    y2="8"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="30"
+                    y="8"
+                    width="14"
+                    height="22"
+                    fill="#ff4d6a"
+                    rx="2"
+                  />
+                  <line
+                    x1="37"
+                    y1="30"
+                    x2="37"
+                    y2="38"
+                    stroke="#ff4d6a"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div class="pattern-name">Dark Cloud Cover</div>
+              <div class="pattern-ar">الغيمة الداكنة</div>
+              <div class="pattern-desc">
+                شمعة حمراء تفتح أعلى لكن تغلق داخل منتصف الشمعة الخضراء السابقة.
+                إشارة ضعف وانعكاس محتمل.
+              </div>
+              <div class="pattern-example">
+                📌 MATIC عند $1.2 → غيمة داكنة عند مقاومة → هبط 25%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="patterns-continuation">
+          <div class="pattern-grid">
+            <div class="pattern-card bullish" style="border-color: var(--blue)">
+              <div
+                class="pattern-badge"
+                style="
+                  background: rgba(74, 158, 255, 0.1);
+                  color: var(--blue);
+                  border: 1px solid rgba(74, 158, 255, 0.3);
+                "
+              >
+                استمرار صعودي
+              </div>
+              <div style="margin: 1rem 0">
+                <div
+                  style="
+                    font-weight: 700;
+                    color: var(--blue);
+                    font-size: 1.1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Bull Flag 🚀
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    line-height: 1.6;
+                  "
+                >
+                  صعود حاد (العمود) ثم تصحيح صغير في قناة هابطة (الراية).
+                  الاختراق للأعلى = هدف يساوي طول العمود.<br /><br /><span
+                    style="color: var(--teal); font-style: italic"
+                    >مثال: BTC صعد $5k ← تصحيح أسبوع ← اختراق → صعد $5k
+                    أخرى</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="pattern-card bullish" style="border-color: var(--blue)">
+              <div
+                class="pattern-badge"
+                style="
+                  background: rgba(74, 158, 255, 0.1);
+                  color: var(--blue);
+                  border: 1px solid rgba(74, 158, 255, 0.3);
+                "
+              >
+                استمرار
+              </div>
+              <div style="margin: 1rem 0">
+                <div
+                  style="
+                    font-weight: 700;
+                    color: var(--blue);
+                    font-size: 1.1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Ascending Triangle
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    line-height: 1.6;
+                  "
+                >
+                  مقاومة أفقية + دعم صاعد. كل موجة صعود تقترب أكثر من المقاومة.
+                  الاختراق = استمرار صعودي قوي.<br /><br /><span
+                    style="color: var(--teal); font-style: italic"
+                    >مثال: ETH عند $1,800 → مثلث صاعد → اختراق → $2,400</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="pattern-card bearish"
+              style="border-color: var(--purple)"
+            >
+              <div
+                class="pattern-badge"
+                style="
+                  background: rgba(168, 85, 247, 0.1);
+                  color: var(--purple);
+                  border: 1px solid rgba(168, 85, 247, 0.3);
+                "
+              >
+                انعكاس
+              </div>
+              <div style="margin: 1rem 0">
+                <div
+                  style="
+                    font-weight: 700;
+                    color: var(--purple);
+                    font-size: 1.1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Head & Shoulders
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    line-height: 1.6;
+                  "
+                >
+                  ثلاث قمم: اليمنى، الوسطى (الأعلى)، اليسرى. كسر خط الرقبة =
+                  هبوط بهدف يساوي ارتفاع الرأس.<br /><br /><span
+                    style="color: var(--teal); font-style: italic"
+                    >من أقوى أنماط الانعكاس الهبوطي على الإطلاق</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div
+              class="pattern-card bullish"
+              style="border-color: var(--green)"
+            >
+              <div class="pattern-badge badge-bull">انعكاس صعودي</div>
+              <div style="margin: 1rem 0">
+                <div
+                  style="
+                    font-weight: 700;
+                    color: var(--green);
+                    font-size: 1.1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Double Bottom (W)
+                </div>
+                <div
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    line-height: 1.6;
+                  "
+                >
+                  قاعان عند نفس المستوى تقريباً. كسر القمة الوسطى = تأكيد الصعود
+                  بهدف يساوي عمق القاع.<br /><br /><span
+                    style="color: var(--teal); font-style: italic"
+                    >مثال: BTC قاع مزدوج $25k → اختراق $30k → صعد $45k</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     3. INDICATORS
+════════════════════════════════════════ -->
+    <section id="indicators">
+      <div class="section-tag">الوحدة الثالثة</div>
+      <h2 class="section-title">المؤشرات الفنية — أدوات التأكيد</h2>
+      <p class="section-desc">
+        المؤشرات لا تتنبأ بالمستقبل — تساعدك على فهم الزخم الحالي وتأكيد
+        الإشارات.
+      </p>
+
+      <!-- RSI INTERACTIVE -->
+      <div
+        style="
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+        "
+      >
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+          "
+        >
+          <div>
+            <div class="indicator-name">RSI</div>
+            <div class="indicator-fullname">
+              Relative Strength Index — مؤشر القوة النسبية
+            </div>
+
+            <div style="margin-bottom: 1rem">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  margin-bottom: 4px;
+                "
+              >
+                <span style="font-size: 0.8rem; color: var(--gray)"
+                  >اضغط لتغيير قيمة RSI</span
+                >
+                <span
+                  class="rsi-label"
+                  id="rsiValue"
+                  style="
+                    font-size: 1.5rem;
+                    font-family: var(--mono);
+                    font-weight: 900;
+                    color: var(--teal);
+                  "
+                  >65</span
+                >
+              </div>
+              <input
+                type="range"
+                id="rsiSlider"
+                min="0"
+                max="100"
+                value="65"
+                aria-label="قيمة RSI"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="65"
+                style="width: 100%; accent-color: var(--teal); cursor: pointer"
+              />
+            </div>
+
+            <div
+              id="rsiZoneInfo"
+              style="
+                padding: 1rem;
+                border-radius: 12px;
+                background: rgba(0, 212, 168, 0.08);
+                border: 1px solid rgba(0, 212, 168, 0.2);
+                transition: all 0.3s;
+              "
+            >
+              <div
+                id="rsiZoneTitle"
+                style="
+                  font-weight: 700;
+                  font-size: 1rem;
+                  color: var(--teal);
+                  margin-bottom: 0.3rem;
+                "
+              >
+                منطقة محايدة
+              </div>
+              <div
+                id="rsiZoneDesc"
+                style="font-size: 0.875rem; color: var(--lgray)"
+              >
+                السوق في توازن. لا إشارة واضحة. انتظر تأكيداً إضافياً قبل
+                الدخول.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div
+              style="
+                background: var(--bg2);
+                border-radius: 12px;
+                padding: 1.25rem;
+              "
+            >
+              <div
+                style="
+                  font-weight: 700;
+                  color: var(--white);
+                  margin-bottom: 1rem;
+                "
+              >
+                جدول قيم RSI
+              </div>
+              <table style="width: 100%; font-size: 0.82rem">
+                <tr style="border-bottom: 1px solid var(--border)">
+                  <th
+                    style="
+                      text-align: right;
+                      padding: 6px;
+                      color: var(--gray);
+                      font-weight: 700;
+                    "
+                  >
+                    القيمة
+                  </th>
+                  <th
+                    style="
+                      text-align: right;
+                      padding: 6px;
+                      color: var(--gray);
+                      font-weight: 700;
+                    "
+                  >
+                    التفسير
+                  </th>
+                  <th
+                    style="
+                      text-align: right;
+                      padding: 6px;
+                      color: var(--gray);
+                      font-weight: 700;
+                    "
+                  >
+                    الإجراء
+                  </th>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      padding: 8px;
+                      color: var(--red);
+                      font-family: var(--mono);
+                      font-weight: 700;
+                    "
+                  >
+                    > 80
+                  </td>
+                  <td style="padding: 8px; color: var(--lgray)">
+                    تشبع شراء حاد
+                  </td>
+                  <td style="padding: 8px; color: var(--red)">بيع قوي</td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      padding: 8px;
+                      color: var(--red);
+                      font-family: var(--mono);
+                      font-weight: 700;
+                    "
+                  >
+                    70-80
+                  </td>
+                  <td style="padding: 8px; color: var(--lgray)">تشبع شراء</td>
+                  <td style="padding: 8px; color: var(--red)">استعد للبيع</td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      padding: 8px;
+                      color: var(--lgray);
+                      font-family: var(--mono);
+                      font-weight: 700;
+                    "
+                  >
+                    50-70
+                  </td>
+                  <td style="padding: 8px; color: var(--lgray)">قوة صعودية</td>
+                  <td style="padding: 8px; color: var(--teal)">ابحث عن شراء</td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      padding: 8px;
+                      color: var(--lgray);
+                      font-family: var(--mono);
+                      font-weight: 700;
+                    "
+                  >
+                    30-50
+                  </td>
+                  <td style="padding: 8px; color: var(--lgray)">ضعف / تردد</td>
+                  <td style="padding: 8px; color: var(--gray)">انتظر</td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      padding: 8px;
+                      color: var(--green);
+                      font-family: var(--mono);
+                      font-weight: 700;
+                    "
+                  >
+                    20-30
+                  </td>
+                  <td style="padding: 8px; color: var(--lgray)">تشبع بيع</td>
+                  <td style="padding: 8px; color: var(--green)">فرصة شراء</td>
+                </tr>
+                <tr>
+                  <td
+                    style="
+                      padding: 8px;
+                      color: var(--green);
+                      font-family: var(--mono);
+                      font-weight: 700;
+                    "
+                  >
+                    < 20
+                  </td>
+                  <td style="padding: 8px; color: var(--lgray)">
+                    تشبع بيع حاد
+                  </td>
+                  <td style="padding: 8px; color: var(--green)">شراء قوي</td>
+                </tr>
+              </table>
+            </div>
+            <div
+              style="
+                margin-top: 0.75rem;
+                padding: 0.75rem 1rem;
+                background: rgba(168, 85, 247, 0.08);
+                border: 1px solid rgba(168, 85, 247, 0.2);
+                border-radius: 10px;
+                font-size: 0.82rem;
+                color: var(--lgray);
+              "
+            >
+              🔥
+              <strong style="color: var(--purple)">RSI Divergence:</strong>
+              السعر يصنع قمة جديدة لكن RSI لا → انعكاس هبوطي وشيك. إشارة نادرة
+              وقوية جداً!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STOCHASTIC -->
+      <div
+        style="
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+        "
+      >
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+          "
+        >
+          <div>
+            <div class="indicator-name">Stochastic</div>
+            <div class="indicator-fullname">
+              Stochastic Oscillator — مؤشر الستوكاستيك
+            </div>
+            <p style="font-size: 0.92rem; color: var(--lgray); margin: 1rem 0 1.5rem">
+              يقارن موقع الإغلاق بالنسبة إلى أعلى وأدنى نطاق سعري حديث. ممتاز لاكتشاف التشبع والانعكاسات السريعة داخل التذبذب.
+            </p>
+
+            <div class="stoch-control">
+              <div class="stoch-control-row">
+                <label for="stochKSlider">%K</label>
+                <span id="stochKValue">78</span>
+              </div>
+              <input type="range" id="stochKSlider" min="0" max="100" value="78" />
+            </div>
+
+            <div class="stoch-control">
+              <div class="stoch-control-row">
+                <label for="stochDSlider">%D</label>
+                <span id="stochDValue">72</span>
+              </div>
+              <input type="range" id="stochDSlider" min="0" max="100" value="72" />
+            </div>
+
+            <div class="stoch-signal-box" id="stochSignalBox">
+              <div class="stoch-signal-title" id="stochSignalTitle">زخم صاعد يقترب من التشبع</div>
+              <div class="stoch-signal-desc" id="stochSignalDesc">
+                عندما يبقى %K أعلى من %D مع اقتراب المؤشر من 80، يكون الزخم قوياً لكن يحتاج تأكيداً قبل مطاردة السعر.
+              </div>
+            </div>
+          </div>
+
+          <div class="stoch-panel">
+            <div class="stoch-zones">
+              <div class="stoch-zone stoch-zone-overbought">80-100 تشبع شراء</div>
+              <div class="stoch-zone stoch-zone-mid">20-80 منطقة عمل</div>
+              <div class="stoch-zone stoch-zone-oversold">0-20 تشبع بيع</div>
+            </div>
+            <div class="stoch-meter">
+              <div class="stoch-track">
+                <div class="stoch-line stoch-line-k" id="stochKLine"></div>
+                <div class="stoch-line stoch-line-d" id="stochDLine"></div>
+              </div>
+            </div>
+            <ul class="stoch-tips">
+              <li>%K يلتف فوق %D من منطقة أقل من 20 = إشارة صعود مبكرة.</li>
+              <li>%K يهبط تحت %D من منطقة أعلى من 80 = تحذير هبوطي.</li>
+              <li>أفضل استخدامه داخل سوق متذبذب أو قرب مناطق الدعم والمقاومة.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- MACD -->
+      <div
+        style="
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 2rem;
+          margin-bottom: 2rem;
+        "
+      >
+        <div class="indicator-name">MACD</div>
+        <div class="indicator-fullname">
+          Moving Average Convergence Divergence — مؤشر تقارب وتباعد المتوسطات
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                color: var(--teal);
+                font-family: var(--mono);
+                font-weight: 700;
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+              "
+            >
+              خط MACD
+            </div>
+            <div style="font-size: 0.85rem; color: var(--lgray)">
+              EMA(12) − EMA(26)
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                color: var(--gold);
+                font-family: var(--mono);
+                font-weight: 700;
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+              "
+            >
+              Signal Line
+            </div>
+            <div style="font-size: 0.85rem; color: var(--lgray)">
+              EMA(9) of MACD
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              text-align: center;
+            "
+          >
+            <div
+              style="
+                color: var(--purple);
+                font-family: var(--mono);
+                font-weight: 700;
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+              "
+            >
+              Histogram
+            </div>
+            <div style="font-size: 0.85rem; color: var(--lgray)">
+              MACD − Signal
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+          <div
+            style="
+              background: rgba(46, 204, 113, 0.08);
+              border: 1px solid rgba(46, 204, 113, 0.2);
+              border-radius: 10px;
+              padding: 1rem;
+            "
+          >
+            <div
+              style="
+                font-weight: 700;
+                color: var(--green);
+                margin-bottom: 0.4rem;
+              "
+            >
+              ⬆️ إشارة شراء
+            </div>
+            <div style="font-size: 0.875rem; color: var(--lgray)">
+              خط MACD يتقاطع فوق Signal + Histogram يتحول موجباً = دخول شراء
+            </div>
+          </div>
+          <div
+            style="
+              background: rgba(255, 77, 106, 0.08);
+              border: 1px solid rgba(255, 77, 106, 0.2);
+              border-radius: 10px;
+              padding: 1rem;
+            "
+          >
+            <div
+              style="font-weight: 700; color: var(--red); margin-bottom: 0.4rem"
+            >
+              ⬇️ إشارة بيع
+            </div>
+            <div style="font-size: 0.875rem; color: var(--lgray)">
+              خط MACD يتقاطع تحت Signal + Histogram يتحول سالباً = خروج أو بيع
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Moving Averages -->
+      <div
+        style="
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 2rem;
+        "
+      >
+        <div class="indicator-name">EMA</div>
+        <div class="indicator-fullname">
+          Exponential Moving Average — المتوسط المتحرك الأسي
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              border-right: 3px solid #ff6b6b;
+            "
+          >
+            <div
+              style="color: #ff6b6b; font-family: var(--mono); font-weight: 700"
+            >
+              EMA 9
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              إشارات سريعة • Scalping
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              border-right: 3px solid #ffa500;
+            "
+          >
+            <div
+              style="color: #ffa500; font-family: var(--mono); font-weight: 700"
+            >
+              EMA 21
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              قصير المدى • يومي/4H
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              border-right: 3px solid var(--gold);
+            "
+          >
+            <div
+              style="
+                color: var(--gold);
+                font-family: var(--mono);
+                font-weight: 700;
+              "
+            >
+              EMA 50
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              اتجاه متوسط • أسبوعي
+            </div>
+          </div>
+          <div
+            style="
+              background: var(--bg2);
+              border-radius: 10px;
+              padding: 1rem;
+              border-right: 3px solid var(--teal);
+            "
+          >
+            <div
+              style="
+                color: var(--teal);
+                font-family: var(--mono);
+                font-weight: 700;
+              "
+            >
+              EMA 200 ⭐
+            </div>
+            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px">
+              الاتجاه الكبير • الأهم
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+          <div
+            style="
+              background: rgba(46, 204, 113, 0.06);
+              border: 1px solid rgba(46, 204, 113, 0.2);
+              border-radius: 10px;
+              padding: 1rem;
+            "
+          >
+            <div
+              style="
+                font-weight: 800;
+                color: var(--green);
+                margin-bottom: 0.3rem;
+              "
+            >
+              ✅ Golden Cross
+            </div>
+            <div style="font-size: 0.875rem; color: var(--lgray)">
+              EMA50 يتقاطع فوق EMA200 → إشارة شراء قوية جداً. BTC 2020 Golden
+              Cross → +1000% في سنة!
+            </div>
+          </div>
+          <div
+            style="
+              background: rgba(255, 77, 106, 0.06);
+              border: 1px solid rgba(255, 77, 106, 0.2);
+              border-radius: 10px;
+              padding: 1rem;
+            "
+          >
+            <div
+              style="font-weight: 800; color: var(--red); margin-bottom: 0.3rem"
+            >
+              ❌ Death Cross
+            </div>
+            <div style="font-size: 0.875rem; color: var(--lgray)">
+              EMA50 يتقاطع تحت EMA200 → إشارة هبوط قوية. غالباً تسبق موجات هبوط
+              ضخمة.
+            </div>
+          </div>
+        </div>
+
+      <!-- Bollinger Bands -->
+      <div
+        style="
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 20px;
+          padding: 2rem;
+          margin-top: 2rem;
+        "
+      >
+        <div class="indicator-name">BB</div>
+        <div class="indicator-fullname">
+          Bollinger Bands — نطاقات بولينجر
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start">
+          <div>
+            <p style="font-size: 0.9rem; color: var(--lgray); margin-bottom: 1.25rem; line-height: 1.7">
+              ثلاثة خطوط تتمدد وتضيق حسب تقلبات السوق. الضيق الشديد (Squeeze) يسبق غالباً حركة كبيرة وعنيفة.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem">
+              <div style="display: flex; align-items: center; gap: 0.75rem">
+                <div style="width: 28px; height: 3px; background: var(--blue); border-radius: 2px; flex-shrink:0"></div>
+                <span style="font-size: 0.875rem; color: var(--lgray)"><strong style="color:var(--blue)">النطاق العلوي</strong> — SMA20 + 2σ — مقاومة ديناميكية</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem">
+                <div style="width: 28px; height: 3px; background: var(--gold); border-radius: 2px; flex-shrink:0"></div>
+                <span style="font-size: 0.875rem; color: var(--lgray)"><strong style="color:var(--gold)">الخط الأوسط</strong> — SMA20 — اتجاه متوسط</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem">
+                <div style="width: 28px; height: 3px; background: var(--green); border-radius: 2px; flex-shrink:0"></div>
+                <span style="font-size: 0.875rem; color: var(--lgray)"><strong style="color:var(--green)">النطاق السفلي</strong> — SMA20 − 2σ — دعم ديناميكي</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem">
+              <div style="background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.25); border-radius: 10px; padding: 0.9rem">
+                <div style="font-weight: 700; color: var(--green); font-size: 0.85rem; margin-bottom: 0.3rem">🔵 Squeeze → انفجار</div>
+                <div style="font-size: 0.8rem; color: var(--lgray)">النطاق يضيق جداً = طاقة مكتنزة. استعد للحركة الكبيرة.</div>
+              </div>
+              <div style="background: rgba(255,77,106,0.08); border: 1px solid rgba(255,77,106,0.25); border-radius: 10px; padding: 0.9rem">
+                <div style="font-weight: 700; color: var(--red); font-size: 0.85rem; margin-bottom: 0.3rem">⚠️ لمس النطاق العلوي</div>
+                <div style="font-size: 0.8rem; color: var(--lgray)">السعر لمس النطاق العلوي مرتين = تشبع وانعكاس محتمل.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <canvas id="bbCanvas" width="400" height="200" style="width:100%; border-radius:12px; background:var(--bg2)"></canvas>
+            <div style="margin-top: 0.75rem; padding: 0.75rem 1rem; background: rgba(74,158,255,0.08); border: 1px solid rgba(74,158,255,0.2); border-radius: 10px; font-size: 0.82rem; color: var(--lgray)">
+              💡 <strong style="color:var(--blue)">قاعدة الـ 2σ:</strong> 95% من حركات السعر تبقى داخل النطاقين. الخروج = إشارة قوية.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     4. SUPPORT & RESISTANCE
+════════════════════════════════════════ -->
+    <div class="section-full">
+      <section id="sr">
+        <div class="section-tag">الوحدة الرابعة</div>
+        <h2 class="section-title">الدعم والمقاومة — المستويات المهمة</h2>
+        <p class="section-desc">
+          هي أهم المفاهيم في التحليل الفني. كل قرار تداولي يجب أن يكون مبنياً
+          على مستويات الدعم والمقاومة.
+        </p>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+          "
+        >
+          <div>
+            <div class="sr-demo">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 1rem;
+                "
+              >
+                <span style="font-weight: 700; font-size: 0.95rem"
+                  >مخطط توضيحي</span
+                >
+                <span style="font-size: 0.8rem; color: var(--gray)"
+                  >BTC/USDT — يومي</span
+                >
+              </div>
+              <div class="sr-chart-wrap">
+                <canvas id="srCanvas" width="500" height="220"></canvas>
+              </div>
+              <div class="sr-tags">
+                <div class="sr-tag sr-tag-res">● مقاومة</div>
+                <div class="sr-tag sr-tag-sup">● دعم</div>
+                <div class="sr-tag sr-tag-break">⚡ اختراق → تحول</div>
+              </div>
+            </div>
+
+            <div
+              style="
+                margin-top: 1rem;
+                background: rgba(245, 200, 66, 0.06);
+                border: 1px solid rgba(245, 200, 66, 0.2);
+                border-radius: 12px;
+                padding: 1.25rem;
+              "
+            >
+              <div
+                style="
+                  font-weight: 700;
+                  color: var(--gold);
+                  margin-bottom: 0.5rem;
+                "
+              >
+                ⚡ القاعدة الذهبية
+              </div>
+              <div style="font-size: 0.875rem; color: var(--lgray)">
+                المقاومة التي تُكسر تتحول إلى دعم، والدعم الذي يُكسر يتحول إلى
+                مقاومة. هذه القاعدة تعمل في كل الأسواق والأطر الزمنية.
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 1rem">
+            <div
+              style="
+                background: var(--card);
+                border: 1px solid rgba(46, 204, 113, 0.3);
+                border-radius: 14px;
+                padding: 1.5rem;
+              "
+            >
+              <div
+                style="
+                  font-size: 1.1rem;
+                  font-weight: 800;
+                  color: var(--green);
+                  margin-bottom: 0.75rem;
+                "
+              >
+                الدعم (Support)
+              </div>
+              <ul
+                style="
+                  list-style: none;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.5rem;
+                "
+              >
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--green)">◆</span>مستوى يتوقف عنده
+                  الهبوط ويرتد السعر للأعلى
+                </li>
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--green)">◆</span>يمثل منطقة تراكم
+                  المشترين (Buyers Zone)
+                </li>
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--green)">◆</span>كلما اختُبر أكثر كان
+                  أقوى وأكثر موثوقية
+                </li>
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--green)">◆</span>عند لمسه: فرصة شراء
+                  مع Stop Loss تحته
+                </li>
+              </ul>
+            </div>
+            <div
+              style="
+                background: var(--card);
+                border: 1px solid rgba(255, 77, 106, 0.3);
+                border-radius: 14px;
+                padding: 1.5rem;
+              "
+            >
+              <div
+                style="
+                  font-size: 1.1rem;
+                  font-weight: 800;
+                  color: var(--red);
+                  margin-bottom: 0.75rem;
+                "
+              >
+                المقاومة (Resistance)
+              </div>
+              <ul
+                style="
+                  list-style: none;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.5rem;
+                "
+              >
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--red)">◆</span>مستوى يتوقف عنده
+                  الصعود ويرتد السعر للأسفل
+                </li>
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--red)">◆</span>يمثل منطقة تراكم
+                  البائعين (Sellers Zone)
+                </li>
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--red)">◆</span>عند لمسه: فرصة بيع أو
+                  أخذ ربح جزئي
+                </li>
+                <li
+                  style="
+                    font-size: 0.875rem;
+                    color: var(--lgray);
+                    display: flex;
+                    gap: 8px;
+                  "
+                >
+                  <span style="color: var(--red)">◆</span>بعد كسره بشمعة مؤكدة:
+                  يتحول لدعم ✅
+                </li>
+              </ul>
+            </div>
+            <div
+              style="
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 1.5rem;
+              "
+            >
+              <div
+                style="
+                  font-size: 1rem;
+                  font-weight: 700;
+                  color: var(--blue);
+                  margin-bottom: 0.75rem;
+                "
+              >
+                كيف ترسم المستويات؟
+              </div>
+              <ol
+                style="
+                  padding-right: 1.2rem;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.4rem;
+                "
+              >
+                <li style="font-size: 0.875rem; color: var(--lgray)">
+                  انظر لقمم وقيعان واضحة على الإطار اليومي
+                </li>
+                <li style="font-size: 0.875rem; color: var(--lgray)">
+                  ابحث عن المستويات التي اختُبرت مرتين أو أكثر
+                </li>
+                <li style="font-size: 0.875rem; color: var(--lgray)">
+                  المستوى المستدير ($30k, $50k) = مستوى نفسي قوي
+                </li>
+                <li style="font-size: 0.875rem; color: var(--lgray)">
+                  ارسم منطقة (Zone) لا خطاً واحداً بالضبط
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- FIBONACCI -->
+        <div style="margin-top: 2.5rem">
+          <div style="font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px">
+            <span style="display:inline-block; width:24px; height:2px; background:var(--gold)"></span>
+            فيبوناتشي
+          </div>
+          <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.75rem">مستويات تصحيح فيبوناتشي</h3>
+          <p style="font-size: 0.9rem; color: var(--lgray); margin-bottom: 1.5rem">
+            أداة رياضية طبيعية — 61.8% هو "النسبة الذهبية" التي يرتد عندها السعر في معظم حالات التصحيح الصحي.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start">
+            <div style="display: flex; flex-direction: column; gap: 0.6rem">
+              <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--card); border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid var(--border)">
+                <div style="font-family: var(--mono); font-weight: 700; color: var(--green); min-width: 50px">23.6%</div>
+                <div style="flex:1; height:4px; background: rgba(46,204,113,0.2); border-radius:2px; position:relative">
+                  <div style="position:absolute;right:0;top:0;height:100%;width:23.6%;background:var(--green);border-radius:2px"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gray)">تصحيح ضعيف</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--card); border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid var(--border)">
+                <div style="font-family: var(--mono); font-weight: 700; color: var(--teal); min-width: 50px">38.2%</div>
+                <div style="flex:1; height:4px; background: rgba(0,212,168,0.2); border-radius:2px; position:relative">
+                  <div style="position:absolute;right:0;top:0;height:100%;width:38.2%;background:var(--teal);border-radius:2px"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gray)">دعم أول</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--card); border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid rgba(245,200,66,0.4)">
+                <div style="font-family: var(--mono); font-weight: 700; color: var(--gold); min-width: 50px">50%</div>
+                <div style="flex:1; height:4px; background: rgba(245,200,66,0.2); border-radius:2px; position:relative">
+                  <div style="position:absolute;right:0;top:0;height:100%;width:50%;background:var(--gold);border-radius:2px"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gray)">مستوى نفسي</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--card); border-radius: 10px; padding: 0.85rem 1rem; border: 2px solid rgba(245,200,66,0.5)">
+                <div style="font-family: var(--mono); font-weight: 900; color: var(--gold); min-width: 50px; font-size:1rem">61.8%</div>
+                <div style="flex:1; height:5px; background: rgba(245,200,66,0.2); border-radius:2px; position:relative">
+                  <div style="position:absolute;right:0;top:0;height:100%;width:61.8%;background:var(--gold);border-radius:2px"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gold); font-weight:700">⭐ النسبة الذهبية</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--card); border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid rgba(168,85,247,0.3)">
+                <div style="font-family: var(--mono); font-weight: 700; color: var(--purple); min-width: 50px">78.6%</div>
+                <div style="flex:1; height:4px; background: rgba(168,85,247,0.2); border-radius:2px; position:relative">
+                  <div style="position:absolute;right:0;top:0;height:100%;width:78.6%;background:var(--purple);border-radius:2px"></div>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gray)">تصحيح عميق</div>
+              </div>
+            </div>
+            <div style="background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem">
+              <div style="font-weight: 700; color: var(--gold); margin-bottom: 1rem; font-size: 0.95rem">كيف تطبق فيبوناتشي؟</div>
+              <ol style="padding-right: 1.2rem; display: flex; flex-direction: column; gap: 0.6rem">
+                <li style="font-size: 0.875rem; color: var(--lgray)">حدد القاع (Low) والقمة (High) للحركة الكبيرة</li>
+                <li style="font-size: 0.875rem; color: var(--lgray)">ارسم الفيبوناتشي من القاع للقمة (صعود) أو العكس (هبوط)</li>
+                <li style="font-size: 0.875rem; color: var(--lgray)">انتظر السعر عند مستوى 38.2% أو 61.8%</li>
+                <li style="font-size: 0.875rem; color: var(--lgray)">ابحث عن تأكيد بنمط شمعة أو مؤشر RSI</li>
+              </ol>
+              <div style="margin-top: 1rem; padding: 0.85rem; background: rgba(245,200,66,0.07); border: 1px solid rgba(245,200,66,0.25); border-radius: 10px; font-size: 0.82rem; color: var(--lgray)">
+                📌 <strong style="color:var(--gold)">مثال:</strong> BTC ارتفع من $20k → $60k. تصحيح إلى 61.8% = $35.5k ← منطقة شراء استراتيجية ذهبية.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     5. QUIZ
+════════════════════════════════════════ -->
+    <section id="quiz">
+      <div class="section-tag">اختبر معلوماتك</div>
+      <h2 class="section-title">اختبار التحليل الفني</h2>
+      <p class="section-desc">
+        اختبر فهمك للمفاهيم الأساسية. 20 سؤالاً بمستويات مختلفة.
+        <span style="font-size:0.8rem;color:var(--gray);display:block;margin-top:4px;">⌨️ اضغط 1-4 لاختيار الإجابة، Enter للسؤال التالي، و ? لعرض كل الاختصارات</span>
+      </p>
+      <div class="quiz-stats-bar">
+        <span id="quizBestScore">أفضل نتيجة: 0/20</span>
+        <span id="quizAttempts">المحاولات: 0</span>
+      </div>
+
+      <div class="quiz-card">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+          "
+        >
+          <span class="quiz-progress-text" id="quizProgress">سؤال 1 / 20</span>
+          <span class="quiz-score" id="quizScore">النتيجة: 0</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div
+            class="progress-bar"
+            id="quizProgressBar"
+            style="width: 5%"
+          ></div>
+        </div>
+
+        <div class="quiz-question" id="quizQ">ما هو مؤشر القوة النسبية؟</div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="quiz-nav">
+          <button
+            type="button"
+            class="btn-outline"
+            id="nextBtn"
+            onclick="nextQuestion()"
+            style="display: none; padding: 10px 20px; font-size: 0.9rem"
+          >
+            السؤال التالي ←
+          </button>
+          <div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     6. CHECKLIST
+════════════════════════════════════════ -->
+    <div class="section-full">
+      <section id="checklist">
+        <div class="section-tag">الوحدة الخامسة</div>
+        <h2 class="section-title">قائمة التحقق قبل كل صفقة</h2>
+        <p class="section-desc">
+          اضغط على كل عنصر لتحديده. لا تدخل أي صفقة قبل الإجابة على جميع
+          الأسئلة.
+        </p>
+
+        <div class="checklist-wrap">
+          <div id="checklistItems"></div>
+          <button type="button" onclick="printChecklist()"
+            style="margin-top:1rem; background:transparent; border:1px solid var(--border); color:var(--gray); border-radius:8px; padding:8px 18px; font-family:var(--font); font-size:0.85rem; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px"
+            onmouseover="this.style.borderColor='var(--teal)';this.style.color='var(--teal)'"
+            onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--gray)'">
+            🖨️ طباعة / تصدير PDF
+          </button>
+          <div
+            style="
+              margin-top: 1rem;
+              padding: 1rem;
+              background: var(--bg3);
+              border-radius: 10px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <span
+              style="font-size: 0.9rem; color: var(--gray); font-weight: 600"
+              >اكتمال قائمة التحقق</span
+            >
+            <span
+              id="checklistCount"
+              style="
+                font-family: var(--mono);
+                font-weight: 700;
+                color: var(--teal);
+              "
+              >0 / 8</span
+            >
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" id="checklistBar" style="width: 0%"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     6b. POSITION CALCULATOR
+════════════════════════════════════════ -->
+    <section id="calculator">
+      <div class="section-tag">أداة احترافية</div>
+      <h2 class="section-title">حاسبة حجم الصفقة وإدارة المخاطر</h2>
+      <p class="section-desc">
+        أدخل بيانات صفقتك لحساب حجم المركز الأمثل، نسبة المخاطرة/المكافأة، وأهداف الربح — كل المحترفين يستخدمون هذه الحاسبة قبل كل دخول.
+      </p>
+      <div id="calcValidation" class="calc-validation" hidden>سيتم حفظ آخر قيمك تلقائياً على هذا الجهاز.</div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; max-width: 900px; margin: 0 auto">
+        <!-- Inputs -->
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem">
+          <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--white)">بيانات الصفقة</div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--gray); font-weight: 700; display: block; margin-bottom: 6px">💰 رأس المال (USDT)</label>
+            <input type="number" id="calcCapital" value="1000" min="1"
+              style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--white); font-family:var(--mono); font-size:1rem; outline:none; transition:border-color 0.2s"
+              onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'" oninput="calcPosition()" />
+          </div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--gray); font-weight: 700; display: block; margin-bottom: 6px">⚠️ نسبة المخاطرة (%)</label>
+            <div style="display:flex; align-items:center; gap:0.75rem">
+              <input type="range" id="calcRisk" min="0.5" max="10" step="0.5" value="2"
+                style="flex:1; accent-color:var(--teal); cursor:pointer" oninput="calcPosition(); document.getElementById('calcRiskVal').textContent=this.value+'%'" />
+              <span id="calcRiskVal" style="font-family:var(--mono); font-weight:700; color:var(--teal); min-width:42px; text-align:left">2%</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--gray); margin-top:4px">الموصى به: 1-2% لكل صفقة</div>
+          </div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--gray); font-weight: 700; display: block; margin-bottom: 6px">📍 سعر الدخول</label>
+            <input type="number" id="calcEntry" value="67000" min="0"
+              style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--white); font-family:var(--mono); font-size:1rem; outline:none; transition:border-color 0.2s"
+              onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'" oninput="calcPosition()" />
+          </div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--gray); font-weight: 700; display: block; margin-bottom: 6px">🛑 Stop Loss</label>
+            <input type="number" id="calcSL" value="65000" min="0"
+              style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--white); font-family:var(--mono); font-size:1rem; outline:none; transition:border-color 0.2s"
+              onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'" oninput="calcPosition()" />
+          </div>
+
+          <div>
+            <label style="font-size: 0.8rem; color: var(--gray); font-weight: 700; display: block; margin-bottom: 6px">🎯 هدف الربح (TP)</label>
+            <input type="number" id="calcTP" value="71000" min="0"
+              style="width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:10px 14px; color:var(--white); font-family:var(--mono); font-size:1rem; outline:none; transition:border-color 0.2s"
+              onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'" oninput="calcPosition()" />
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div style="display: flex; flex-direction: column; gap: 1rem">
+          <div id="calcResults" style="background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem">
+            <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--white)">النتائج</div>
+            <div style="display: flex; flex-direction: column; gap: 0.85rem">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid var(--border)">
+                <span style="font-size:0.875rem; color:var(--gray)">المبلغ المخاطر به</span>
+                <span id="riskAmount" style="font-family:var(--mono); font-weight:700; color:var(--red); font-size:1.1rem">$20</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid var(--border)">
+                <span style="font-size:0.875rem; color:var(--gray)">حجم الصفقة</span>
+                <span id="posSize" style="font-family:var(--mono); font-weight:700; color:var(--white); font-size:1.1rem">0.010 BTC</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid var(--border)">
+                <span style="font-size:0.875rem; color:var(--gray)">قيمة الصفقة</span>
+                <span id="posValue" style="font-family:var(--mono); font-weight:700; color:var(--blue); font-size:1.1rem">$670</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:0.75rem; border-bottom:1px solid var(--border)">
+                <span style="font-size:0.875rem; color:var(--gray)">الربح المتوقع</span>
+                <span id="profitAmount" style="font-family:var(--mono); font-weight:700; color:var(--green); font-size:1.1rem">$40</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center">
+                <span style="font-size:0.875rem; color:var(--gray)">نسبة R:R</span>
+                <span id="rrRatio" style="font-family:var(--mono); font-weight:900; font-size:1.4rem; color:var(--teal)">1:2</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="rrAlert" style="padding:1rem 1.25rem; border-radius:12px; font-size:0.875rem; font-weight:600; background:rgba(46,204,113,0.1); border:1px solid rgba(46,204,113,0.3); color:var(--green)">
+            ✅ نسبة R:R جيدة — يمكنك المتابعة
+          </div>
+
+          <div id="signalBox" style="background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:1.25rem; display:none">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem">
+              <div style="font-size:0.8rem; font-weight:700; color:var(--teal)">📡 إشارة التداول</div>
+              <button type="button" id="copySignalBtn" onclick="copySignal()"
+                style="background:var(--teal); color:var(--bg); border:none; border-radius:6px; padding:4px 12px; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:var(--font)">
+                نسخ ⎘
+              </button>
+            </div>
+            <pre id="signalText" style="font-family:var(--mono); font-size:0.75rem; color:var(--lgray); white-space:pre-wrap; line-height:1.7; margin:0"></pre>
+          </div>
+
+          <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:1.25rem">
+            <div style="font-size:0.8rem; font-weight:700; color:var(--gray); margin-bottom:0.75rem">المستويات المهمة</div>
+            <div style="position:relative; height:60px; background:var(--bg2); border-radius:8px; overflow:hidden; margin-bottom:0.5rem">
+              <div id="priceBar" style="position:absolute; height:100%; width:100%"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-family:var(--mono)">
+              <span id="slLabel" style="color:var(--red)">SL</span>
+              <span id="entryLabel" style="color:var(--teal)">Entry</span>
+              <span id="tpLabel" style="color:var(--green)">TP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="journal">
+      <div class="section-tag">التدريب العملي</div>
+      <h2 class="section-title">Journal de trading</h2>
+      <p class="section-desc">
+        سجّل صفقاتك وملاحظاتك بعد كل دخول. البيانات محفوظة محلياً داخل المتصفح حتى تراجع أداءك بمرور الوقت.
+      </p>
+
+      <div class="journal-layout">
+        <form class="journal-form" id="tradeJournalForm">
+          <div class="journal-form-grid">
+            <div>
+              <label for="tradeDate">التاريخ</label>
+              <input type="date" id="tradeDate" required />
+            </div>
+            <div>
+              <label for="tradeAsset">الأصل</label>
+              <input type="text" id="tradeAsset" placeholder="BTCUSDT" required />
+            </div>
+            <div>
+              <label for="tradeDirection">الاتجاه</label>
+              <select id="tradeDirection">
+                <option value="long">LONG</option>
+                <option value="short">SHORT</option>
+              </select>
+            </div>
+            <div>
+              <label for="tradeSetup">السيناريو</label>
+              <input type="text" id="tradeSetup" placeholder="Breakout / Pullback / Reversal" />
+            </div>
+            <div>
+              <label for="tradeEntry">الدخول</label>
+              <input type="number" id="tradeEntry" step="0.0001" required />
+            </div>
+            <div>
+              <label for="tradeStop">Stop Loss</label>
+              <input type="number" id="tradeStop" step="0.0001" required />
+            </div>
+            <div>
+              <label for="tradeExit">الخروج</label>
+              <input type="number" id="tradeExit" step="0.0001" />
+            </div>
+            <div>
+              <label for="tradeMood">الحالة الذهنية</label>
+              <select id="tradeMood">
+                <option value="calm">هادئ</option>
+                <option value="focused">مركز</option>
+                <option value="hesitant">متردد</option>
+                <option value="impulsive">مندفع</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="tradeNotes">الملاحظات</label>
+            <textarea id="tradeNotes" rows="4" placeholder="لماذا دخلت؟ ماذا كان جيداً أو سيئاً؟"></textarea>
+          </div>
+
+          <div class="journal-form-actions">
+            <button type="submit" class="btn-primary">حفظ الصفقة</button>
+            <button type="button" class="btn-outline" onclick="resetTradeForm()">إعادة ضبط الحقول</button>
+            <button type="button" class="btn-outline" onclick="clearTradingJournal()">حذف السجل</button>
+          </div>
+        </form>
+
+        <div class="journal-side">
+          <div class="journal-summary">
+            <div class="journal-summary-card">
+              <span>عدد الصفقات</span>
+              <strong id="journalTradeCount">0</strong>
+            </div>
+            <div class="journal-summary-card">
+              <span>نسبة النجاح</span>
+              <strong id="journalWinRate">0%</strong>
+            </div>
+            <div class="journal-summary-card">
+              <span>متوسط R:R</span>
+              <strong id="journalAvgRR">0.0</strong>
+            </div>
+          </div>
+
+          <div class="journal-list-wrap">
+            <div class="journal-list-header">
+              <div>آخر الصفقات المسجلة</div>
+              <div id="journalStorageHint">محفوظ محلياً</div>
+            </div>
+            <div class="journal-tools">
+              <input type="search" id="journalSearch" class="journal-search" placeholder="ابحث عن أصل أو سيناريو أو ملاحظة..." aria-label="البحث داخل السجل" />
+              <div class="journal-filters" role="tablist" aria-label="تصفية السجل">
+                <button type="button" class="journal-filter active" data-filter="all" aria-pressed="true">الكل</button>
+                <button type="button" class="journal-filter" data-filter="open" aria-pressed="false">مفتوحة</button>
+                <button type="button" class="journal-filter" data-filter="win" aria-pressed="false">رابحة</button>
+                <button type="button" class="journal-filter" data-filter="loss" aria-pressed="false">خاسرة</button>
+              </div>
+              <button type="button" class="market-refresh-btn journal-export-btn" onclick="exportTradingJournal()">تصدير CSV</button>
+            </div>
+            <div id="journalEmptyState" class="journal-empty">
+              لا توجد صفقات محفوظة بعد. أضف أول صفقة لتبدأ أرشيفك الشخصي.
+            </div>
+            <div id="journalList" class="journal-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     7. GLOSSARY
+════════════════════════════════════════ -->
+    <section id="glossary">
+      <div class="section-tag">المرجع</div>
+      <h2 class="section-title">قاموس مصطلحات التحليل الفني</h2>
+      <p class="section-desc">
+        المصطلحات الأساسية التي تحتاج معرفتها للتداول الاحترافي.
+      </p>
+
+      <div style="margin-bottom: 1.5rem">
+        <input
+          type="text"
+          id="glossarySearch"
+          placeholder="ابحث عن مصطلح..."
+          oninput="filterGlossary(this.value)"
+          aria-label="البحث في المصطلحات"
+          style="
+            width: 100%;
+            max-width: 400px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--white);
+            font-family: var(--font);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+          "
+          onfocus="this.style.borderColor='var(--teal)';this.style.boxShadow='0 0 0 3px rgba(0,212,168,0.15)'"
+          onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"
+        />
+      </div>
+
+      <div class="glossary-grid" id="glossaryGrid"></div>
+    </section>
+
+    <div class="shortcut-overlay" id="shortcutOverlay" hidden>
+      <div class="shortcut-dialog" role="dialog" aria-modal="true" aria-labelledby="shortcutTitle">
+        <div class="shortcut-dialog-head">
+          <div>
+            <div class="section-tag">لوحة المفاتيح</div>
+            <h3 id="shortcutTitle">الاختصارات المتاحة داخل الصفحة</h3>
+          </div>
+          <button type="button" class="shortcut-close" onclick="toggleShortcutOverlay(false)">✕</button>
+        </div>
+        <div class="shortcut-grid">
+          <div class="shortcut-row"><kbd>?</kbd><span>فتح أو إغلاق هذه النافذة</span></div>
+          <div class="shortcut-row"><kbd>1</kbd><span>اختيار الإجابة الأولى في الاختبار</span></div>
+          <div class="shortcut-row"><kbd>2</kbd><span>اختيار الإجابة الثانية</span></div>
+          <div class="shortcut-row"><kbd>3</kbd><span>اختيار الإجابة الثالثة</span></div>
+          <div class="shortcut-row"><kbd>4</kbd><span>اختيار الإجابة الرابعة</span></div>
+          <div class="shortcut-row"><kbd>Enter</kbd><span>الانتقال إلى السؤال التالي</span></div>
+          <div class="shortcut-row"><kbd>T</kbd><span>تبديل المظهر</span></div>
+          <div class="shortcut-row"><kbd>G</kbd><span>الانتقال مباشرة إلى قاموس المصطلحات</span></div>
+          <div class="shortcut-row"><kbd>J</kbd><span>الانتقال إلى Journal de trading</span></div>
+          <div class="shortcut-row"><kbd>Esc</kbd><span>إغلاق القائمة أو نافذة الاختصارات</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-logo">TA Academy</div>
+      <div class="footer-tagline">دليلك للتحليل الفني الاحترافي</div>
+      <div class="footer-warning">
+        ⚠️ تحذير: التداول في العملات الرقمية ينطوي على مخاطر عالية جداً. هذا
+        الموقع لأغراض تعليمية فقط وليس نصيحة استثمارية. لا تستثمر إلا ما تتحمل
+        خسارته.
+      </div>
+      <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--gray)">
+        TA Academy © 2026 — جميع المعلومات تعليمية فقط
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+

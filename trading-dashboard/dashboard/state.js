@@ -1,0 +1,55 @@
+export const state = {
+  curSym: 'BTCUSDT',
+  curIv: '1d',
+  effectiveIv: null,
+  analysisProfile: 'balanced',
+  candleLimit: 100,
+  layers: {
+    ema: true,
+    vol: true,
+    grid: true,
+    sr: true,
+    bb: false,
+    tl: true,
+    fib: false,
+    vp: false,
+    trade: true,
+    tradeZones: true,
+  },
+  lastResult: null,
+  chartCandles: [],
+  hoverIndex: -1,
+  hoverY: -1,
+  activeRunId: 0,
+  prices: {},
+  manualLevels: [],
+  hoveredLevelIndex: -1,
+  draggingLevelIndex: -1,
+
+  // Modern State Slices
+  runtime: {
+    isOnline: navigator.onLine ?? true,
+    isDisposed: false,
+    isBfcacheSuspended: false,
+    timers: {
+      countdownIntervalId: null,
+      runIntervalId: null,
+      screenerIntervalId: null,
+      initialScreenerTimeoutId: null,
+      sentimentFearGreedIntervalId: null,
+      sentimentDominanceIntervalId: null,
+    },
+  },
+  scanner: {
+    lastRefresh: 0,
+    abortController: null,
+  },
+  screener: {
+    activeMode: 'market',
+    isLoading: false,
+  },
+  network: {
+    wsConnected: false,
+  },
+  exchangeSymbols: [],
+};
