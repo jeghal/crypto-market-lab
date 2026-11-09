@@ -80,8 +80,8 @@ Les regressions couvrent ATR, expiration du cache, annulation des requetes, fall
 
 Projet actif.
 
-## Source partage et journal
+## Source partage
 
 Les fichiers `dashboard/market-core.js` et `radar/assets/js/{market-core,api,collectors,transforms}.js` sont generes depuis `../shared/`. Modifier le source puis executer `node ../scripts/sync_shared.mjs`. La copie locale permet toujours de servir ce projet independamment.
 
-Le bandeau affiche l age des donnees et le timeframe effectif. Le journal `journal.html` conserve localement les signaux observes et permet leur export et une evaluation forward avec couts. Voir `../docs/ARCHITECTURE.md` pour les hypotheses.
+Le bandeau affiche l age des donnees et le timeframe effectif.

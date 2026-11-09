@@ -14,7 +14,7 @@ export function renderDataHealth() {
   const requested = IV_LABELS[state.curIv] || state.curIv;
   const time = health.receivedAt ? new Date(health.receivedAt).toLocaleTimeString('ar', {hour12:false}) : '—';
   root.dataset.stale = String(Boolean(view.stale));
-  root.textContent = `${view.label} · آخر تحديث ${time} · عمر البيانات ${view.age==null?'—':Math.floor(view.age/1000)+'ث'} · الفريم الفعلي ${label}${health.effectiveIv && health.effectiveIv!==state.curIv?' (المطلوب '+requested+')':''} · ${state.network.wsConnected?'بث متصل':'البث غير متصل'}${health.journalSaved===false?' · تعذّر حفظ سجل الإشارات':''}`;
+  root.textContent = `${view.label} · آخر تحديث ${time} · عمر البيانات ${view.age==null?'—':Math.floor(view.age/1000)+'ث'} · الفريم الفعلي ${label}${health.effectiveIv && health.effectiveIv!==state.curIv?' (المطلوب '+requested+')':''} · ${state.network.wsConnected?'بث متصل':'البث غير متصل'}`;
   const signal = document.getElementById('sigTxt');
   if (signal) {
     signal.dataset.stale=String(Boolean(view.stale));

@@ -1,14 +1,10 @@
-const CACHE_NAME = 'cryptowatch-v19';
+const CACHE_NAME = 'cryptowatch-v20';
 
 const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.json',
   './style.css',
-  './journal.html',
-  './journal.css',
-  './dashboard/journal-page.js',
-  './dashboard/signal-journal.js',
   './dashboard/data-health.js',
   './script.js',
   './icons/icon-192.svg',

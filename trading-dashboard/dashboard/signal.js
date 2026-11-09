@@ -419,8 +419,6 @@ export async function buildSignal(sym, chartIv, limit, signal, analysisProfile =
     srLevels: rSr,
     candles: cVisible,
     analysisProfile: profileKey,
-    analysisCandleTime: c15.at(-1)?.t,
-    evaluationCandles: c15,
     receivedAt: Math.min(...[cRaw,c4r,c15r,r1h,r1d].filter(Array.isArray).map(c=>c.at(-1)?.receivedAt || Date.now())),
     chartRvolArr: relativeVolume(cVisible, 20),
     chartIv,

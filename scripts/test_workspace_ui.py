@@ -26,10 +26,13 @@ def main():
             base=f'http://127.0.0.1:{server.server_port}'
             page.goto(base+'/')
             check('Independent projects are listed at the workspace entrance',page.locator('a.card').count()==3)
+            page.evaluate("localStorage.setItem('binance_signal_journal_v1','retired-test')")
             page.locator('a[href="trading-dashboard/"]').click()
             page.wait_for_function("document.getElementById('dataHealth').dataset.stale === 'false'")
             check('Dashboard displays source age and effective interval','الفريم الفعلي' in page.locator('#dataHealth').inner_text())
             check('Successful analysis updates the status bar','تم التحديث' in page.locator('#stTxt').inner_text())
+            check('Journal entry point has been removed',page.locator('a[href="journal.html"]').count()==0)
+            check('Retired journal data is cleaned without new recording',page.evaluate("localStorage.getItem('binance_signal_journal_v1')")==None)
             context.set_offline(True)
             page.wait_for_function("document.getElementById('dataHealth').dataset.stale === 'true'")
             check('Offline browser immediately marks the analysis as stale',page.locator('#sigTxt').get_attribute('data-stale')=='true')
@@ -58,18 +61,6 @@ def main():
             page.locator('#refBtn').click()
             page.wait_for_function("document.getElementById('dataHealth').dataset.stale==='false' && !document.getElementById('dataHealth').textContent.includes('المطلوب')")
             check('Returning to the original timeframe restores the correct stream',page.evaluate("async()=>{const {state}=await import('./dashboard/state.js');return state.effectiveIv;}")=='1M')
-
-            # Install a local paper signal; no simulated record is inserted in the user's browser.
-            page.evaluate("""async()=>{const j=await import('./dashboard/signal-journal.js');const now=Date.now()-1800000;const records=j.captureSignal({signal:true,sym:'BTCUSDT',price:100,sl:95,tp:110,analysisCandleTime:now,chartIv:'1d',condCount:7,rr:2},[],now);j.writeJournal(records);}""")
-            page.locator('a[href="journal.html"]').click()
-            page.wait_for_selector('#journalRows tr')
-            check('Journal displays the saved signal',page.locator('#journalRows tr').count()==1)
-            with page.expect_download() as download:page.locator('#exportJournal').click()
-            check('Journal can export its raw records',download.value.suggested_filename.endswith('.json'))
-            page.locator('#evaluateJournal').click()
-            page.wait_for_function("!document.getElementById('evaluateJournal').disabled")
-            check('Historical evaluation completes without a page error','اكتمل فحص' in page.locator('#journalMessage').inner_text())
-            check('Small samples are explicitly labelled','غير كافية' in page.locator('#sampleNote').inner_text())
 
             page.goto(base+'/ATLASFLOW/tests.html')
             page.wait_for_function("document.getElementById('overall').dataset.completed==='true'")

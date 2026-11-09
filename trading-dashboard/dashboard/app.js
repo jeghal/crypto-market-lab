@@ -11,7 +11,6 @@ import { destroySentiment, initSentiment } from './market-sentiment.js';
 import { buildCoilRow, buildScreenerRow, buildSignal } from './signal.js';
 import { state } from './state.js';
 import { renderDataHealth } from './data-health.js';
-import { updateJournal } from './signal-journal.js';
 import { activateTab } from './utils.js';
 import { initMomentumScanner } from './momentum-scanner.js';
 import { initPwa } from './pwa.js';
@@ -59,6 +58,8 @@ const AUTO_REFRESH_MS = 60_000;
 const SCREENER_INTERVAL_MS = 5 * 60_000;
 
 export function startApp() {
+  // Remove data left by the retired optional journal without touching other settings.
+  try { localStorage.removeItem('binance_signal_journal_v1'); } catch {}
   state.runtime.isDisposed = false;
   state.runtime.isBfcacheSuspended = false;
 
@@ -136,9 +137,8 @@ export function startApp() {
     renderTradeCalculator: () => tradeCalc?.render(),
     showToast,
     onAnalysisSuccess: result => {
-      const journal = updateJournal(result);
       state.dataHealth = {receivedAt: result.receivedAt || Date.now(), effectiveIv: result.chartIv,
-        failed: false, journalSaved: journal.saved};
+        failed: false};
       renderDataHealth();
     },
     onAnalysisError: () => { state.dataHealth.failed = true; renderDataHealth(); },
